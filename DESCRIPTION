@@ -9,3 +9,8 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/jimhester/bench
 BugReports: https://github.com/jimhester/bench/issues
+LinkingTo: 
+    Rcpp
+Imports: 
+    Rcpp
+RoxygenNote: 6.0.1
