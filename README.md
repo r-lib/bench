@@ -32,9 +32,9 @@ results <- bench::mark(
   dat[which(dat$x > 499), ],
   subset(dat, x > 500))
 #> Error: results[[1]]$result not equal to results[[2]]$result.
-#> Attributes: < Component "row.names": Numeric: lengths (4907, 4916) differ >
-#> Component "x": Numeric: lengths (4907, 4916) differ
-#> Component "y": Numeric: lengths (4907, 4916) differ
+#> Attributes: < Component "row.names": Numeric: lengths (4954, 4966) differ >
+#> Component "x": Numeric: lengths (4954, 4966) differ
+#> Component "y": Numeric: lengths (4954, 4966) differ
 
 results <- bench::mark(
   dat[dat$x > 500, ],
@@ -43,13 +43,11 @@ results <- bench::mark(
 
 results
 #> # A tibble: 3 x 12
-#>   name              relative     n     mean     min  median    max `n/sec`
-#>   <chr>                <dbl> <int>    <dbl>   <dbl>   <dbl>  <dbl>   <dbl>
-#> 1 dat[which(dat$x …     1.70  1192 0.000417 2.49e-4 2.70e-4 0.0308   2399.
-#> 2 dat[dat$x > 500,…     1.38   965 0.000494 3.20e-4 3.49e-4 0.0304   2024.
-#> 3 subset(dat, x > …     1.00   700 0.000711 3.98e-4 4.40e-4 0.0300   1406.
-#> # ... with 4 more variables: allocated_memory <chr>, memory <list>,
-#> #   result <list>, timing <list>
+#>   name                      relative     n    mean     min  median    max `n/sec` allocated_memory memory result timing
+#>   <chr>                        <dbl> <int>   <dbl>   <dbl>   <dbl>  <dbl>   <dbl> <chr>            <list> <list> <list>
+#> 1 dat[which(dat$x > 500), ]     1.49  1116 4.45e-4 2.49e-4 2.70e-4 0.0302   2245. 364.33 kB        <Rpro… <data… <dbl …
+#> 2 dat[dat$x > 500, ]            1.30   975 5.10e-4 3.20e-4 3.44e-4 0.0308   1960. 424.57 kB        <Rpro… <data… <dbl …
+#> 3 subset(dat, x > 500)          1.00   749 6.47e-4 4.02e-4 4.34e-4 0.0287   1547. 544.69 kB        <Rpro… <data… <dbl …
 ```
 
 ``` r
