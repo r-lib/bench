@@ -1,0 +1,55 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# bench
+
+[![Travis build status](https://travis-ci.org/jimhester/bench.svg?branch=master)](https://travis-ci.org/jimhester/bench)
+
+
+The goal of bench is to benchmark code.
+
+## Installation
+
+You can install the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("jimhester/bench")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
+results <- bench::mark(
+  dat[dat$x > 500, ],
+  dat[which(dat$x > 500), ],
+  subset(dat, x > 500))
+
+results
+```
+
+```{r pressure}
+library(tidyverse)
+results %>%
+  mutate(name = fct_reorder(name, relative)) %>%
+  select(name, timing) %>%
+  unnest() %>%
+  ggplot(aes(name, timing, color = name)) +
+    geom_jitter() +
+    scale_y_log10() +
+    coord_flip()
+```
