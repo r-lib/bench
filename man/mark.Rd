@@ -4,7 +4,7 @@
 \alias{mark}
 \title{Benchmark a list of quoted expressions}
 \usage{
-mark(exprs, env = parent.frame(), n = 10)
+mark(exprs, env = parent.frame(), n = 10, check_results = TRUE)
 }
 \description{
 Benchmark a list of quoted expressions

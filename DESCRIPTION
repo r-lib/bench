@@ -12,5 +12,7 @@ BugReports: https://github.com/jimhester/bench/issues
 LinkingTo: 
     Rcpp
 Imports: 
-    Rcpp
+    Rcpp,
+    profmem,
+    testthat
 RoxygenNote: 6.0.1
