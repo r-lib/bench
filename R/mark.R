@@ -1,7 +1,3 @@
-#' @useDynLib bench, .registration = TRUE
-#' @importFrom Rcpp sourceCpp
-NULL
-
 #' Benchmark a series of functions
 #'
 #' Benchmark a list of quoted expressions. Each expression will always run at
@@ -53,7 +49,7 @@ mark <- function(..., exprs = NULL, env = parent.frame(), min_time = .5, num_ite
   }
 
   # Run timing benchmark
-  timing <- mark_(exprs, env, min_time, num_iterations)
+  timing <- .Call(mark_, exprs, env, min_time, as.integer(num_iterations))
 
   # Add timings to results
   for (i in seq_along(results)) {
