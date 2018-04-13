@@ -4,7 +4,7 @@
 \alias{mark}
 \title{Benchmark a series of functions}
 \usage{
-mark(..., exprs, env = parent.frame(), min_time = 0.5,
+mark(..., exprs = NULL, env = parent.frame(), min_time = 0.5,
   num_iterations = 1e+06, check_results = TRUE)
 }
 \arguments{
@@ -14,8 +14,8 @@ mark(..., exprs, env = parent.frame(), min_time = 0.5,
 
 \item{env}{The environment which to evaluate the expressions}
 
-\item{min_time}{The minimum time to run each expression, set to `0` to always
-run `num_iterations` times instead.}
+\item{min_time}{The minimum number of seconds to run each expression, set to
+`0` to disable and always run `num_iterations` times instead.}
 
 \item{num_iterations}{Expressions will be a maximum of `num_iterations` times.}
 
@@ -29,4 +29,9 @@ or more times to measure timing.
 }
 \examples{
 mark(list(quote(1 + 1), quote(4 - 2)))
+dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
+mark(
+  dat[dat$x > 500, ],
+  dat[which(dat$x > 500), ],
+  subset(dat, x > 500))
 }

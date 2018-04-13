@@ -1,4 +1,5 @@
 #' @useDynLib bench, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
 NULL
 
 #' Benchmark a series of functions
@@ -19,7 +20,7 @@ NULL
 #' @examples
 #' mark(list(quote(1 + 1), quote(4 - 2)))
 #' dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
-#' res <- mark(
+#' mark(
 #'   dat[dat$x > 500, ],
 #'   dat[which(dat$x > 500), ],
 #'   subset(dat, x > 500))
@@ -33,10 +34,10 @@ mark <- function(..., exprs = NULL, env = parent.frame(), min_time = .5, num_ite
     f <- tempfile()
     on.exit(unlink(f))
     if (capabilities("profmem")) {
-      Rprofmem(f, threshold = 1)
+      utils::Rprofmem(f, threshold = 1)
     }
     res <- eval(e, env)
-    Rprofmem(NULL)
+    utils::Rprofmem(NULL)
     list(result = res, memory = parse_allocations(f))
   }
 
@@ -63,12 +64,12 @@ mark <- function(..., exprs = NULL, env = parent.frame(), min_time = .5, num_ite
   res <- tibble::as_tibble(purrr::transpose(results))
 
   res$name <- auto_name(exprs)
-  res$n <- map_int(res$timing, length)
-  res$mean <- map_dbl(res$timing, mean)
-  res$min <- map_dbl(res$timing, min)
-  res$median <- map_dbl(res$timing, median)
-  res$max <- map_dbl(res$timing, max)
-  total_time <- map_dbl(res$timing, sum)
+  res$n <- purrr::map_int(res$timing, length)
+  res$mean <- purrr::map_dbl(res$timing, mean)
+  res$min <- purrr::map_dbl(res$timing, min)
+  res$median <- purrr::map_dbl(res$timing, stats::median)
+  res$max <- purrr::map_dbl(res$timing, max)
+  total_time <- purrr::map_dbl(res$timing, sum)
   res$`n/sec` <- res$n / total_time
 
   res$relative <- res$n / min(res$n)

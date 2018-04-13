@@ -17,5 +17,9 @@ LinkingTo:
 Imports: 
     Rcpp,
     profmem,
-    testthat
+    testthat,
+    tibble,
+    purrr,
+    utils,
+    stats
 RoxygenNote: 6.0.1
