@@ -52,7 +52,7 @@ results <- bench::mark(
 results
 ```
 
-```{r example2, cache = TRUE}
+```{r example2}
 set.seed(42)
 results <- bench::mark(
   setup = {
