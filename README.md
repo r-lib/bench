@@ -23,6 +23,7 @@ devtools::install_github("jimhester/bench")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
+set.seed(42)
 dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 
 # Throws an error if the results are not equivalent, so you don't accidentally
@@ -32,9 +33,9 @@ results <- bench::mark(
   dat[which(dat$x > 499), ],
   subset(dat, x > 500))
 #> Error: results[[1]]$result not equal to results[[2]]$result.
-#> Attributes: < Component "row.names": Numeric: lengths (4954, 4966) differ >
-#> Component "x": Numeric: lengths (4954, 4966) differ
-#> Component "y": Numeric: lengths (4954, 4966) differ
+#> Attributes: < Component "row.names": Numeric: lengths (5002, 5016) differ >
+#> Component "x": Numeric: lengths (5002, 5016) differ
+#> Component "y": Numeric: lengths (5002, 5016) differ
 
 results <- bench::mark(
   dat[dat$x > 500, ],
@@ -45,21 +46,36 @@ results
 #> # A tibble: 3 x 12
 #>   name                      relative     n    mean     min  median    max `n/sec` allocated_memory memory result timing
 #>   <chr>                        <dbl> <int>   <dbl>   <dbl>   <dbl>  <dbl>   <dbl> <chr>            <list> <list> <list>
-#> 1 dat[which(dat$x > 500), ]     1.49  1116 4.45e-4 2.49e-4 2.70e-4 0.0302   2245. 364.33 kB        <Rpro… <data… <dbl …
-#> 2 dat[dat$x > 500, ]            1.30   975 5.10e-4 3.20e-4 3.44e-4 0.0308   1960. 424.57 kB        <Rpro… <data… <dbl …
-#> 3 subset(dat, x > 500)          1.00   749 6.47e-4 4.02e-4 4.34e-4 0.0287   1547. 544.69 kB        <Rpro… <data… <dbl …
+#> 1 dat[which(dat$x > 500), ]     1.61  1238 4.01e-4 2.50e-4 2.84e-4 0.0198   2493. 366.06 kB        <Rpro… <data… <dbl …
+#> 2 dat[dat$x > 500, ]            1.32  1014 4.90e-4 3.21e-4 3.53e-4 0.0205   2039. 426.10 kB        <Rpro… <data… <dbl …
+#> 3 subset(dat, x > 500)          1.00   768 6.48e-4 4.01e-4 4.53e-4 0.0238   1543. 546.22 kB        <Rpro… <data… <dbl …
+```
+
+``` r
+set.seed(42)
+results <- bench::mark(
+  setup = {
+    dat <- data.frame(x = runif(num_x, 1, 1000), y=runif(num_y, 1, 1000))
+  },
+  parameters = list(num_x = 10 ^ seq(3, 5), num_y = c(1000, 10000)),
+
+  dat[dat$x > 500, ],
+  dat[which(dat$x > 500), ],
+  subset(dat, x > 500)
+)
 ```
 
 ``` r
 library(tidyverse)
 results %>%
   mutate(name = fct_reorder(name, relative)) %>%
-  select(name, timing) %>%
+  select(name, num_x, num_y, timing) %>%
   unnest() %>%
-  ggplot(aes(name, timing, color = name)) +
+  ggplot(aes(x = name, y = timing)) +
     geom_jitter() +
     scale_y_log10() +
-    coord_flip()
+    coord_flip() +
+    facet_grid(num_y ~ num_x, labeller = label_both)
 ```
 
 <img src="man/figures/README-pressure-1.png" width="100%" />

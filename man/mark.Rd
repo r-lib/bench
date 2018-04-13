@@ -4,13 +4,19 @@
 \alias{mark}
 \title{Benchmark a series of functions}
 \usage{
-mark(..., exprs = NULL, env = parent.frame(), min_time = 0.5,
-  num_iterations = 1e+06, check_results = TRUE)
+mark(..., exprs = NULL, setup = NULL, parameters = list(),
+  env = parent.frame(), min_time = 0.5, num_iterations = 1e+06,
+  check_results = TRUE)
 }
 \arguments{
 \item{...}{Expressions to benchmark}
 
 \item{exprs}{A list of quoted expressions to benchmark}
+
+\item{setup}{code to run before each benchmark group}
+
+\item{parameters}{Variable values to assign, all values will be enumerated
+by `expand.grid()`.}
 
 \item{env}{The environment which to evaluate the expressions}
 

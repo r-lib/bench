@@ -1,3 +1,6 @@
+#' @useDynLib bench, .registration = TRUE
+NULL
+
 #' Benchmark a series of functions
 #'
 #' Benchmark a list of quoted expressions. Each expression will always run at
@@ -6,6 +9,9 @@
 #'
 #' @param ... Expressions to benchmark
 #' @param exprs A list of quoted expressions to benchmark
+#' @param setup code to run before each benchmark group
+#' @param parameters Variable values to assign, all values will be enumerated
+#'   by `expand.grid()`.
 #' @param env The environment which to evaluate the expressions
 #' @param min_time The minimum number of seconds to run each expression, set to
 #'   `0` to disable and always run `num_iterations` times instead.
@@ -20,7 +26,44 @@
 #'   dat[dat$x > 500, ],
 #'   dat[which(dat$x > 500), ],
 #'   subset(dat, x > 500))
-mark <- function(..., exprs = NULL, env = parent.frame(), min_time = .5, num_iterations = 1e6, check_results = TRUE) {
+
+mark <- function(..., exprs = NULL, setup = NULL, parameters = list(), env = parent.frame(), min_time = .5, num_iterations = 1e6, check_results = TRUE) {
+  parameters <- expand.grid(parameters)
+  setup <- substitute(setup)
+
+  if (nrow(parameters) == 0) {
+    e <- new.env(parent = env)
+    res <- mark_internal(..., exprs = exprs, setup = setup, env = e, min_time = min_time, num_iterations = num_iterations, check_results = check_results)
+  } else {
+    out <- list()
+    for (i in seq_len(nrow(parameters))) {
+      e <- new.env(parent = env)
+      for (j in seq_along(parameters)) {
+        var <- names(parameters)[[j]]
+        value <- parameters[i, j]
+        assign(var, value, envir = e)
+      }
+      out[[i]] <- mark_internal(..., exprs = exprs, setup = setup, env = e, min_time = min_time, num_iterations = num_iterations, check_results = check_results)
+      for (j in seq_along(parameters)) {
+        var <- names(parameters)[[j]]
+        value <- parameters[i, j]
+        out[[i]][[var]] <- value
+      }
+    }
+    res <- dplyr::bind_rows(out)
+  }
+
+  res <- res[c("name", names(parameters), "relative", "n", "mean", "min", "median", "max", "n/sec", "allocated_memory", "memory", "result", "timing")]
+  res[order(-res$relative), ]
+}
+
+mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, check_results) {
+
+  # Run setup code
+  if (!is.null(setup)) {
+    eval(setup, env)
+  }
+
   exprs <- c(dots(...), exprs)
 
   results <- vector("list", length(exprs))
@@ -70,9 +113,7 @@ mark <- function(..., exprs = NULL, env = parent.frame(), min_time = .5, num_ite
 
   res$relative <- res$n / min(res$n)
   res$allocated_memory <- prettyunits::pretty_bytes(purrr::map_dbl(res$memory, ~ if (is.null(.)) NA else sum(.$bytes, na.rm = TRUE)))
-
-  res <- res[c("name", "relative", "n", "mean", "min", "median", "max", "n/sec", "allocated_memory", "memory", "result", "timing")]
-  res[order(-res$relative), ]
+  res
 }
 
 parse_allocations <- function(filename) {
