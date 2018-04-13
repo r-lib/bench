@@ -6,21 +6,22 @@
 using namespace Rcpp;
 
 // mark_
-List mark_(List expressions, Environment env, R_xlen_t n);
-RcppExport SEXP _bench_mark_(SEXP expressionsSEXP, SEXP envSEXP, SEXP nSEXP) {
+List mark_(List expressions, Environment env, double min_time, R_xlen_t num_iterations);
+RcppExport SEXP _bench_mark_(SEXP expressionsSEXP, SEXP envSEXP, SEXP min_timeSEXP, SEXP num_iterationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type expressions(expressionsSEXP);
     Rcpp::traits::input_parameter< Environment >::type env(envSEXP);
-    Rcpp::traits::input_parameter< R_xlen_t >::type n(nSEXP);
-    rcpp_result_gen = Rcpp::wrap(mark_(expressions, env, n));
+    Rcpp::traits::input_parameter< double >::type min_time(min_timeSEXP);
+    Rcpp::traits::input_parameter< R_xlen_t >::type num_iterations(num_iterationsSEXP);
+    rcpp_result_gen = Rcpp::wrap(mark_(expressions, env, min_time, num_iterations));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_bench_mark_", (DL_FUNC) &_bench_mark_, 3},
+    {"_bench_mark_", (DL_FUNC) &_bench_mark_, 4},
     {NULL, NULL, 0}
 };
 

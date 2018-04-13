@@ -2,13 +2,31 @@
 % Please edit documentation in R/mark.R
 \name{mark}
 \alias{mark}
-\title{Benchmark a list of quoted expressions}
+\title{Benchmark a series of functions}
 \usage{
-mark(exprs, env = parent.frame(), n = 10, check_results = TRUE)
+mark(..., exprs, env = parent.frame(), min_time = 0.5,
+  num_iterations = 1e+06, check_results = TRUE)
+}
+\arguments{
+\item{...}{Expressions to benchmark}
+
+\item{exprs}{A list of quoted expressions to benchmark}
+
+\item{env}{The environment which to evaluate the expressions}
+
+\item{min_time}{The minimum time to run each expression, set to `0` to always
+run `num_iterations` times instead.}
+
+\item{num_iterations}{Expressions will be a maximum of `num_iterations` times.}
+
+\item{check_results}{Should results be checked with [testthat::expect_equal]
+for consistency?}
 }
 \description{
-Benchmark a list of quoted expressions
+Benchmark a list of quoted expressions. Each expression will always run at
+least twice, once to measure the memory allocation and store results and one
+or more times to measure timing.
 }
 \examples{
-mark(list(quote(1 + 1), quote(2 == 2)))
+mark(list(quote(1 + 1), quote(4 - 2)))
 }
