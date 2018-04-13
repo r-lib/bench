@@ -24,19 +24,32 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
+
+# Throws an error if the results are not equivalent, so you don't accidentally
+# benchmark against the wrong answer
+results <- bench::mark(
+  dat[dat$x > 500, ],
+  dat[which(dat$x > 499), ],
+  subset(dat, x > 500))
+#> Error: results[[1]]$result not equal to results[[2]]$result.
+#> Attributes: < Component "row.names": Numeric: lengths (4907, 4916) differ >
+#> Component "x": Numeric: lengths (4907, 4916) differ
+#> Component "y": Numeric: lengths (4907, 4916) differ
+
 results <- bench::mark(
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
 
 results
-#> # A tibble: 3 x 11
-#>   name      relative     n    mean     min  median    max `n/sec` memory  
-#>   <chr>        <dbl> <int>   <dbl>   <dbl>   <dbl>  <dbl>   <dbl> <list>  
-#> 1 dat[whic…     1.59  1159 4.28e-4 2.67e-4 2.79e-4 0.0301   2335. <Rprofm…
-#> 2 dat[dat$…     1.33   972 5.12e-4 3.33e-4 3.55e-4 0.0327   1954. <Rprofm…
-#> 3 subset(d…     1.00   729 6.74e-4 4.27e-4 4.50e-4 0.0317   1483. <Rprofm…
-#> # ... with 2 more variables: result <list>, timing <list>
+#> # A tibble: 3 x 12
+#>   name              relative     n     mean     min  median    max `n/sec`
+#>   <chr>                <dbl> <int>    <dbl>   <dbl>   <dbl>  <dbl>   <dbl>
+#> 1 dat[which(dat$x …     1.70  1192 0.000417 2.49e-4 2.70e-4 0.0308   2399.
+#> 2 dat[dat$x > 500,…     1.38   965 0.000494 3.20e-4 3.49e-4 0.0304   2024.
+#> 3 subset(dat, x > …     1.00   700 0.000711 3.98e-4 4.40e-4 0.0300   1406.
+#> # ... with 4 more variables: allocated_memory <chr>, memory <list>,
+#> #   result <list>, timing <list>
 ```
 
 ``` r

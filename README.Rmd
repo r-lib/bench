@@ -32,8 +32,16 @@ devtools::install_github("jimhester/bench")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+```{r example, error = TRUE}
 dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
+
+# Throws an error if the results are not equivalent, so you don't accidentally
+# benchmark against the wrong answer
+results <- bench::mark(
+  dat[dat$x > 500, ],
+  dat[which(dat$x > 499), ],
+  subset(dat, x > 500))
+
 results <- bench::mark(
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
@@ -42,7 +50,7 @@ results <- bench::mark(
 results
 ```
 
-```{r pressure}
+```{r pressure, cache = TRUE}
 library(tidyverse)
 results %>%
   mutate(name = fct_reorder(name, relative)) %>%

@@ -48,7 +48,7 @@ mark <- function(..., exprs = NULL, env = parent.frame(), min_time = .5, num_ite
     results[[i + 1]] <- eval_one(exprs[[i + 1]])
 
     if (isTRUE(check_results)) {
-      testthat::expect_equal(!!results[[1]]$result, !!results[[i + 1]]$result)
+      testthat::expect_equal(results[[1]]$result, results[[!!(i + 1)]]$result)
     }
   }
 
@@ -73,8 +73,9 @@ mark <- function(..., exprs = NULL, env = parent.frame(), min_time = .5, num_ite
   res$`n/sec` <- res$n / total_time
 
   res$relative <- res$n / min(res$n)
+  res$allocated_memory <- prettyunits::pretty_bytes(purrr::map_dbl(res$memory, ~ sum(.$bytes, na.rm = TRUE)))
 
-  res <- res[c("name", "relative", "n", "mean", "min", "median", "max", "n/sec", "memory", "result", "timing")]
+  res <- res[c("name", "relative", "n", "mean", "min", "median", "max", "n/sec", "allocated_memory", "memory", "result", "timing")]
   res[order(-res$relative), ]
 }
 
@@ -97,7 +98,7 @@ auto_name <- function(exprs) {
 
   nms
 }
+
 dots <- function(...) {
   eval(substitute(alist(...)))
 }
-
