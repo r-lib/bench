@@ -19,5 +19,6 @@ Imports:
     purrr,
     utils,
     stats,
-    prettyunits
+    prettyunits,
+    dplyr
 RoxygenNote: 6.0.1
