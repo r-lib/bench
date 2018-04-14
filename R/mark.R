@@ -9,7 +9,8 @@ NULL
 #'
 #' @param ... Expressions to benchmark
 #' @param exprs A list of quoted expressions to benchmark
-#' @param setup code to run before each benchmark group
+#' @param setup code to evaluated before _each_ benchmark group, this code will
+#'   be reevaluated for each row in parameters.
 #' @param parameters Variable values to assign, all values will be enumerated
 #'   by `expand.grid()`.
 #' @param env The environment which to evaluate the expressions
@@ -27,23 +28,51 @@ NULL
 #'   dat[which(dat$x > 500), ],
 #'   subset(dat, x > 500))
 
-mark <- function(..., exprs = NULL, setup = NULL, parameters = list(), env = parent.frame(), min_time = .5, num_iterations = 1e6, check_results = TRUE) {
+mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
+  env = parent.frame(), min_time = .5, num_iterations = 1e6,
+  check_results = TRUE) {
+
   parameters <- expand.grid(parameters)
   setup <- substitute(setup)
 
   if (nrow(parameters) == 0) {
     e <- new.env(parent = env)
-    res <- mark_internal(..., exprs = exprs, setup = setup, env = e, min_time = min_time, num_iterations = num_iterations, check_results = check_results)
+    res <- mark_internal(
+      ...,
+      exprs = exprs,
+      setup = setup,
+      env = e,
+      min_time = min_time,
+      num_iterations = num_iterations,
+      check_results = check_results)
+
   } else {
     out <- list()
+    p_out <- format(tibble::as_tibble(parameters), n = Inf)
+
+    # Output a status message
+    message(paste0(p_out[[2]], collapse = "\n"))
     for (i in seq_len(nrow(parameters))) {
+
+      # Assign parameters in the execution environment
       e <- new.env(parent = env)
       for (j in seq_along(parameters)) {
         var <- names(parameters)[[j]]
         value <- parameters[i, j]
         assign(var, value, envir = e)
       }
-      out[[i]] <- mark_internal(..., exprs = exprs, setup = setup, env = e, min_time = min_time, num_iterations = num_iterations, check_results = check_results)
+
+      message(p_out[[i + 3]])
+      out[[i]] <- mark_internal(
+        ...,
+        exprs = exprs,
+        setup = setup,
+        env = e,
+        min_time = min_time,
+        num_iterations = num_iterations,
+        check_results = check_results)
+
+      # Add parameters to the output result
       for (j in seq_along(parameters)) {
         var <- names(parameters)[[j]]
         value <- parameters[i, j]
@@ -53,7 +82,10 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(), env = par
     res <- dplyr::bind_rows(out)
   }
 
-  res <- res[c("name", names(parameters), "relative", "n", "mean", "min", "median", "max", "n/sec", "allocated_memory", "memory", "result", "timing")]
+  res <- res[ c("name", names(parameters), "relative", "n", "mean", "min",
+    "median", "max", "n/sec", "allocated_memory", "memory", "result",
+    "timing")]
+
   res[order(-res$relative), ]
 }
 
