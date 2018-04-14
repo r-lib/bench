@@ -20,5 +20,6 @@ Imports:
     utils,
     stats,
     prettyunits,
-    dplyr
+    dplyr,
+    glue
 RoxygenNote: 6.0.1

@@ -40,8 +40,8 @@ dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 # Throws an error if the results are not equivalent, so you don't accidentally
 # benchmark against the wrong answer
 results <- bench::mark(
-  dat[dat$x > 500, ],
-  dat[which(dat$x > 499), ],
+  y = dat[dat$x > 500, ],
+  x = dat[which(dat$x > 499), ],
   subset(dat, x > 500))
 
 results <- bench::mark(

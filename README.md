@@ -29,13 +29,11 @@ dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 # Throws an error if the results are not equivalent, so you don't accidentally
 # benchmark against the wrong answer
 results <- bench::mark(
-  dat[dat$x > 500, ],
-  dat[which(dat$x > 499), ],
+  y = dat[dat$x > 500, ],
+  x = dat[which(dat$x > 499), ],
   subset(dat, x > 500))
-#> Error: results[[1]]$result not equal to results[[2]]$result.
-#> Attributes: < Component "row.names": Numeric: lengths (5002, 5016) differ >
-#> Component "x": Numeric: lengths (5002, 5016) differ
-#> Component "y": Numeric: lengths (5002, 5016) differ
+#> Error: All results must equal the first result:
+#>   `dat[dat$x > 500, ]` does not equal `dat[which(dat$x > 499), ]`
 
 results <- bench::mark(
   dat[dat$x > 500, ],
@@ -46,9 +44,9 @@ results
 #> # A tibble: 3 x 12
 #>   name                      relative     n    mean     min  median    max `n/sec` allocated_memory memory result timing
 #>   <chr>                        <dbl> <int>   <dbl>   <dbl>   <dbl>  <dbl>   <dbl> <chr>            <list> <list> <list>
-#> 1 dat[which(dat$x > 500), ]     1.54  1191 4.17e-4 2.52e-4 2.80e-4 0.0181   2397. 366.06 kB        <Rpro… <data… <dbl …
-#> 2 dat[dat$x > 500, ]            1.22   943 5.28e-4 3.20e-4 3.53e-4 0.0186   1896. 426.10 kB        <Rpro… <data… <dbl …
-#> 3 subset(dat, x > 500)          1.00   773 6.44e-4 4.11e-4 4.44e-4 0.0297   1553. 546.22 kB        <Rpro… <data… <dbl …
+#> 1 dat[which(dat$x > 500), ]     1.50  1154 4.31e-4 2.54e-4 2.85e-4 0.0252   2321. 366.06 kB        <Rpro… <data… <dbl …
+#> 2 dat[dat$x > 500, ]            1.25   963 5.16e-4 3.22e-4 3.76e-4 0.0228   1938. 426.10 kB        <Rpro… <data… <dbl …
+#> 3 subset(dat, x > 500)          1.00   768 6.48e-4 4.01e-4 4.51e-4 0.0197   1543. 546.22 kB        <Rpro… <data… <dbl …
 ```
 
 ``` r
@@ -63,6 +61,13 @@ results <- bench::mark(
   dat[which(dat$x > 500), ],
   subset(dat, x > 500)
 )
+#>     num_x  num_y
+#> 1   1000.  1000.
+#> 2  10000.  1000.
+#> 3 100000.  1000.
+#> 4   1000. 10000.
+#> 5  10000. 10000.
+#> 6 100000. 10000.
 ```
 
 ``` r

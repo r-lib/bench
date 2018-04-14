@@ -119,7 +119,16 @@ mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, chec
     results[[i + 1]] <- eval_one(exprs[[i + 1]])
 
     if (isTRUE(check_results)) {
-      testthat::expect_equal(results[[1]]$result, results[[!!(i + 1)]]$result)
+      comp <- testthat::compare(results[[1]]$result, results[[i + 1]]$result)
+      if (!comp$equal) {
+        stop(glue::glue("
+            All results must equal the first result:
+              `{first}` does not equal `{current}`
+            ",
+            first = deparse(exprs[[1]]),
+            current = deparse(exprs[[2]])),
+          call. = FALSE)
+      }
     }
   }
 
