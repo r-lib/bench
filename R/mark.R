@@ -32,7 +32,12 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
   env = parent.frame(), min_time = .5, num_iterations = 1e6,
   check_results = TRUE) {
 
-  parameters <- expand.grid(parameters)
+  # Only use expand.grid if not already a data.frame
+  is_simple_list <- is.list(parameters) && !is.object(parameters)
+  if (is_simple_list) {
+    parameters <- expand.grid(parameters)
+  }
+
   setup <- substitute(setup)
 
   if (nrow(parameters) == 0) {
