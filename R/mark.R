@@ -87,8 +87,8 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
     res <- dplyr::bind_rows(out)
   }
 
-  res <- res[ c("name", names(parameters), "relative", "n", "mean", "min",
-    "median", "max", "n/sec", "allocated_memory", "memory", "result",
+  res <- res[c("name", names(parameters), "relative", "n", "mean", "min",
+    "median", "max", "n/sec", "allocated_memory", "gc", "memory", "result",
     "timing")]
 
   res[order(-res$relative), ]
@@ -112,6 +112,7 @@ mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, chec
     if (capabilities("profmem")) {
       utils::Rprofmem(f, threshold = 1)
     }
+
     res <- eval(e, env)
     utils::Rprofmem(NULL)
     list(result = res, memory = parse_allocations(f))
@@ -138,11 +139,10 @@ mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, chec
   }
 
   # Run timing benchmark
-  timing <- .Call(mark_, exprs, env, min_time, as.integer(num_iterations))
-
-  # Add timings to results
-  for (i in seq_along(results)) {
-    results[[i]]$timing <- timing[[i]]
+  for (i in seq_len(length(exprs))) {
+    gcs <- count_gc()
+    results[[i]]$timing <- .Call(mark_, exprs[[i]], env, min_time, as.integer(num_iterations))
+    results[[i]]$gc <- gcs()
   }
 
   # TODO remove purrr dependency probably?
@@ -159,6 +159,7 @@ mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, chec
 
   res$relative <- res$n / min(res$n)
   res$allocated_memory <- prettyunits::pretty_bytes(purrr::map_dbl(res$memory, ~ if (is.null(.)) NA else sum(.$bytes, na.rm = TRUE)))
+  res$gc <- unlist(res$gc)
   res
 }
 
@@ -184,4 +185,20 @@ auto_name <- function(exprs) {
 
 dots <- function(...) {
   eval(substitute(alist(...)))
+}
+
+count_gc <- function() {
+  complete <- FALSE
+  reg.finalizer(environment(), function(e) complete <<- TRUE)
+
+  i <- 0
+  fin <- function(e) {
+    i <<- i + 1
+    if (!identical(complete, TRUE)) {
+      reg.finalizer(environment(), fin)
+    }
+  }
+  fin()
+
+  function() i
 }
