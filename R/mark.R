@@ -143,6 +143,9 @@ mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, chec
     gcs <- count_gc()
     results[[i]]$timing <- .Call(mark_, exprs[[i]], env, min_time, as.integer(num_iterations))
     results[[i]]$gc <- gcs()
+
+    # Do an explicit gc, to minimize counting a gc against a prior expression.
+    gc()
   }
 
   # TODO remove purrr dependency probably?
