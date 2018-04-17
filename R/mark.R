@@ -177,7 +177,7 @@ summary.tidy_benchmark <- function(object, ...) {
 
   object$rel <- unclass(object$median) / unclass(min(object$median))
   object$mem_alloc <-
-    prettyunits::pretty_bytes(
+    bench_bytes(
       vdapply(object$memory, function(objectobject) if (is.null(objectobject)) NA else sum(objectobject$bytes, na.rm = TRUE)))
   object$num_gc <- viapply(no_gc, function(object) sum(!object))
 

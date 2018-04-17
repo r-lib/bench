@@ -1,4 +1,4 @@
-units <- c('ns' = 1e-9, 'us' = 1e-6, '\U00B5s' = 1e-6, 'ms' = 1e-3, 's' = 1, 'm' = 60, 'h' = 60 * 60, 'd' = 60 * 60 * 24, 'w' = 60 * 60 * 24 * 7)
+time_units <- c('ns' = 1e-9, 'us' = 1e-6, '\U00B5s' = 1e-6, 'ms' = 1e-3, 's' = 1, 'm' = 60, 'h' = 60 * 60, 'd' = 60 * 60 * 24, 'w' = 60 * 60 * 24 * 7)
 
 #' Human readable times
 #'
@@ -38,11 +38,11 @@ as_bench_time.default <- function(x) {
   x <- as.character(x)
   re <- glue::glue("
       ^(?<size>[[:digit:].]+)\\s*(?<unit>{nms}?)$
-      ", nms = glue::glue_collapse(names(units), "|"))
+      ", nms = glue::glue_collapse(names(time_units), "|"))
 
   m <- captures(x, regexpr(re, x, perl = TRUE))
   m$unit[m$unit == ""] <- "s"
-  new_bench_time(unname(as.numeric(m$size) * units[m$unit]))
+  new_bench_time(unname(as.numeric(m$size) * time_units[m$unit]))
 }
 
 #' @export
@@ -65,7 +65,7 @@ format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
     if (is.na(x) || x == 0) {
       return(NA_character_)
     }
-    epsilon <- 1 - (x * (1 / units))
+    epsilon <- 1 - (x * (1 / time_units))
     tolerance <- sqrt(.Machine$double.eps)
     names(
       utils::tail(n = 1,
@@ -74,7 +74,7 @@ format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
   seconds <- unclass(x)
 
   unit <- vcapply(x, find_unit)
-  res <- round(seconds / units[unit], digits = digits)
+  res <- round(seconds / time_units[unit], digits = digits)
 
   ## Zero seconds
   res[seconds == 0] <- 0
