@@ -6,7 +6,7 @@
 \usage{
 mark(..., exprs = NULL, setup = NULL, parameters = list(),
   env = parent.frame(), min_time = 0.5, num_iterations = 1e+06,
-  check_results = TRUE)
+  check = TRUE)
 }
 \arguments{
 \item{...}{Expressions to benchmark}
@@ -26,8 +26,10 @@ by \code{expand.grid()}.}
 
 \item{num_iterations}{Expressions will be a maximum of \code{num_iterations} times.}
 
-\item{check_results}{Should results be checked with \link[testthat:expect_equal]{testthat::expect_equal}
-for consistency?}
+\item{check}{Check if results are consistent. If \code{TRUE}, checking is done
+with \code{\link[=all.equal]{all.equal()}}, if \code{FALSE} checking is disabled. If \code{check} is a
+function that function will be called with each pair of results to
+determine consistency.}
 }
 \description{
 Benchmark a list of quoted expressions. Each expression will always run at
