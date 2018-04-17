@@ -17,8 +17,10 @@ NULL
 #' @param min_time The minimum number of seconds to run each expression, set to
 #'   `0` to disable and always run `num_iterations` times instead.
 #' @param num_iterations Expressions will be a maximum of `num_iterations` times.
-#' @param check_results Should results be checked with [testthat::expect_equal]
-#'   for consistency?
+#' @param check Check if results are consistent. If `TRUE`, checking is done
+#'   with [all.equal()], if `FALSE` checking is disabled. If `check` is a
+#'   function that function will be called with each pair of results to
+#'   determine consistency.
 #' @examples
 #' dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 #' mark(
@@ -27,8 +29,7 @@ NULL
 #'   subset(dat, x > 500))
 #' @export
 mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
-  env = parent.frame(), min_time = .5, num_iterations = 1e6,
-  check_results = TRUE) {
+  env = parent.frame(), min_time = .5, num_iterations = 1e6, check = TRUE) {
 
   # Only use expand.grid if not already a data.frame
   is_simple_list <- is.list(parameters) && !is.object(parameters)
@@ -47,7 +48,7 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
       env = e,
       min_time = min_time,
       num_iterations = num_iterations,
-      check_results = check_results)
+      check = check)
 
   } else {
     out <- list()
@@ -73,7 +74,7 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
         env = e,
         min_time = min_time,
         num_iterations = num_iterations,
-        check_results = check_results)
+        check = check)
 
       # Add parameters to the output result
       for (j in seq_along(parameters)) {
@@ -93,16 +94,25 @@ tidy_benchmark <- function(x) {
   x
 }
 
-mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, check_results) {
+mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, check) {
 
-  # Run setup code
-  if (!is.null(setup)) {
-    eval(setup, env)
+  if (isTRUE(check)) {
+    check_fun <- all.equal
+  } else if (is.function(check)) {
+    check_fun <- check
+    check <- TRUE
+  } else {
+    check <- FALSE
   }
 
   exprs <- c(dots(...), exprs)
 
   results <- list(expression = auto_name(exprs))
+
+  # Run setup code
+  if (!is.null(setup)) {
+    eval(setup, env)
+  }
 
   # Helper for evaluating with memory profiling
   eval_one <- function(e) {
@@ -123,9 +133,9 @@ mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, chec
     results$result[[i]] <- res$result
     results$memory[[i]] <- res$memory
 
-    if (isTRUE(check_results) && i > 1) {
-      comp <- testthat::compare(results$result[[1]], results$result[[i]])
-      if (!comp$equal) {
+    if (isTRUE(check) && i > 1) {
+      comp <- check_fun(results$result[[1]], results$result[[i]])
+      if (!isTRUE(comp)) {
         stop(glue::glue("
             All results must equal the first result:
               `{first}` does not equal `{current}`
