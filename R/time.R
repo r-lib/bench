@@ -59,6 +59,8 @@ as_bench_time.numeric <- function(x) {
 # Aims to be consistent with ls -lh, so uses 1024 KiB units, 3 or less digits etc.
 #' @export
 format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
+  nms <- names(x)
+
   find_unit <- function(x) {
     if (is.na(x) || x == 0) {
       return(NA_character_)
@@ -83,9 +85,10 @@ format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
   res[is.nan(seconds)] <- NaN
   unit[is.na(seconds)] <- ""            # Includes NaN as well
 
+
   res <- format(res, scientific = scientific, digits = digits, drop0trailing = TRUE, ...)
 
-  paste0(res, unit)
+  stats::setNames(paste0(res, unit), nms)
 }
 
 #' @export
@@ -93,7 +96,7 @@ as.character.bench_time <- format.bench_time
 
 #' @export
 print.bench_time <- function(x, ...) {
-  cat(format.bench_time(x, ...), sep = " ")
+  print(format.bench_time(x, ...), quote = FALSE)
 }
 
 #' @export

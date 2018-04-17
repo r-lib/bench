@@ -13,20 +13,20 @@ mark(..., exprs = NULL, setup = NULL, parameters = list(),
 
 \item{exprs}{A list of quoted expressions to benchmark}
 
-\item{setup}{code to evaluated before _each_ benchmark group, this code will
+\item{setup}{code to evaluated before \emph{each} benchmark group, this code will
 be reevaluated for each row in parameters.}
 
 \item{parameters}{Variable values to assign, all values will be enumerated
-by `expand.grid()`.}
+by \code{expand.grid()}.}
 
 \item{env}{The environment which to evaluate the expressions}
 
 \item{min_time}{The minimum number of seconds to run each expression, set to
-`0` to disable and always run `num_iterations` times instead.}
+\code{0} to disable and always run \code{num_iterations} times instead.}
 
-\item{num_iterations}{Expressions will be a maximum of `num_iterations` times.}
+\item{num_iterations}{Expressions will be a maximum of \code{num_iterations} times.}
 
-\item{check_results}{Should results be checked with [testthat::expect_equal]
+\item{check_results}{Should results be checked with \link[testthat:expect_equal]{testthat::expect_equal}
 for consistency?}
 }
 \description{

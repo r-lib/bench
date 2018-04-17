@@ -20,7 +20,8 @@ devtools::install_github("jimhester/bench")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+`bench::mark()` a function to easily benchmark a series of expressions
+and evaluate relative performance.
 
 ``` r
 set.seed(42)
@@ -44,9 +45,9 @@ results
 #> # A tibble: 3 x 13
 #>   expression                  rel min    mean   median  max     `itr/sec` mem_alloc num_gc time   result   memory gc   
 #>   <chr>                     <dbl> <S3: > <S3: > <S3: b> <S3: b>     <dbl> <chr>      <int> <list> <list>   <list> <lis>
-#> 1 subset(dat, x > 500)       1.50 422µs  560µs  487µs   2.38ms      1786. 561.10 kB     14 <S3: … <data.f… <Rpro… <chr…
-#> 2 dat[dat$x > 500, ]         1.35 342µs  504µs  436µs   3.29ms      1985. 426.10 kB     12 <S3: … <data.f… <Rpro… <chr…
-#> 3 dat[which(dat$x > 500), ]  1    271µs  373µs  324µs   2.17ms      2678. 366.06 kB     14 <S3: … <data.f… <Rpro… <chr…
+#> 1 subset(dat, x > 500)       1.58 422µs  584µs  514µs   2.38ms      1712. 561.10 kB     13 <S3: … <data.f… <Rpro… <chr…
+#> 2 dat[dat$x > 500, ]         1.34 340µs  491µs  435µs   3.61ms      2037. 426.10 kB     13 <S3: … <data.f… <Rpro… <chr…
+#> 3 dat[which(dat$x > 500), ]  1    268µs  376µs  325µs   2.37ms      2661. 366.06 kB     14 <S3: … <data.f… <Rpro… <chr…
 ```
 
 ``` r
@@ -86,3 +87,15 @@ results %>%
 ```
 
 <img src="man/figures/README-pressure-1.png" width="100%" />
+
+Also includes `system_time()`, a higher precision replacement for
+`system.time()`
+
+``` r
+bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
+#> process    real 
+#>   370ms   376ms
+bench::system_time(Sys.sleep(.5))
+#> process    real 
+#>    90µs   503ms
+```

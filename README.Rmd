@@ -31,7 +31,8 @@ devtools::install_github("jimhester/bench")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+`bench::mark()` a function to easily benchmark a series of expressions and
+evaluate relative performance.
 
 ```{r example, error = TRUE}
 set.seed(42)
@@ -79,4 +80,11 @@ results %>%
     scale_y_continuous(trans = bench::bench_time_trans()) +
     coord_flip() +
     facet_grid(num_y ~ num_x, labeller = label_both)
+```
+
+Also includes `system_time()`, a higher precision replacement for `system.time()`
+
+```{r}
+bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
+bench::system_time(Sys.sleep(.5))
 ```

@@ -59,8 +59,40 @@ SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP num_iterations, SEXP logfile
   return out;
 }
 
+double real_time() {
+  struct timespec ts;
+  if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {
+    Rf_error("clock_gettime(CLOCK_REALTIME, ...) failed");
+  }
+  return ts.tv_sec + (double)ts.tv_nsec * 1e-9;
+}
+
+double process_cpu_time() {
+  struct timespec ts;
+  if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts) != 0) {
+    Rf_error("clock_gettime(CLOCK_PROCESS_CPUTIME_ID, ...) failed");
+  }
+  return ts.tv_sec + (double)ts.tv_nsec * 1e-9;
+}
+
+SEXP system_time_(SEXP expr, SEXP env) {
+  double process_begin = process_cpu_time();
+  double real_begin = real_time();
+  Rf_eval(expr, env);
+  double real_end = real_time();
+  double process_end = process_cpu_time();
+
+  SEXP out = PROTECT(Rf_allocVector(REALSXP, 2));
+  REAL(out)[0] = process_end - process_begin;
+  REAL(out)[1] = real_end - real_begin;
+
+  UNPROTECT(1);
+  return out;
+}
+
 static const R_CallMethodDef CallEntries[] = {
     {"mark_", (DL_FUNC) &mark_, 5},
+    {"system_time_", (DL_FUNC) &system_time_, 2},
     {NULL, NULL, 0}
 };
 
