@@ -210,19 +210,3 @@ auto_name <- function(exprs) {
 dots <- function(...) {
   eval(substitute(alist(...)))
 }
-
-count_gc <- function() {
-  complete <- FALSE
-  reg.finalizer(environment(), function(e) complete <<- TRUE)
-
-  i <- 0
-  fin <- function(e) {
-    i <<- i + 1
-    if (!identical(complete, TRUE)) {
-      reg.finalizer(environment(), fin)
-    }
-  }
-  fin()
-
-  function() i
-}
