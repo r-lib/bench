@@ -19,15 +19,13 @@ NULL
 #' @param num_iterations Expressions will be a maximum of `num_iterations` times.
 #' @param check_results Should results be checked with [testthat::expect_equal]
 #'   for consistency?
-#' @export
 #' @examples
-#' mark(list(quote(1 + 1), quote(4 - 2)))
 #' dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 #' mark(
 #'   dat[dat$x > 500, ],
 #'   dat[which(dat$x > 500), ],
 #'   subset(dat, x > 500))
-
+#' @export
 mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
   env = parent.frame(), min_time = .5, num_iterations = 1e6,
   check_results = TRUE) {
@@ -87,11 +85,12 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
     res <- dplyr::bind_rows(out)
   }
 
-  res <- res[c("name", names(parameters), "relative", "n", "mean", "min",
-    "median", "max", "n/sec", "allocated_memory", "gc", "memory", "result",
-    "timing")]
+  summary(tidy_benchmark(res))
+}
 
-  res[order(-res$relative), ]
+tidy_benchmark <- function(x) {
+  class(x) <- unique(c("tidy_benchmark", class(x)))
+  x
 }
 
 mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, check_results) {
@@ -103,7 +102,7 @@ mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, chec
 
   exprs <- c(dots(...), exprs)
 
-  results <- vector("list", length(exprs))
+  results <- list(expression = auto_name(exprs))
 
   # Helper for evaluating with memory profiling
   eval_one <- function(e) {
@@ -119,13 +118,13 @@ mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, chec
   }
 
   # Run allocation benchmark and check results
-  results[[1]] <- eval_one(exprs[[1]])
-  for (i in seq_len(length(exprs) - 1)) {
+  for (i in seq_len(length(exprs))) {
+    res <- eval_one(exprs[[i]])
+    results$result[[i]] <- res$result
+    results$memory[[i]] <- res$memory
 
-    results[[i + 1]] <- eval_one(exprs[[i + 1]])
-
-    if (isTRUE(check_results)) {
-      comp <- testthat::compare(results[[1]]$result, results[[i + 1]]$result)
+    if (isTRUE(check_results) && i > 1) {
+      comp <- testthat::compare(results$result[[1]], results$result[[i]])
       if (!comp$equal) {
         stop(glue::glue("
             All results must equal the first result:
@@ -140,30 +139,42 @@ mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, chec
 
   # Run timing benchmark
   for (i in seq_len(length(exprs))) {
-    gcs <- count_gc()
-    results[[i]]$timing <- .Call(mark_, exprs[[i]], env, min_time, as.integer(num_iterations))
-    results[[i]]$gc <- gcs()
+    with_gcinfo({
+      res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(num_iterations), tempfile())
+    })
+    results$time[[i]] <- as_bench_time(res[[1]])
+    results$gc[[i]] <- res[[2]]
 
     # Do an explicit gc, to minimize counting a gc against a prior expression.
     gc()
   }
 
-  # TODO remove purrr dependency probably?
-  res <- tibble::as_tibble(purrr::transpose(results))
+  tibble::as_tibble(results)
+}
 
-  res$name <- auto_name(exprs)
-  res$n <- purrr::map_int(res$timing, length)
-  res$mean <- purrr::map_dbl(res$timing, mean)
-  res$min <- purrr::map_dbl(res$timing, min)
-  res$median <- purrr::map_dbl(res$timing, stats::median)
-  res$max <- purrr::map_dbl(res$timing, max)
-  total_time <- purrr::map_dbl(res$timing, sum)
-  res$`n/sec` <- res$n / total_time
+#' @export
+summary.tidy_benchmark <- function(object, ...) {
+  nms <- colnames(object)
+  no_gc <- lapply(object$gc, `==`, "")
+  times <- Map(`[`, object$time, no_gc)
 
-  res$relative <- res$n / min(res$n)
-  res$allocated_memory <- prettyunits::pretty_bytes(purrr::map_dbl(res$memory, ~ if (is.null(.)) NA else sum(.$bytes, na.rm = TRUE)))
-  res$gc <- unlist(res$gc)
-  res
+  object$mean <- new_bench_time(vdapply(times, mean))
+  object$min <- new_bench_time(vdapply(times, min))
+  object$median <- new_bench_time(vdapply(times, stats::median))
+  object$max <- new_bench_time(vdapply(times, max))
+  object$total_time <- new_bench_time(vdapply(times, sum))
+  object$`itr/sec` <- viapply(times, length) / unclass(object$total_time)
+
+  object$rel <- unclass(object$median) / unclass(min(object$median))
+  object$mem_alloc <-
+    prettyunits::pretty_bytes(
+      vdapply(object$memory, function(objectobject) if (is.null(objectobject)) NA else sum(objectobject$bytes, na.rm = TRUE)))
+  object$num_gc <- viapply(no_gc, function(object) sum(!object))
+
+  tidy_benchmark(
+    object[order(-object$rel),
+      c(setdiff(nms, c("result", "memory", "time", "gc")), "rel", "min", "mean",
+        "median", "max", "itr/sec", "mem_alloc", "num_gc", "time", "result", "memory", "gc")])
 }
 
 parse_allocations <- function(filename) {

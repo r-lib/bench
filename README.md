@@ -41,12 +41,12 @@ results <- bench::mark(
   subset(dat, x > 500))
 
 results
-#> # A tibble: 3 x 12
-#>   name                      relative     n    mean     min  median    max `n/sec` allocated_memory memory result timing
-#>   <chr>                        <dbl> <int>   <dbl>   <dbl>   <dbl>  <dbl>   <dbl> <chr>            <list> <list> <list>
-#> 1 dat[which(dat$x > 500), ]     1.50  1154 4.31e-4 2.54e-4 2.85e-4 0.0252   2321. 366.06 kB        <Rpro… <data… <dbl …
-#> 2 dat[dat$x > 500, ]            1.25   963 5.16e-4 3.22e-4 3.76e-4 0.0228   1938. 426.10 kB        <Rpro… <data… <dbl …
-#> 3 subset(dat, x > 500)          1.00   768 6.48e-4 4.01e-4 4.51e-4 0.0197   1543. 546.22 kB        <Rpro… <data… <dbl …
+#> # A tibble: 3 x 13
+#>   expression                  rel min    mean   median  max     `itr/sec` mem_alloc num_gc time   result   memory gc   
+#>   <chr>                     <dbl> <S3: > <S3: > <S3: b> <S3: b>     <dbl> <chr>      <int> <list> <list>   <list> <lis>
+#> 1 subset(dat, x > 500)       1.50 422µs  560µs  487µs   2.38ms      1786. 561.10 kB     14 <S3: … <data.f… <Rpro… <chr…
+#> 2 dat[dat$x > 500, ]         1.35 342µs  504µs  436µs   3.29ms      1985. 426.10 kB     12 <S3: … <data.f… <Rpro… <chr…
+#> 3 dat[which(dat$x > 500), ]  1    271µs  373µs  324µs   2.17ms      2678. 366.06 kB     14 <S3: … <data.f… <Rpro… <chr…
 ```
 
 ``` r
@@ -61,24 +61,26 @@ results <- bench::mark(
   dat[which(dat$x > 500), ],
   subset(dat, x > 500)
 )
-#>     num_x  num_y
-#> 1   1000.  1000.
-#> 2  10000.  1000.
-#> 3 100000.  1000.
-#> 4   1000. 10000.
-#> 5  10000. 10000.
-#> 6 100000. 10000.
+#>    num_x num_y
+#> 1   1000  1000
+#> 2  10000  1000
+#> 3 100000  1000
+#> 4   1000 10000
+#> 5  10000 10000
+#> 6 100000 10000
 ```
 
 ``` r
 library(tidyverse)
 results %>%
-  mutate(name = fct_reorder(name, relative)) %>%
-  select(name, num_x, num_y, timing) %>%
+  mutate(expression = fct_reorder(expression, rel)) %>%
+  select(expression, num_x, num_y, time, gc) %>%
   unnest() %>%
-  ggplot(aes(x = name, y = timing)) +
+  group_by(expression, num_x, num_y) %>%
+  mutate(gc = sub(".*(level \\d+).*", "\\1", gc)) %>%
+  ggplot(aes(x = expression, y = time, color = gc)) +
     geom_jitter() +
-    scale_y_log10() +
+    scale_y_continuous(trans = bench::bench_time_trans()) +
     coord_flip() +
     facet_grid(num_y ~ num_x, labeller = label_both)
 ```

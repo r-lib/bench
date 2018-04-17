@@ -13,7 +13,8 @@ mark(..., exprs = NULL, setup = NULL, parameters = list(),
 
 \item{exprs}{A list of quoted expressions to benchmark}
 
-\item{setup}{code to run before each benchmark group}
+\item{setup}{code to evaluated before _each_ benchmark group, this code will
+be reevaluated for each row in parameters.}
 
 \item{parameters}{Variable values to assign, all values will be enumerated
 by `expand.grid()`.}
@@ -34,7 +35,6 @@ least twice, once to measure the memory allocation and store results and one
 or more times to measure timing.
 }
 \examples{
-mark(list(quote(1 + 1), quote(4 - 2)))
 dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 mark(
   dat[dat$x > 500, ],

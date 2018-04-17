@@ -66,15 +66,17 @@ results <- bench::mark(
 )
 ```
 
-```{r pressure}
+```{r pressure, message = FALSE, warning = FALSE}
 library(tidyverse)
 results %>%
-  mutate(name = fct_reorder(name, relative)) %>%
-  select(name, num_x, num_y, timing) %>%
+  mutate(expression = fct_reorder(expression, rel)) %>%
+  select(expression, num_x, num_y, time, gc) %>%
   unnest() %>%
-  ggplot(aes(x = name, y = timing)) +
+  group_by(expression, num_x, num_y) %>%
+  mutate(gc = sub(".*(level \\d+).*", "\\1", gc)) %>%
+  ggplot(aes(x = expression, y = time, color = gc)) +
     geom_jitter() +
-    scale_y_log10() +
+    scale_y_continuous(trans = bench::bench_time_trans()) +
     coord_flip() +
     facet_grid(num_y ~ num_x, labeller = label_both)
 ```
