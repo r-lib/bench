@@ -86,7 +86,7 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
         out[[i]][[var]] <- value
       }
     }
-    res <- dplyr::bind_rows(out)
+    res <- do.call(rbind, out)
   }
 
   summary(tidy_benchmark(res))
