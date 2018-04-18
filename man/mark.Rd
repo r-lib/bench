@@ -22,7 +22,7 @@ by \code{expand.grid()}.}
 \item{env}{The environment which to evaluate the expressions}
 
 \item{min_time}{The minimum number of seconds to run each expression, set to
-\code{0} to disable and always run \code{max_iterations} times instead.}
+\code{Inf} to always run \code{max_iterations} times instead.}
 
 \item{min_iterations}{Each expression will be evaluated a minimum of \code{min_iterations} times.}
 

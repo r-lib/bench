@@ -15,7 +15,7 @@ NULL
 #'   by `expand.grid()`.
 #' @param env The environment which to evaluate the expressions
 #' @param min_time The minimum number of seconds to run each expression, set to
-#'   `0` to disable and always run `max_iterations` times instead.
+#'   `Inf` to always run `max_iterations` times instead.
 #' @param min_iterations Each expression will be evaluated a minimum of `min_iterations` times.
 #' @param max_iterations Each expression will be evaluated a maximum of `max_iterations` times.
 #' @param check Check if results are consistent. If `TRUE`, checking is done

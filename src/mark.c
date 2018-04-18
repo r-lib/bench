@@ -30,14 +30,12 @@ SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP min_itr, SEXP max_itr, SEXP 
   SET_VECTOR_ELT(out, 0, Rf_allocVector(REALSXP, max_itr_));
   SET_VECTOR_ELT(out, 1, Rf_allocVector(STRSXP, max_itr_));
 
-  long double begin = real_time();
-  long double end = begin;
+  long double total = 0;
 
   double overhead = get_overhead(env);
-  Rprintf("%.20f", overhead * 1e9);
 
   R_xlen_t i = 0;
-  for (; i < max_itr_ && ( ((end - begin) < min_time_) || i < min_itr_); ++i) {
+  for (; i < max_itr_ && ( (total < min_time_) || i < min_itr_); ++i) {
     freopen(log, "w", stderr);
 
     long double elapsed = expr_elapsed_time(expr, env);
@@ -53,6 +51,7 @@ SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP min_itr, SEXP max_itr, SEXP 
     fclose(fp);
 
     REAL(VECTOR_ELT(out, 0))[i] = elapsed - overhead;
+    total+=elapsed;
   }
 
   SET_VECTOR_ELT(out, 0, Rf_xlengthgets(VECTOR_ELT(out, 0), i));
