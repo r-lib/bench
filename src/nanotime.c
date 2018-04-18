@@ -1,65 +1,59 @@
 #include "nanotime.h"
-#include <stdio.h>
 
 #ifdef __MACH__
-#include <mach/mach.h>
-#include <mach/clock.h>
+#include <mach/mach_time.h>
+#include <time.h>
+#include <sys/time.h>
 #else
 #include <time.h>
 #include <sys/time.h>
 #endif
 
-NANO nano_return_t nano_timespec(struct timespec *now)
-{
-#ifdef __MACH__
-	clock_serv_t clock_service;
-	mach_timespec_t mach_time;
+#if __MACH__
+long double real_time() {
 
-	if (host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &clock_service) != 0) {
-		return NANO_FAILURE;
-	}
+  // https://developer.apple.com/library/content/qa/qa1398/_index.html
+  //static mach_timebase_info_data_t info;
+  static uint64_t ratio = 0;
 
-	if (clock_get_time(clock_service, &mach_time) != 0) {
-		return NANO_FAILURE;
-	}
+  if (ratio == 0) {
+    mach_timebase_info_data_t info;
+    if (mach_timebase_info(&info) != KERN_SUCCESS) {
+      Rf_error("mach_timebase_info(...) failed");
+    }
+    ratio = info.numer / info.denom;
+  }
 
-	if (mach_port_deallocate(mach_task_self(), clock_service) != 0) {
-		return NANO_FAILURE;
-	}
-
-	now->tv_sec = mach_time.tv_sec;
-	now->tv_nsec = mach_time.tv_nsec;
+  uint64_t time = mach_absolute_time();
+  uint64_t nanos = time * ratio;
+  return (long double)nanos / NSEC_PER_SEC;
+}
 #else
-	if (clock_gettime(CLOCK_REALTIME, now) != 0) {
-		return NANO_FAILURE;
-	}
+long double real_time() {
+  struct timespec ts;
+  if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {
+    Rf_error("clock_gettime(CLOCK_REALTIME, ...) failed");
+  }
+
+  return ts.tv_sec * NSEC_PER_SEC + (long double)ts.tv_nsec;
+}
 #endif
 
-	return NANO_SUCCESS;
+long double process_cpu_time() {
+  struct timespec ts;
+  if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts) != 0) {
+    Rf_error("clock_gettime(CLOCK_PROCESS_CPUTIME_ID, ...) failed");
+  }
+  return ts.tv_sec + (long double)ts.tv_nsec / NSEC_PER_SEC;
 }
 
-NANO nano_return_t nano_second(unsigned long *second)
-{
-	struct timespec now;
+long double expr_elapsed_time(SEXP expr, SEXP env) {
+  long double start = real_time();
 
-	if (NANO_UNEXPECTED(nano_timespec(&now))) {
-		return NANO_FAILURE;
-	}
+  // Actually evaluate the R code
+  Rf_eval(expr, env);
 
-	*second = now.tv_sec * 1E9 + now.tv_nsec;
+  long double end = real_time();
 
-	return NANO_SUCCESS;
-}
-
-NANO nano_return_t nano_time(long double *time)
-{
-	struct timespec now;
-
-	if (NANO_UNEXPECTED(nano_timespec(&now))) {
-		return NANO_FAILURE;
-	}
-
-	*time = (long double) now.tv_sec + now.tv_nsec / 1E9;
-
-	return NANO_SUCCESS;
+  return end - start;
 }
