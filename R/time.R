@@ -61,6 +61,10 @@ as_bench_time.numeric <- function(x) {
 format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
   nms <- names(x)
 
+  # convert negative times to 1ns, this can happen if the minimum calculated
+  # overhead is higher than the time.
+  x[x < 1e-9] <- 1e-9
+
   find_unit <- function(x) {
     if (is.na(x) || x == 0) {
       return(NA_character_)

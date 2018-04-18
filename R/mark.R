@@ -15,8 +15,9 @@ NULL
 #'   by `expand.grid()`.
 #' @param env The environment which to evaluate the expressions
 #' @param min_time The minimum number of seconds to run each expression, set to
-#'   `0` to disable and always run `num_iterations` times instead.
-#' @param num_iterations Expressions will be a maximum of `num_iterations` times.
+#'   `0` to disable and always run `max_iterations` times instead.
+#' @param min_iterations Each expression will be evaluated a minimum of `min_iterations` times.
+#' @param max_iterations Each expression will be evaluated a maximum of `max_iterations` times.
 #' @param check Check if results are consistent. If `TRUE`, checking is done
 #'   with [all.equal()], if `FALSE` checking is disabled. If `check` is a
 #'   function that function will be called with each pair of results to
@@ -29,7 +30,7 @@ NULL
 #'   subset(dat, x > 500))
 #' @export
 mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
-  env = parent.frame(), min_time = .5, num_iterations = 1e6, check = TRUE) {
+  env = parent.frame(), min_time = .5, min_iterations = 1, max_iterations = 1e6, check = TRUE) {
 
   # Only use expand.grid if not already a data.frame
   is_simple_list <- is.list(parameters) && !is.object(parameters)
@@ -47,7 +48,8 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
       setup = setup,
       env = e,
       min_time = min_time,
-      num_iterations = num_iterations,
+      min_iterations = min_iterations,
+      max_iterations = max_iterations,
       check = check)
 
   } else {
@@ -73,7 +75,8 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
         setup = setup,
         env = e,
         min_time = min_time,
-        num_iterations = num_iterations,
+        min_iterations = min_iterations,
+        max_iterations = max_iterations,
         check = check)
 
       # Add parameters to the output result
@@ -94,7 +97,7 @@ tidy_benchmark <- function(x) {
   x
 }
 
-mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, check) {
+mark_internal <- function(..., exprs, setup, env, min_time, min_iterations, max_iterations, check) {
 
   if (isTRUE(check)) {
     check_fun <- all.equal
@@ -148,9 +151,12 @@ mark_internal <- function(..., exprs, setup, env, min_time, num_iterations, chec
   }
 
   # Run timing benchmark
+  results$time <- list()
+  results$gc <- list()
+
   for (i in seq_len(length(exprs))) {
     with_gcinfo({
-      res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(num_iterations), tempfile())
+      res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(min_iterations), as.integer(max_iterations), tempfile())
     })
     results$time[[i]] <- as_bench_time(res[[1]])
     results$gc[[i]] <- res[[2]]

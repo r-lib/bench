@@ -4,30 +4,43 @@
 #include "nanotime.h"
 #include <unistd.h>
 
-SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP num_iterations, SEXP logfile) {
-  R_xlen_t n = INTEGER(num_iterations)[0];
-  double min = REAL(min_time)[0];
+double get_overhead(SEXP env) {
+  long double overhead = 100.0;
+  for (int i = 0; i < 10; ++i) {
+    long double diff = expr_elapsed_time(R_NilValue, env);
+    if (diff > 0 && diff < overhead) {
+      overhead = diff;
+    }
+  }
+
+  if (overhead == 100.0) {
+    overhead = 0.0;
+  }
+
+  return overhead;
+}
+
+SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP min_itr, SEXP max_itr, SEXP logfile) {
+  R_xlen_t min_itr_ = INTEGER(min_itr)[0];
+  R_xlen_t max_itr_ = INTEGER(max_itr)[0];
+  double min_time_ = REAL(min_time)[0];
 
   const char* log = CHAR(STRING_ELT(logfile, 0));
   SEXP out = PROTECT(Rf_allocVector(VECSXP, 2));
-  SET_VECTOR_ELT(out, 0, Rf_allocVector(REALSXP, n));
-  SET_VECTOR_ELT(out, 1, Rf_allocVector(STRSXP, n));
+  SET_VECTOR_ELT(out, 0, Rf_allocVector(REALSXP, max_itr_));
+  SET_VECTOR_ELT(out, 1, Rf_allocVector(STRSXP, max_itr_));
 
-  long double begin;
-  if (NANO_UNEXPECTED(nano_time(&begin))) {
-    Rf_error("Failed to get begin time");
-  }
+  long double begin = real_time();
+  long double end = begin;
+
+  double overhead = get_overhead(env);
+  Rprintf("%.20f", overhead * 1e9);
+
   R_xlen_t i = 0;
-  for (; i < n; ++i) {
-    long double start, end;
-    if (NANO_UNEXPECTED(nano_time(&start))) {
-      Rf_error("Failed to get start time iteration: %i", i);
-    }
-
+  for (; i < max_itr_ && ( ((end - begin) < min_time_) || i < min_itr_); ++i) {
     freopen(log, "w", stderr);
 
-    // Actually evaluate the R code
-    Rf_eval(expr, env);
+    long double elapsed = expr_elapsed_time(expr, env);
 
     FILE* fp = fopen(log, "r");
     char* buffer = NULL;
@@ -39,40 +52,17 @@ SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP num_iterations, SEXP logfile
     }
     fclose(fp);
 
-    if (NANO_UNEXPECTED(nano_time(&end))) {
-      Rf_error("Failed to get end time iteration: %i", i);
-    }
-
-    // If we are over our time threshold for this expression break
-    if (min != 0 && end - begin > min) { break; }
-
-    REAL(VECTOR_ELT(out, 0))[i] = end - start;
+    REAL(VECTOR_ELT(out, 0))[i] = elapsed - overhead;
   }
 
-  SET_VECTOR_ELT(out, 0, Rf_lengthgets(VECTOR_ELT(out, 0), i));
-  SET_VECTOR_ELT(out, 1, Rf_lengthgets(VECTOR_ELT(out, 1), i));
+  SET_VECTOR_ELT(out, 0, Rf_xlengthgets(VECTOR_ELT(out, 0), i));
+  SET_VECTOR_ELT(out, 1, Rf_xlengthgets(VECTOR_ELT(out, 1), i));
 
   freopen("/dev/tty", "a", stderr);
 
   UNPROTECT(1);
 
   return out;
-}
-
-double real_time() {
-  struct timespec ts;
-  if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {
-    Rf_error("clock_gettime(CLOCK_REALTIME, ...) failed");
-  }
-  return ts.tv_sec + (double)ts.tv_nsec * 1e-9;
-}
-
-double process_cpu_time() {
-  struct timespec ts;
-  if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts) != 0) {
-    Rf_error("clock_gettime(CLOCK_PROCESS_CPUTIME_ID, ...) failed");
-  }
-  return ts.tv_sec + (double)ts.tv_nsec * 1e-9;
 }
 
 SEXP system_time_(SEXP expr, SEXP env) {
@@ -91,7 +81,7 @@ SEXP system_time_(SEXP expr, SEXP env) {
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"mark_", (DL_FUNC) &mark_, 5},
+    {"mark_", (DL_FUNC) &mark_, 6},
     {"system_time_", (DL_FUNC) &system_time_, 2},
     {NULL, NULL, 0}
 };

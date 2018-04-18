@@ -5,8 +5,8 @@
 \title{Benchmark a series of functions}
 \usage{
 mark(..., exprs = NULL, setup = NULL, parameters = list(),
-  env = parent.frame(), min_time = 0.5, num_iterations = 1e+06,
-  check = TRUE)
+  env = parent.frame(), min_time = 0.5, min_iterations = 1,
+  max_iterations = 1e+06, check = TRUE)
 }
 \arguments{
 \item{...}{Expressions to benchmark}
@@ -22,9 +22,11 @@ by \code{expand.grid()}.}
 \item{env}{The environment which to evaluate the expressions}
 
 \item{min_time}{The minimum number of seconds to run each expression, set to
-\code{0} to disable and always run \code{num_iterations} times instead.}
+\code{0} to disable and always run \code{max_iterations} times instead.}
 
-\item{num_iterations}{Expressions will be a maximum of \code{num_iterations} times.}
+\item{min_iterations}{Each expression will be evaluated a minimum of \code{min_iterations} times.}
+
+\item{max_iterations}{Each expression will be evaluated a maximum of \code{max_iterations} times.}
 
 \item{check}{Check if results are consistent. If \code{TRUE}, checking is done
 with \code{\link[=all.equal]{all.equal()}}, if \code{FALSE} checking is disabled. If \code{check} is a
