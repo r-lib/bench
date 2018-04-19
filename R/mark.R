@@ -160,7 +160,7 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
       res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(min_iterations), as.integer(max_iterations), tempfile())
     })
     results$time[[i]] <- as_bench_time(res[[1]])
-    results$gc[[i]] <- res[[2]]
+    results$gc[[i]] <- parse_gc(res[[2]])
 
     # Do an explicit gc, to minimize counting a gc against a prior expression.
     gc()
@@ -174,12 +174,17 @@ data_cols <- c("result", "memory", "time", "gc")
 
 # TODO: document return values
 #' @export
-summary.bench_mark <- function(object, ..., relative_within = TRUE) {
+summary.bench_mark <- function(object, ..., filter_gc = TRUE, relative_within = TRUE) {
   nms <- colnames(object)
   parameters <- setdiff(nms, c("expression", summary_cols, data_cols))
 
-  no_gc <- lapply(object$gc, `==`, "")
-  times <- Map(`[`, object$time, no_gc)
+  num_gc <- lapply(object$gc, function(x) rowSums(x))
+  if (isTRUE(filter_gc)) {
+    no_gc <- lapply(num_gc, `==`, 0)
+    times <- Map(`[`, object$time, no_gc)
+  } else {
+    times <- object$time
+  }
 
   object$mean <- new_bench_time(vdapply(times, mean))
   object$min <- new_bench_time(vdapply(times, min))
@@ -191,7 +196,8 @@ summary.bench_mark <- function(object, ..., relative_within = TRUE) {
   object$mem_alloc <-
     bench_bytes(
       vdapply(object$memory, function(objectobject) if (is.null(objectobject)) NA else sum(objectobject$bytes, na.rm = TRUE)))
-  object$num_gc <- viapply(no_gc, function(object) sum(!object))
+
+  object$num_gc <- vdapply(num_gc, sum)
 
   if (isTRUE(relative_within) && length(parameters)) {
     grp <- interaction(object[parameters])
@@ -264,4 +270,11 @@ knit_print.bench_mark <- function(x, ..., options) {
   } else {
     print(x[!colnames(x) %in% data_cols])
   }
+}
+
+parse_gc <- function(x) {
+  tibble::tibble(
+    level0 = lengths(regmatches(x, gregexpr("Garbage collection [^(]+[(](level 0)", x))),
+    level1 = lengths(regmatches(x, gregexpr("Garbage collection [^(]+[(](level 1)", x))),
+    level2 = lengths(regmatches(x, gregexpr("Garbage collection [^(]+[(](level 2)", x))))
 }
