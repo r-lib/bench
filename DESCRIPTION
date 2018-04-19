@@ -20,7 +20,8 @@ Imports:
     scales,
     stats,
     tibble,
-    utils
+    utils,
+    mockery
 Suggests:
     testthat
 RoxygenNote: 6.0.1
