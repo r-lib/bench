@@ -34,9 +34,4 @@ describe("mark_", {
     res <- .Call(mark_, quote({a <- 42}), e, Inf, as.integer(1), as.integer(1), tempfile())
     expect_equal(e[["a"]], 42)
   })
-
-  it("captures stderr in results[[2]]", {
-    res <- .Call(mark_, quote(message("hi")), new.env(), Inf, as.integer(1), as.integer(1), tempfile())
-    expect_equal(e[["a"]], "hi\n")
-  })
 })
