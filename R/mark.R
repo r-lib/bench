@@ -111,7 +111,7 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
 
   exprs <- dots(...)
 
-  results <- list(expression = auto_name(exprs))
+  results <- list(expression = auto_name(exprs), result = list(), memory = list(), time = list(), gc = list())
 
   # Run setup code
   if (!is.null(setup)) {
@@ -150,10 +150,6 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
       }
     }
   }
-
-  # Run timing benchmark
-  results$time <- list()
-  results$gc <- list()
 
   for (i in seq_len(length(exprs))) {
     with_gcinfo({
@@ -224,9 +220,18 @@ summary.bench_mark <- function(object, ..., filter_gc = TRUE, relative_within = 
 }
 
 parse_allocations <- function(filename) {
+
   if (!file.exists(filename)) {
-    return(NULL)
+    empty_Rprofmem <- structure(
+      list(what = character(),
+        bytes = integer(),
+        trace = list()),
+      class = c("Rprofmem",
+        "data.frame"))
+
+    return(empty_Rprofmem)
   }
+
   # TODO: remove this dependency / simplify parsing
   profmem::readRprofmem(filename)
 }
