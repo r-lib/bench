@@ -37,8 +37,11 @@ least twice, once to measure the memory allocation and store results and one
 or more times to measure timing.
 }
 \examples{
-dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 mark(
+  setup = dat <- data.frame(x = runif(num_x, 1, 1000), y=runif(num_y, 1, 1000)),
+  parameters = list(num_x = c(1000, 10000), num_y = c(1000, 10000)),
+  min_time = .1,
+
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
