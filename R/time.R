@@ -119,18 +119,18 @@ max.bench_time <- function(x, ...) {
 }
 
 #' @export
-`[.bench_time` <- function(x, i) {
+`[.bench_time` <- function(x, i, ...) {
   new_bench_time(NextMethod("["))
 }
 
 #' @export
-`[[.bench_time` <- function(x, i) {
+`[[.bench_time` <- function(x, i, ...) {
   new_bench_time(NextMethod("["))
 }
 
 #' @export
 # Adapted from Ops.numeric_version
-Ops.bench_time <- function(e1, e2) {
+Ops.bench_time <- function(e1, e2, ...) {
   if (nargs() == 1L) {
     stop(sprintf("unary '%s' not defined for \"bench_time\" objects", .Generic),
       call. = FALSE)
