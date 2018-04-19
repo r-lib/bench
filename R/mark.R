@@ -58,7 +58,8 @@ mark <- function(..., setup = NULL, parameters = list(),
     p_out <- format(tibble::as_tibble(parameters), n = Inf)
 
     # Output a status message
-    message(paste0(p_out[[2]], collapse = "\n"))
+    message("Running benchmark with:\n",
+      paste0(p_out[[2]], collapse = "\n"), sep = "")
     for (i in seq_len(nrow(parameters))) {
 
       # Assign parameters in the execution environment
