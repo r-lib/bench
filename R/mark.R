@@ -86,11 +86,11 @@ mark <- function(..., setup = NULL, parameters = list(),
     res <- do.call(rbind, out)
   }
 
-  summary(tidy_benchmark(res))
+  summary(bench_mark(res))
 }
 
-tidy_benchmark <- function(x) {
-  class(x) <- unique(c("tidy_benchmark", class(x)))
+bench_mark <- function(x) {
+  class(x) <- unique(c("bench_mark", class(x)))
   x
 }
 
@@ -165,9 +165,15 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
   tibble::as_tibble(results)
 }
 
+summary_cols <- c("rel", "min", "mean", "median", "max", "itr/sec", "mem_alloc", "num_gc")
+data_cols <- c("result", "memory", "time", "gc")
+
+# TODO: document return values
 #' @export
-summary.tidy_benchmark <- function(object, ...) {
+summary.bench_mark <- function(object, ..., relative_within = TRUE) {
   nms <- colnames(object)
+  parameters <- setdiff(nms, c("expression", summary_cols, data_cols))
+
   no_gc <- lapply(object$gc, `==`, "")
   times <- Map(`[`, object$time, no_gc)
 
@@ -178,16 +184,33 @@ summary.tidy_benchmark <- function(object, ...) {
   object$total_time <- new_bench_time(vdapply(times, sum))
   object$`itr/sec` <- viapply(times, length) / unclass(object$total_time)
 
-  object$rel <- unclass(object$median) / unclass(min(object$median))
   object$mem_alloc <-
     bench_bytes(
       vdapply(object$memory, function(objectobject) if (is.null(objectobject)) NA else sum(objectobject$bytes, na.rm = TRUE)))
   object$num_gc <- viapply(no_gc, function(object) sum(!object))
 
-  tidy_benchmark(
-    object[order(-object$rel),
-      c(setdiff(nms, c("result", "memory", "time", "gc")), "rel", "min", "mean",
-        "median", "max", "itr/sec", "mem_alloc", "num_gc", "time", "result", "memory", "gc")])
+  if (isTRUE(relative_within) && length(parameters)) {
+    grp <- interaction(object[parameters])
+    object$rel <- unsplit(
+      lapply(split(object$median, grp), function(x) unclass(x) / unclass(min(x))),
+      grp)
+  } else {
+    object$rel <- unclass(object$median) / unclass(min(object$median))
+  }
+
+  bench_mark(
+    object[do.call(order, cbind(object[parameters], -object$rel)),
+      c("expression", parameters, summary_cols, data_cols)])
+}
+
+#' @export
+`[.bench_mark` <- function(x, i, j, ...) {
+  bench_mark(NextMethod("["))
+}
+
+#' @export
+`[[.bench_mark` <- function(x, i, ...) {
+  bench_mark(NextMethod("[["))
 }
 
 parse_allocations <- function(filename) {
