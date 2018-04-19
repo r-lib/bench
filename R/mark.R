@@ -208,7 +208,7 @@ auto_name <- function(exprs) {
     nms <- rep("", length(exprs))
   }
   is_missing <- nms == ""
-  nms[is_missing] <- vapply(exprs[is_missing], deparse, character(1), width.cutoff = 500)
+  nms[is_missing] <- vapply(exprs[is_missing], deparse_trunc, character(1))
 
   nms
 }
