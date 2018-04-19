@@ -35,3 +35,74 @@ describe("mark_", {
     expect_equal(e[["a"]], 42)
   })
 })
+
+describe("mark_internal", {
+  it("Uses all.equal to check results by default", {
+    res <- mark_internal(1 + 1, 1L + 1L, check = NULL,
+      setup = NULL, env = new.env(), min_time = Inf,
+      min_iterations = as.integer(1), max_iterations = as.integer(1))
+
+    expect_is(res$result, "list")
+    expect_true(all.equal(res$result[[1]], res$result[[2]]))
+  })
+  it("Can use other functions to check results like identical to check results", {
+
+    # numerics and integers not identical
+    expect_error(regexp = "All results must equal the first result",
+      mark_internal(1 + 1, 1L + 1L, check = identical,
+        setup = NULL, env = new.env(), min_time = Inf,
+        min_iterations = as.integer(1), max_iterations = as.integer(1)))
+
+    # Function that always returns false
+    expect_error(regexp = "All results must equal the first result",
+      mark_internal(1 + 1, 1 + 1, check = function(x, y) FALSE,
+        setup = NULL, env = new.env(), min_time = Inf,
+        min_iterations = as.integer(1), max_iterations = as.integer(1)))
+
+    # Function that always returns true
+    res <- mark_internal(1 + 1, 1 + 2, check = function(x, y) TRUE,
+      setup = NULL, env = new.env(), min_time = Inf,
+      min_iterations = as.integer(1), max_iterations = as.integer(1))
+
+    expect_is(res$result, "list")
+    expect_equal(res$result[[1]], 2)
+    expect_equal(res$result[[2]], 3)
+
+    # Using check = FALSE is equivalent
+    res2 <- mark_internal(1 + 1, 1 + 2, check = FALSE,
+      setup = NULL, env = new.env(), min_time = Inf,
+      min_iterations = as.integer(1), max_iterations = as.integer(1))
+
+    expect_is(res2$result, "list")
+    expect_equal(res2$result[[1]], 2)
+    expect_equal(res2$result[[2]], 3)
+  })
+
+  it("works with capabilities('profmem')", {
+    skip_if_not(!isTRUE(capabilities("profmem")))
+
+    res <- mark_internal(1, 2, check = NULL,
+      setup = NULL, env = new.env(), min_time = Inf,
+      min_iterations = as.integer(1), max_iterations = as.integer(1))
+
+    expect_equal(length(res$memory), 2)
+
+    expect_is(res$memory[[1]], "Rprofmem")
+    expect_equal(ncol(res$memory[[1]]), 3)
+    expect_gte(nrow(res$memory[[1]]), 1)
+  })
+
+  it("works without capabilities('profmem')", {
+    mockery::stub(mark_internal, "capabilities", FALSE)
+
+    res <- mark_internal(1, 2, check = NULL,
+      setup = NULL, env = new.env(), min_time = Inf,
+      min_iterations = as.integer(1), max_iterations = as.integer(1))
+
+    expect_equal(length(res$memory), 2)
+
+    expect_is(res$memory[[1]], "Rprofmem")
+    expect_equal(ncol(res$memory[[1]]), 3)
+    expect_equal(nrow(res$memory[[1]]), 0)
+  })
+})
