@@ -4,14 +4,12 @@
 \alias{mark}
 \title{Benchmark a series of functions}
 \usage{
-mark(..., exprs = NULL, setup = NULL, parameters = list(),
-  env = parent.frame(), min_time = 0.5, min_iterations = 1,
-  max_iterations = 1e+06, check = TRUE)
+mark(..., setup = NULL, parameters = list(), env = parent.frame(),
+  min_time = 0.5, min_iterations = 1, max_iterations = 1e+06,
+  check = TRUE)
 }
 \arguments{
 \item{...}{Expressions to benchmark}
-
-\item{exprs}{A list of quoted expressions to benchmark}
 
 \item{setup}{code to evaluated before \emph{each} benchmark group, this code will
 be reevaluated for each row in parameters.}

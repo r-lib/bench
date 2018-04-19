@@ -8,7 +8,6 @@ NULL
 #' or more times to measure timing.
 #'
 #' @param ... Expressions to benchmark
-#' @param exprs A list of quoted expressions to benchmark
 #' @param setup code to evaluated before _each_ benchmark group, this code will
 #'   be reevaluated for each row in parameters.
 #' @param parameters Variable values to assign, all values will be enumerated
@@ -29,7 +28,7 @@ NULL
 #'   dat[which(dat$x > 500), ],
 #'   subset(dat, x > 500))
 #' @export
-mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
+mark <- function(..., setup = NULL, parameters = list(),
   env = parent.frame(), min_time = .5, min_iterations = 1, max_iterations = 1e6, check = TRUE) {
 
   # Only use expand.grid if not already a data.frame
@@ -44,7 +43,6 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
     e <- new.env(parent = env)
     res <- mark_internal(
       ...,
-      exprs = exprs,
       setup = setup,
       env = e,
       min_time = min_time,
@@ -71,7 +69,6 @@ mark <- function(..., exprs = NULL, setup = NULL, parameters = list(),
       message(p_out[[i + 3]])
       out[[i]] <- mark_internal(
         ...,
-        exprs = exprs,
         setup = setup,
         env = e,
         min_time = min_time,
@@ -97,7 +94,7 @@ tidy_benchmark <- function(x) {
   x
 }
 
-mark_internal <- function(..., exprs, setup, env, min_time, min_iterations, max_iterations, check) {
+mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterations, check) {
 
   if (isTRUE(check)) {
     check_fun <- all.equal
@@ -108,7 +105,7 @@ mark_internal <- function(..., exprs, setup, env, min_time, min_iterations, max_
     check <- FALSE
   }
 
-  exprs <- c(dots(...), exprs)
+  exprs <- dots(...)
 
   results <- list(expression = auto_name(exprs))
 
