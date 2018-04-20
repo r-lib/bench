@@ -3,7 +3,6 @@
 \name{bench_bytes}
 \alias{bench_bytes}
 \alias{as_bench_bytes}
-\alias{bench_bytes}
 \title{Human readable memory sizes}
 \usage{
 as_bench_bytes(x)

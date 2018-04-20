@@ -3,7 +3,6 @@
 \name{bench_time}
 \alias{bench_time}
 \alias{as_bench_time}
-\alias{bench_time}
 \title{Human readable times}
 \usage{
 as_bench_time(x)

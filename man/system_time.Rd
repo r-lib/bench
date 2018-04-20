@@ -25,5 +25,6 @@ precision than the realtime clock, as a result there may be cases where the
 process time is larger than the real time for fast expressions.
 }
 \examples{
-system_time(Sys.sleep(1))
+This will use ~.5 seconds of real time, but very little process time.
+system_time(Sys.sleep(.5))
 }
