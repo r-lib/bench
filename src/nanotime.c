@@ -37,7 +37,7 @@ long double real_time() {
     Rf_error("clock_gettime(CLOCK_REALTIME, ...) failed");
   }
 
-  return ts.tv_sec * NSEC_PER_SEC + (long double)ts.tv_nsec;
+  return ts.tv_sec + (long double)ts.tv_nsec / NSEC_PER_SEC;
 }
 #endif
 
