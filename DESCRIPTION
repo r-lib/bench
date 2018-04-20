@@ -22,9 +22,10 @@ Imports:
     tibble,
     utils,
     mockery
-Suggests:
+Suggests: 
     testthat,
-    ggplot2
+    ggplot2,
+    covr
 RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
 Remotes:
