@@ -181,6 +181,7 @@ type_sum.bench_time <- function(x) {
 #' This both log transforms the times and formats the labels as a `bench_time`
 #' object.
 #' @inheritParams scales::log_trans
+#' @keywords internal
 #' @export
 bench_time_trans <- function(base = 10) {
   trans <- function(x) log(x, base)
@@ -188,4 +189,24 @@ bench_time_trans <- function(base = 10) {
 
   scales::trans_new(paste0("bch:tm-", format(base)), trans, inv,
     scales::log_breaks(base = base), domain = c(1e-100, Inf))
+}
+
+scale_type.bench_time <- function(x) "bench_time"
+
+#' Position scales for bench_time data
+#'
+#' Default scales for the [bench_time] class, these are added to plots using
+#' [bench_time] objects automatically.
+#' @name scale_bench_time
+#' @keywords internal
+#' @export
+scale_x_bench_time <- function(...) {
+  ggplot2::scale_x_continuous(..., trans = bench_time_trans())
+}
+
+#' @rdname scale_bench_time
+#' @keywords internal
+#' @export
+scale_y_bench_time <- function(...) {
+  ggplot2::scale_y_continuous(..., trans = bench_time_trans())
 }

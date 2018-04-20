@@ -13,3 +13,4 @@ bench_time_trans(base = 10)
 This both log transforms the times and formats the labels as a \code{bench_time}
 object.
 }
+\keyword{internal}

@@ -42,48 +42,57 @@ results <- bench::mark(
   subset(dat, x > 500))
 
 results
-#> # A tibble: 3 x 13
-#>   expression                  rel min    mean   median  max     `itr/sec` mem_alloc num_gc time   result   memory gc   
-#>   <chr>                     <dbl> <S3: > <S3: > <S3: b> <S3: b>     <dbl> <chr>      <int> <list> <list>   <list> <lis>
-#> 1 subset(dat, x > 500)       1.58 422µs  584µs  514µs   2.38ms      1712. 561.10 kB     13 <S3: … <data.f… <Rpro… <chr…
-#> 2 dat[dat$x > 500, ]         1.34 340µs  491µs  435µs   3.61ms      2037. 426.10 kB     13 <S3: … <data.f… <Rpro… <chr…
-#> 3 dat[which(dat$x > 500), ]  1    268µs  376µs  325µs   2.37ms      2661. 366.06 kB     14 <S3: … <data.f… <Rpro… <chr…
+#> # A tibble: 3 x 9
+#>   expression                  rel      min     mean   median      max `itr/sec` mem_alloc num_gc
+#>   <chr>                     <dbl> <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt>  <dbl>
+#> 1 subset(dat, x > 500)       1.57    396µs    518µs    435µs   2.04ms     1929.      546K      6
+#> 2 dat[dat$x > 500, ]         1.27    317µs    422µs    352µs   2.21ms     2372.      426K     10
+#> 3 dat[which(dat$x > 500), ]  1       245µs    340µs    277µs   1.86ms     2943.      366K      6
 ```
 
 ``` r
 set.seed(42)
+
+create_df <- function(rows, cols) {
+  as.data.frame(setNames(
+    replicate(cols, runif(rows, 1, 1000), simplify = FALSE),
+    rep_len(c("x", letters), cols)))
+}
+
 results <- bench::mark(
-  setup = {
-    dat <- data.frame(x = runif(num_x, 1, 1000), y=runif(num_y, 1, 1000))
-  },
-  parameters = list(num_x = 10 ^ seq(3, 5), num_y = c(1000, 10000)),
+  setup = dat <- create_df(rows, cols),
+  parameters = list(rows = c(10000, 100000), cols = c(10, 100)),
+  min_time = .5,
+  min_iterations = 100,
 
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
-  subset(dat, x > 500)
-)
-#>    num_x num_y
-#> 1   1000  1000
-#> 2  10000  1000
-#> 3 100000  1000
-#> 4   1000 10000
-#> 5  10000 10000
-#> 6 100000 10000
+  subset(dat, x > 500))
+#> Running benchmark with:
+#>     rows  cols
+#> 1  10000    10
+#> 2 100000    10
+#> 3  10000   100
+#> 4 100000   100
 ```
 
 ``` r
 library(tidyverse)
 results %>%
-  mutate(expression = fct_reorder(expression, rel)) %>%
-  select(expression, num_x, num_y, time, gc) %>%
+  select(expression, rows, cols, time, gc) %>%
   unnest() %>%
-  group_by(expression, num_x, num_y) %>%
-  mutate(gc = sub(".*(level \\d+).*", "\\1", gc)) %>%
+  mutate(gc =
+    case_when(
+      level2 > 0 ~ "level2",
+      level1 > 0 ~ "level1",
+      level0 > 0 ~ "level0",
+      TRUE ~ "none")) %>%
+  mutate(gc = factor(gc, c("none", "level0", "level1", "level2"))) %>%
   ggplot(aes(x = expression, y = time, color = gc)) +
     geom_jitter() +
-    scale_y_continuous(trans = bench::bench_time_trans()) +
     coord_flip() +
-    facet_grid(num_y ~ num_x, labeller = label_both)
+    scale_color_brewer(type = "qual", palette = 3) +
+    facet_grid(rows ~ cols, labeller = label_both)
 ```
 
 <img src="man/figures/README-pressure-1.png" width="100%" />
@@ -94,8 +103,8 @@ Also includes `system_time()`, a higher precision replacement for
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   370ms   376ms
+#>   360ms   366ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    90µs   503ms
+#>    41µs   502ms
 ```

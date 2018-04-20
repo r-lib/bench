@@ -53,33 +53,43 @@ results <- bench::mark(
 results
 ```
 
-```{r example2}
+```{r example2, cache = TRUE}
 set.seed(42)
+
+create_df <- function(rows, cols) {
+  as.data.frame(setNames(
+    replicate(cols, runif(rows, 1, 1000), simplify = FALSE),
+    rep_len(c("x", letters), cols)))
+}
+
 results <- bench::mark(
-  setup = {
-    dat <- data.frame(x = runif(num_x, 1, 1000), y=runif(num_y, 1, 1000))
-  },
-  parameters = list(num_x = 10 ^ seq(3, 5), num_y = c(1000, 10000)),
+  setup = dat <- create_df(rows, cols),
+  parameters = list(rows = c(10000, 100000), cols = c(10, 100)),
+  min_time = .5,
+  min_iterations = 100,
 
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
-  subset(dat, x > 500)
-)
+  subset(dat, x > 500))
 ```
 
-```{r pressure, message = FALSE, warning = FALSE}
+```{r pressure, message = FALSE, warning = FALSE, cache = TRUE, dependson = "example2"}
 library(tidyverse)
 results %>%
-  mutate(expression = fct_reorder(expression, rel)) %>%
-  select(expression, num_x, num_y, time, gc) %>%
+  select(expression, rows, cols, time, gc) %>%
   unnest() %>%
-  group_by(expression, num_x, num_y) %>%
-  mutate(gc = sub(".*(level \\d+).*", "\\1", gc)) %>%
+  mutate(gc =
+    case_when(
+      level2 > 0 ~ "level2",
+      level1 > 0 ~ "level1",
+      level0 > 0 ~ "level0",
+      TRUE ~ "none")) %>%
+  mutate(gc = factor(gc, c("none", "level0", "level1", "level2"))) %>%
   ggplot(aes(x = expression, y = time, color = gc)) +
     geom_jitter() +
-    scale_y_continuous(trans = bench::bench_time_trans()) +
     coord_flip() +
-    facet_grid(num_y ~ num_x, labeller = label_both)
+    scale_color_brewer(type = "qual", palette = 3) +
+    facet_grid(rows ~ cols, labeller = label_both)
 ```
 
 Also includes `system_time()`, a higher precision replacement for `system.time()`
