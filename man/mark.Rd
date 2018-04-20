@@ -6,7 +6,7 @@
 \title{Benchmark a series of functions}
 \usage{
 mark(..., setup = NULL, parameters = list(), env = parent.frame(),
-  min_time = 0.5, min_iterations = 1, max_iterations = 1e+06,
+  min_time = 0.5, min_iterations = 1, max_iterations = 10000,
   check = TRUE)
 }
 \arguments{

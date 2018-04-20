@@ -20,8 +20,8 @@ describe("mark_", {
   it("If min_time is 0, runs for min_iterations", {
     res <- .Call(mark_, quote({i <- 1; while(i < 10000) i <- i + 1}), new.env(), .1, as.integer(1), as.integer(1000))
 
-    expect_gt(length(res), 1)
-    expect_lt(length(res), 1000)
+    expect_gte(length(res), 1)
+    expect_lte(length(res), 1000)
   })
 
   it("Evaluates code in the environment", {
