@@ -16,7 +16,7 @@ options(width = 120)
 # bench
 
 [![Travis build status](https://travis-ci.org/jimhester/bench.svg?branch=master)](https://travis-ci.org/jimhester/bench)
-
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/jimhester/bench?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/bench)
 
 The goal of bench is to benchmark code.
 

@@ -5,6 +5,8 @@
 
 [![Travis build
 status](https://travis-ci.org/jimhester/bench.svg?branch=master)](https://travis-ci.org/jimhester/bench)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/jimhester/bench?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/bench)
 
 The goal of bench is to benchmark code.
 
@@ -42,12 +44,12 @@ results <- bench::mark(
   subset(dat, x > 500))
 
 results
-#> # A tibble: 3 x 9
-#>   expression                  rel      min     mean   median      max `itr/sec` mem_alloc num_gc
-#>   <chr>                     <dbl> <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt>  <dbl>
-#> 1 subset(dat, x > 500)       1.57    396µs    518µs    435µs   2.04ms     1929.      546K      6
-#> 2 dat[dat$x > 500, ]         1.27    317µs    422µs    352µs   2.21ms     2372.      426K     10
-#> 3 dat[which(dat$x > 500), ]  1       245µs    340µs    277µs   1.86ms     2943.      366K      6
+#> # A tibble: 3 x 10
+#>   expression                     min     mean   median      max `itr/sec` mem_alloc total_time n_itr  n_gc
+#>   <chr>                     <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt>   <bch:tm> <int> <dbl>
+#> 1 dat[dat$x > 500, ]           313µs    436µs    368µs   1.56ms     2294.      426K      429ms   985     5
+#> 2 dat[which(dat$x > 500), ]    242µs    327µs    271µs    1.5ms     3062.      366K      405ms  1239     6
+#> 3 subset(dat, x > 500)         394µs    523µs    436µs   1.88ms     1910.      561K      418ms   798     6
 ```
 
 ``` r
@@ -103,8 +105,8 @@ Also includes `system_time()`, a higher precision replacement for
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   360ms   366ms
+#>   340ms   341ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    41µs   502ms
+#>    54µs   503ms
 ```
