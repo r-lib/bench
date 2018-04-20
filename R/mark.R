@@ -22,6 +22,7 @@ NULL
 #'   function that function will be called with each pair of results to
 #'   determine consistency.
 #' @inherit summary.bench_mark return
+#' @aliases bench_mark
 #' @examples
 #' mark(
 #'   setup = dat <- data.frame(x = runif(num_x, 1, 1000), y=runif(num_y, 1, 1000)),

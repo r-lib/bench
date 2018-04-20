@@ -2,6 +2,7 @@
 % Please edit documentation in R/mark.R
 \name{mark}
 \alias{mark}
+\alias{bench_mark}
 \title{Benchmark a series of functions}
 \usage{
 mark(..., setup = NULL, parameters = list(), env = parent.frame(),
