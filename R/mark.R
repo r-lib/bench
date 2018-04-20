@@ -152,11 +152,11 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
   }
 
   for (i in seq_len(length(exprs))) {
-    with_gcinfo({
-      res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(min_iterations), as.integer(max_iterations), tempfile())
+    gc_msg <- with_gcinfo({
+      res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(min_iterations), as.integer(max_iterations))
     })
-    results$time[[i]] <- as_bench_time(res[[1]])
-    results$gc[[i]] <- parse_gc(res[[2]])
+    results$time[[i]] <- as_bench_time(res)
+    results$gc[[i]] <- parse_gc(gc_msg)
 
     # Do an explicit gc, to minimize counting a gc against a prior expression.
     gc()
@@ -278,6 +278,8 @@ knit_print.bench_mark <- function(x, ..., options) {
 }
 
 parse_gc <- function(x) {
+  # \x1E is Record Seperator 
+  x <- strsplit(glue::glue_collapse(x, ""), "\x1E")[[1]]
   tibble::tibble(
     level0 = lengths(regmatches(x, gregexpr("Garbage collection [^(]+[(](level 0)", x))),
     level1 = lengths(regmatches(x, gregexpr("Garbage collection [^(]+[(](level 1)", x))),

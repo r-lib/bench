@@ -41,7 +41,7 @@ auto_name_vec <- function(names) {
 with_gcinfo <- function(expr) {
   old <- gcinfo(TRUE)
   on.exit(gcinfo(old))
-  force(expr)
+  utils::capture.output(force(expr), type = "message")
 }
 
 deparse_trunc <- function(x, width = getOption("width")) {

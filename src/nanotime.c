@@ -7,7 +7,9 @@
 #else
 #include <time.h>
 #include <sys/time.h>
+#define NSEC_PER_SEC	1000000000	/* nanoseconds per second */
 #endif
+
 
 #if __MACH__
 long double real_time() {

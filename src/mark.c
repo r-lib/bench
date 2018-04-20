@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "nanotime.h"
 #include <unistd.h>
+#include <errno.h>
+#include <string.h>
 
 double get_overhead(SEXP env) {
   long double overhead = 100.0;
@@ -20,15 +22,12 @@ double get_overhead(SEXP env) {
   return overhead;
 }
 
-SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP min_itr, SEXP max_itr, SEXP logfile) {
+SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP min_itr, SEXP max_itr) {
   R_xlen_t min_itr_ = INTEGER(min_itr)[0];
   R_xlen_t max_itr_ = INTEGER(max_itr)[0];
   double min_time_ = REAL(min_time)[0];
 
-  const char* log = CHAR(STRING_ELT(logfile, 0));
-  SEXP out = PROTECT(Rf_allocVector(VECSXP, 2));
-  SET_VECTOR_ELT(out, 0, Rf_allocVector(REALSXP, max_itr_));
-  SET_VECTOR_ELT(out, 1, Rf_allocVector(STRSXP, max_itr_));
+  SEXP out = PROTECT(Rf_allocVector(REALSXP, max_itr_));
 
   long double total = 0;
 
@@ -36,28 +35,16 @@ SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP min_itr, SEXP max_itr, SEXP 
 
   R_xlen_t i = 0;
   for (; i < max_itr_ && ( (total < min_time_) || i < min_itr_); ++i) {
-    freopen(log, "w", stderr);
 
     long double elapsed = expr_elapsed_time(expr, env);
 
-    FILE* fp = fopen(log, "r");
-    char* buffer = NULL;
-    size_t len;
-    ssize_t bytes_read = getdelim( &buffer, &len, '\0', fp);
-    if ( bytes_read != -1) {
-      SET_STRING_ELT(VECTOR_ELT(out, 1), i, Rf_mkChar(buffer));
-      free(buffer);
-    }
-    fclose(fp);
-
-    REAL(VECTOR_ELT(out, 0))[i] = elapsed - overhead;
+    // 1E is record separator 
+    REprintf("\x1E");
+    REAL(out)[i] = elapsed - overhead;
     total+=elapsed;
   }
 
-  SET_VECTOR_ELT(out, 0, Rf_xlengthgets(VECTOR_ELT(out, 0), i));
-  SET_VECTOR_ELT(out, 1, Rf_xlengthgets(VECTOR_ELT(out, 1), i));
-
-  freopen("/dev/tty", "a", stderr);
+  out = Rf_xlengthgets(out, i);
 
   UNPROTECT(1);
 
@@ -80,7 +67,7 @@ SEXP system_time_(SEXP expr, SEXP env) {
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"mark_", (DL_FUNC) &mark_, 6},
+    {"mark_", (DL_FUNC) &mark_, 5},
     {"system_time_", (DL_FUNC) &system_time_, 2},
     {NULL, NULL, 0}
 };
