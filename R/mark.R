@@ -34,7 +34,7 @@ NULL
 #'   subset(dat, x > 500))
 #' @export
 mark <- function(..., setup = NULL, parameters = list(),
-  env = parent.frame(), min_time = .5, min_iterations = 1, max_iterations = 1e6, check = TRUE) {
+  env = parent.frame(), min_time = .5, min_iterations = 1, max_iterations = 10000, check = TRUE) {
 
   # Only use expand.grid if not already a data.frame
   is_simple_list <- is.list(parameters) && !is.object(parameters)
@@ -154,14 +154,14 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
   }
 
   for (i in seq_len(length(exprs))) {
+    # Do an explicit gc, to minimize counting a gc against a prior expression.
+    gc()
+
     gc_msg <- with_gcinfo({
       res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(min_iterations), as.integer(max_iterations))
     })
     results$time[[i]] <- as_bench_time(res)
     results$gc[[i]] <- parse_gc(gc_msg)
-
-    # Do an explicit gc, to minimize counting a gc against a prior expression.
-    gc()
   }
 
   tibble::as_tibble(results)
@@ -315,10 +315,7 @@ knit_print.bench_mark <- function(x, ..., options) {
 parse_gc <- function(x) {
   # \x1E is Record Seperator 
   x <- strsplit(glue::glue_collapse(x, ""), "\x1E")[[1]]
-  tibble::tibble(
-    level0 = lengths(regmatches(x, gregexpr("Garbage collection [^(]+[(](level 0)", x))),
-    level1 = lengths(regmatches(x, gregexpr("Garbage collection [^(]+[(](level 1)", x))),
-    level2 = lengths(regmatches(x, gregexpr("Garbage collection [^(]+[(](level 2)", x))))
+  tibble::as_tibble(.Call(parse_gc_, x))
 }
 
 #' @export

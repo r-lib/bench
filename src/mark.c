@@ -66,9 +66,44 @@ SEXP system_time_(SEXP expr, SEXP env) {
   return out;
 }
 
+SEXP parse_gc_(SEXP x) {
+
+  R_xlen_t n = Rf_xlength(x);
+  const char *out_nms[] = {"level0", "level1", "level2", ""};
+  SEXP out = PROTECT(Rf_mkNamed(VECSXP, out_nms));
+  SET_VECTOR_ELT(out, 0, Rf_allocVector(INTSXP, n));
+  SET_VECTOR_ELT(out, 1, Rf_allocVector(INTSXP, n));
+  SET_VECTOR_ELT(out, 2, Rf_allocVector(INTSXP, n));
+
+  int* level0 = INTEGER(VECTOR_ELT(out, 0));
+  int* level1 = INTEGER(VECTOR_ELT(out, 1));
+  int* level2 = INTEGER(VECTOR_ELT(out, 2));
+  for (int i = 0; i < n; ++i) {
+    level0[i] = 0;
+    level1[i] = 0;
+    level2[i] = 0;
+    const char* str = CHAR(STRING_ELT(x, i));
+    while((str = strstr(str, " (level ")) != NULL) {
+      if (strncmp(str, " (level 0) ...", 13) == 0) {
+        level0[i]++;
+      } else if (strncmp(str, " (level 1) ...", 13) == 0) {
+        level1[i]++;
+      } else if (strncmp(str, " (level 2) ...", 13) == 0) {
+        level2[i]++;
+      }
+      str+=8;
+    }
+  }
+
+  UNPROTECT(1);
+
+  return out;
+}
+
 static const R_CallMethodDef CallEntries[] = {
     {"mark_", (DL_FUNC) &mark_, 5},
     {"system_time_", (DL_FUNC) &system_time_, 2},
+    {"parse_gc_", (DL_FUNC) &parse_gc_, 1},
     {NULL, NULL, 0}
 };
 
