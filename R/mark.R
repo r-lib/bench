@@ -285,3 +285,22 @@ parse_gc <- function(x) {
     level1 = lengths(regmatches(x, gregexpr("Garbage collection [^(]+[(](level 1)", x))),
     level2 = lengths(regmatches(x, gregexpr("Garbage collection [^(]+[(](level 2)", x))))
 }
+
+#' @export
+`[.bench_mark` <- function(x, ...) {
+  bench_mark(NextMethod())
+}
+
+unnest.bench_mark <- function(data, ...) {
+  # remove columns which don't make sense to unnest
+  data[c("result", "memory")] <- list(NULL)
+
+  # suppressWarnings to avoid 'elements may not preserve their attributes'
+  # warnings from dplyr::collapse
+  data <- suppressWarnings(NextMethod(.Generic))
+
+  # Add bench_time class back to the time column
+  data$time <- bench_time(data$time)
+
+  data
+}

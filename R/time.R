@@ -176,12 +176,6 @@ type_sum.bench_time <- function(x) {
   "bch:tm"
 }
 
-unnest.bench_time <- function(x, ...) {
-  browser()
-  x <- unclass(x)
-  NextMethod(.Generic)
-}
-
 #' Benchmark time transformation
 #'
 #' @inheritParams scales::log_trans
