@@ -10,5 +10,6 @@ bench_time_trans(base = 10)
 \item{base}{base of logarithm}
 }
 \description{
-Benchmark time transformation
+This both log transforms the times and formats the labels as a \code{bench_time}
+object.
 }

@@ -178,6 +178,8 @@ type_sum.bench_time <- function(x) {
 
 #' Benchmark time transformation
 #'
+#' This both log transforms the times and formats the labels as a `bench_time`
+#' object.
 #' @inheritParams scales::log_trans
 #' @export
 bench_time_trans <- function(base = 10) {
