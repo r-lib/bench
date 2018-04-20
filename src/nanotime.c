@@ -1,6 +1,8 @@
 #include "nanotime.h"
 
-#ifdef __MACH__
+#ifdef __WIN32
+#include <windows.h>
+#elif defined(__MACH__)
 #include <mach/mach_time.h>
 #include <time.h>
 #include <sys/time.h>
@@ -11,7 +13,23 @@
 #endif
 
 
-#if __MACH__
+#ifdef _WIN32
+long double real_time() {
+  // https://msdn.microsoft.com/en-us/library/windows/desktop/ms644904(v=vs.85).aspx
+  static LARGE_INTEGER frequency;
+  frequency.QuadPart = 0;
+  if (frequency.QuadPart == 0) {
+    if (QueryPerformanceFrequency(&frequency) == FALSE) {
+      Rf_error("QueryPerformanceFrequency(...) failed");
+    }
+  }
+  LARGE_INTEGER count;
+  if (QueryPerformanceCounter(&count) == FALSE) {
+    Rf_error("QueryPerformanceCounter(...) failed");
+  }
+  return (long double) count.QuadPart / frequency.QuadPart;
+}
+#elif defined(__MACH__)
 long double real_time() {
 
   // https://developer.apple.com/library/content/qa/qa1398/_index.html
@@ -41,6 +59,26 @@ long double real_time() {
 }
 #endif
 
+#ifdef _WIN32
+long double process_cpu_time() {
+  HANDLE proc = GetCurrentProcess();
+  FILETIME creation_time;
+  FILETIME exit_time;
+  FILETIME kernel_time;
+  FILETIME user_time;
+  if (GetProcessTimes(proc, &creation_time, &exit_time, &kernel_time,
+        &user_time) == FALSE) {
+    Rf_error("GetProcessTimes(...) failed");
+  }
+  ULARGE_INTEGER kernel;
+  ULARGE_INTEGER user;
+  kernel.HighPart = kernel_time.dwHighDateTime;
+  kernel.LowPart = kernel_time.dwLowDateTime;
+  user.HighPart = user_time.dwHighDateTime;
+  user.LowPart = user_time.dwLowDateTime;
+  return (((long double)kernel.QuadPart + (long double)user.QuadPart) * 1e-7);
+}
+#else
 long double process_cpu_time() {
   struct timespec ts;
   if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts) != 0) {
@@ -48,6 +86,7 @@ long double process_cpu_time() {
   }
   return ts.tv_sec + (long double)ts.tv_nsec / NSEC_PER_SEC;
 }
+#endif
 
 long double expr_elapsed_time(SEXP expr, SEXP env) {
   long double start = real_time();
