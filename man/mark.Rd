@@ -31,6 +31,21 @@ with \code{\link[=all.equal]{all.equal()}}, if \code{FALSE} checking is disabled
 function that function will be called with each pair of results to
 determine consistency.}
 }
+\value{
+A \link[tibble:tibble]{tibble} with the additional summary columns.
+The following summary columns are computed
+\itemize{
+\item \code{min} - \code{bench_time} The minimum execution time.
+\item \code{mean} - \code{bench_time} The arithmetic mean of execution time
+\item \code{median} - \code{bench_time} The sample median of execution time.
+\item \code{max} - \code{bench_time} The maximum execution time.
+\item \code{mem_alloc} - \code{bench_bytes} Total amount of memory allocated by running the expression.
+\item \code{itr/sec} - \code{integer} The estimated number of executions performed per second.
+\item \code{n_itr} - \code{integer} Total number of iterations after filtering
+garbage collections (if \code{filter_gc == TRUE}).
+\item \code{n_gc} - \code{integer} Total number of garbage collections performed over all runs.
+}
+}
 \description{
 Benchmark a list of quoted expressions. Each expression will always run at
 least twice, once to measure the memory allocation and store results and one

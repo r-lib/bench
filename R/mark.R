@@ -21,6 +21,7 @@ NULL
 #'   with [all.equal()], if `FALSE` checking is disabled. If `check` is a
 #'   function that function will be called with each pair of results to
 #'   determine consistency.
+#' @inherit summary.bench_mark return
 #' @examples
 #' mark(
 #'   setup = dat <- data.frame(x = runif(num_x, 1, 1000), y=runif(num_y, 1, 1000)),
@@ -165,12 +166,51 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
   tibble::as_tibble(results)
 }
 
-summary_cols <- c("rel", "min", "mean", "median", "max", "itr/sec", "mem_alloc", "num_gc")
+summary_cols <- c("min", "mean", "median", "max", "itr/sec", "mem_alloc", "total_time", "n_itr", "n_gc")
 data_cols <- c("result", "memory", "time", "gc")
 
-# TODO: document return values
+#' Summarize [bench::mark] results.
+#'
+#' @param object [bench_mark] object to summarize.
+#' @param filter_gc If `TRUE` filter iterations that contained at least one
+#'   garbage collection before summarizing.
+#' @param relative If `TRUE` all summaries are computed relative to the minimum
+#'   execution time rather than absolute time.
+#' @param ... Additional arguments ignored.
+#' @details
+#'   If `filter_gc == TRUE` (the default) runs that contain a garbage
+#'   collection will be removed before summarizing. This is most useful for fast
+#'   expressions when the majority of runs do not contain a gc. Call
+#'   `summary(filter_gc = FALSE)` if you would like to compute summaries _with_
+#'   these times, such as expressions with lots of allocations when all or most
+#'   runs contain a gc.
+#' @return A [tibble][tibble::tibble] with the additional summary columns.
+#'   The following summary columns are computed
+#'   - `min` - `bench_time` The minimum execution time.
+#'   - `mean` - `bench_time` The arithmetic mean of execution time
+#'   - `median` - `bench_time` The sample median of execution time.
+#'   - `max` - `bench_time` The maximum execution time.
+#'   - `mem_alloc` - `bench_bytes` Total amount of memory allocated by running the expression.
+#'   - `itr/sec` - `integer` The estimated number of executions performed per second.
+#'   - `n_itr` - `integer` Total number of iterations after filtering
+#'      garbage collections (if `filter_gc == TRUE`).
+#'   - `n_gc` - `integer` Total number of garbage collections performed over all runs.
+#' @examples
+#' dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
+#'
+#' # `bench::mark()` implicitly calls summary() automatically
+#' results <- bench::mark(
+#'   dat[dat$x > 500, ],
+#'   dat[which(dat$x > 500), ],
+#'   subset(dat, x > 500))
+#'
+#' # However you can also do so explicitly to filter gc differently.
+#' summary(results, filter_gc = FALSE)
+#'
+#' # Or output relative times
+#' summary(results, relative = TRUE)
 #' @export
-summary.bench_mark <- function(object, ..., filter_gc = TRUE, relative_within = TRUE) {
+summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, ...) {
   nms <- colnames(object)
   parameters <- setdiff(nms, c("expression", summary_cols, data_cols))
 
@@ -187,26 +227,20 @@ summary.bench_mark <- function(object, ..., filter_gc = TRUE, relative_within = 
   object$median <- new_bench_time(vdapply(times, stats::median))
   object$max <- new_bench_time(vdapply(times, max))
   object$total_time <- new_bench_time(vdapply(times, sum))
-  object$`itr/sec` <- viapply(times, length) / unclass(object$total_time)
+  object$n_itr <- viapply(times, length)
+  object$`itr/sec` <-  as.numeric(object$n_itr / object$total_time)
 
   object$mem_alloc <-
     bench_bytes(
-      vdapply(object$memory, function(objectobject) if (is.null(objectobject)) NA else sum(objectobject$bytes, na.rm = TRUE)))
+      vdapply(object$memory, function(x) if (is.null(x)) NA else sum(x$bytes, na.rm = TRUE)))
 
-  object$num_gc <- vdapply(num_gc, sum)
+  object$n_gc <- vdapply(num_gc, sum)
 
-  if (isTRUE(relative_within) && length(parameters)) {
-    grp <- interaction(object[parameters])
-    object$rel <- unsplit(
-      lapply(split(object$median, grp), function(x) unclass(x) / unclass(min(x))),
-      grp)
-  } else {
-    object$rel <- unclass(object$median) / unclass(min(object$median))
+  if (isTRUE(relative)) {
+    object[summary_cols] <- lapply(object[summary_cols], function(x) as.numeric(x / min(x)))
   }
 
-  bench_mark(
-    object[do.call(order, cbind(object[parameters], -object$rel)),
-      c("expression", parameters, summary_cols, data_cols)])
+  bench_mark(object[c("expression", parameters, summary_cols, data_cols)])
 }
 
 #' @export
