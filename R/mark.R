@@ -124,12 +124,15 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
   eval_one <- function(e) {
     f <- tempfile()
     on.exit(unlink(f))
-    if (capabilities("profmem")) {
+    can_profile_memory <- capabilities("profmem")
+    if (can_profile_memory) {
       utils::Rprofmem(f, threshold = 1)
     }
 
     res <- eval(e, env)
-    utils::Rprofmem(NULL)
+    if (can_profile_memory) {
+      utils::Rprofmem(NULL)
+    }
     list(result = res, memory = parse_allocations(f))
   }
 

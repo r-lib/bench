@@ -74,7 +74,7 @@ describe("mark_internal", {
   })
 
   it("works with capabilities('profmem')", {
-    skip_if_not(!isTRUE(capabilities("profmem")))
+    skip_if_not(!capabilities("profmem"))
 
     res <- mark_internal(1, 2, check = NULL,
       setup = NULL, env = new.env(), min_time = Inf,

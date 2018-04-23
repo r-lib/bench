@@ -1,3 +1,4 @@
+#include <R_ext/Rdynload.h>
 #include <Rinternals.h>
 #include <stdio.h>
 #include <stdlib.h>

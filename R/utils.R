@@ -50,3 +50,18 @@ deparse_trunc <- function(x, width = getOption("width")) {
 
   paste0(substr(text[1], 1, width - 3), "...")
 }
+
+# inlined from https://github.com/r-lib/cli/blob/master/R/utf8.R
+is_utf8_output <- function() {
+  opt <- getOption("cli.unicode", NULL)
+  if (! is.null(opt)) {
+    isTRUE(opt)
+  } else {
+    l10n_info()$`UTF-8` && !is_latex_output()
+  }
+}
+
+is_latex_output <- function() {
+  if (!("knitr" %in% loadedNamespaces())) return(FALSE)
+  get("is_latex_output", asNamespace("knitr"))()
+}

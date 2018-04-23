@@ -7,6 +7,7 @@
 #include <time.h>
 #include <sys/time.h>
 #else
+#define __EXTENSIONS__
 #include <time.h>
 #include <sys/time.h>
 #define NSEC_PER_SEC	1000000000	/* nanoseconds per second */
@@ -48,6 +49,13 @@ long double real_time() {
   uint64_t nanos = time * ratio;
   return (long double)nanos / NSEC_PER_SEC;
 }
+#elif defined(__sun)
+long double real_time() {
+  hrtime_t time = gethrtime();
+  // The man page doesn't mention any error return values
+
+  return (long double)time / NSEC_PER_SEC;
+}
 #else
 long double real_time() {
   struct timespec ts;
@@ -77,6 +85,13 @@ long double process_cpu_time() {
   user.HighPart = user_time.dwHighDateTime;
   user.LowPart = user_time.dwLowDateTime;
   return (((long double)kernel.QuadPart + (long double)user.QuadPart) * 1e-7);
+}
+#elif defined(__sun)
+long double process_cpu_time() {
+  hrtime_t time = gethrvtime();
+  // The man page doesn't mention any error return values
+
+  return (long double)time / NSEC_PER_SEC;
 }
 #else
 long double process_cpu_time() {

@@ -34,7 +34,7 @@ bench_bytes <- as_bench_bytes
 new_bench_bytes <- function(x) {
   structure(x, class = c("bench_bytes", "numeric"))
 }
-setOldClass(c("bench_bytes", "numeric"), numeric())
+methods::setOldClass(c("bench_bytes", "numeric"), numeric())
 
 #' @export
 as_bench_bytes.default <- function(x) {
