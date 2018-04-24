@@ -66,6 +66,7 @@ is_latex_output <- function() {
   get("is_latex_output", asNamespace("knitr"))()
 }
 
+#nocov start
 # This is capture.output from R-3.4.3, 3.1 does not support type = "message"
 capture_output <- function(..., file = NULL, append = FALSE,
   type = c("output", "message"), split = FALSE) {
@@ -109,3 +110,4 @@ capture_output <- function(..., file = NULL, append = FALSE,
         invisible(NULL)
     else rval
 }
+#nocov end
