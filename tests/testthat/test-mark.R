@@ -84,7 +84,7 @@ describe("mark_internal", {
 
     expect_is(res$memory[[1]], "Rprofmem")
     expect_equal(ncol(res$memory[[1]]), 3)
-    expect_gte(nrow(res$memory[[1]]), 1)
+    expect_gte(nrow(res$memory[[1]]), 0)
   })
 
   it("works without capabilities('profmem')", {
