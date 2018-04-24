@@ -61,6 +61,9 @@ as_bench_time.bench_time <- function(x) {
 
 #' @export
 as_bench_time.numeric <- function(x) {
+  is_small <- x < 1e-9
+  x[is_small] <- 1e-9
+
   new_bench_time(x)
 }
 tolerance <- sqrt(.Machine$double.eps)

@@ -53,11 +53,11 @@ SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP min_itr, SEXP max_itr) {
 }
 
 SEXP system_time_(SEXP expr, SEXP env) {
-  double process_begin = process_cpu_time();
   double real_begin = real_time();
+  double process_begin = process_cpu_time();
   Rf_eval(expr, env);
-  double real_end = real_time();
   double process_end = process_cpu_time();
+  double real_end = real_time();
 
   SEXP out = PROTECT(Rf_allocVector(REALSXP, 2));
   REAL(out)[0] = process_end - process_begin;

@@ -14,7 +14,7 @@
 #endif
 
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64)
 long double real_time() {
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms644904(v=vs.85).aspx
   static LARGE_INTEGER frequency;
@@ -67,7 +67,7 @@ long double real_time() {
 }
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64)
 long double process_cpu_time() {
   HANDLE proc = GetCurrentProcess();
   FILETIME creation_time;
