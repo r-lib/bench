@@ -139,7 +139,11 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
   # Run allocation benchmark and check results
   for (i in seq_len(length(exprs))) {
     res <- eval_one(exprs[[i]])
-    results$result[[i]] <- res$result
+    if (is.null(res$result)) {
+      results$result[i] <- list(res$result)
+    } else {
+      results$result[[i]] <- res$result
+    }
     results$memory[[i]] <- res$memory
 
     if (isTRUE(check) && i > 1) {
@@ -157,9 +161,6 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
   }
 
   for (i in seq_len(length(exprs))) {
-    # Do an explicit gc, to minimize counting a gc against a prior expression.
-    gc()
-
     gc_msg <- with_gcinfo({
       res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(min_iterations), as.integer(max_iterations))
     })
@@ -290,6 +291,8 @@ dots <- function(...) {
   eval(substitute(alist(...)))
 }
 
+#nocov start
+
 #' Custom printing function for bench_mark objects in knitr documents
 #'
 #' By default data columns ('result', 'memory', 'time', 'gc') are omitted when
@@ -314,6 +317,8 @@ knit_print.bench_mark <- function(x, ..., options) {
     print(x[!colnames(x) %in% data_cols])
   }
 }
+
+#nocov end
 
 parse_gc <- function(x) {
   # \x1E is Record Seperator 

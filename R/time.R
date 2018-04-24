@@ -1,7 +1,7 @@
 time_units <- function() c(
   'ns' = 1e-9,
   'us' = 1e-6,
-  if (is_utf8_output()) '\U00B5s' = 1e-6,
+  if (is_utf8_output()) c('\U00B5s' = 1e-6),
   'ms' = 1e-3,
   's' = 1,
   'm' = 60,
