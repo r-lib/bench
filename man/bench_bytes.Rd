@@ -22,7 +22,7 @@ to human readable values such as '10MB'.
 bench_bytes("1")
 bench_bytes("1K")
 bench_bytes("1Kb")
-bench_bytes("1Kib")
+bench_bytes("1KiB")
 bench_bytes("1MB")
 
 bench_bytes("1KB") < "1MB"

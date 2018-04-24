@@ -1,7 +1,7 @@
 # This is mostly a copy of https://github.com/r-lib/fs/blob/0f5b6191935fe4c862d2e5003655e6c1669f4afd/R/fs_bytes.R
 # If I end up needing this in a third package it should probably live in a package somewhere, maybe prettyunits?
 
-byte_units <- c('B' = 1, 'K' = 1000, 'M' = 1000 ^ 2, 'G' = 1000 ^ 3, 'T' = 1000 ^ 4, 'P' = 1000 ^ 5, 'E' = 1000 ^ 6, 'Z' = 1000 ^ 7, 'Y' = 1000 ^ 8)
+byte_units <- c('B' = 1, 'K' = 1024, 'M' = 1024 ^ 2, 'G' = 1024 ^ 3, 'T' = 1024 ^ 4, 'P' = 1024 ^ 5, 'E' = 1024 ^ 6, 'Z' = 1024 ^ 7, 'Y' = 1024 ^ 8)
 
 #' Human readable memory sizes
 #'
@@ -15,7 +15,7 @@ byte_units <- c('B' = 1, 'K' = 1000, 'M' = 1000 ^ 2, 'G' = 1000 ^ 3, 'T' = 1000 
 #' bench_bytes("1")
 #' bench_bytes("1K")
 #' bench_bytes("1Kb")
-#' bench_bytes("1Kib")
+#' bench_bytes("1KiB")
 #' bench_bytes("1MB")
 #'
 #' bench_bytes("1KB") < "1MB"
@@ -59,13 +59,12 @@ as_bench_bytes.numeric <- function(x) {
 format.bench_bytes <- function(x, scientific = FALSE, digits = 3, ...) {
   bytes <- unclass(x)
 
-  exponent <- pmin(floor(log(bytes, 1000)), length(byte_units) - 1)
-  res <- round(bytes / 1000 ^ exponent, 2)
-  unit <- ifelse (exponent == 0, "", names(byte_units)[exponent + 1])
+  unit <- vcapply(x, find_unit, byte_units)
+  res <- round(bytes / byte_units[unit], digits = digits)
 
   ## Zero bytes
   res[bytes == 0] <- 0
-  unit[bytes == 0] <- ""
+  unit[bytes == 0] <- "B"
 
   ## NA and NaN bytes
   res[is.na(bytes)] <- NA_real_

@@ -63,6 +63,16 @@ as_bench_time.bench_time <- function(x) {
 as_bench_time.numeric <- function(x) {
   new_bench_time(x)
 }
+tolerance <- sqrt(.Machine$double.eps)
+find_unit <- function(x, units) {
+  if (is.na(x) || x == 0) {
+    return(NA_character_)
+  }
+  epsilon <- 1 - (x * (1 / units))
+  names(
+    utils::tail(n = 1,
+      which(epsilon < tolerance)))
+}
 
 # Adapted from https://github.com/gaborcsardi/prettyunits
 # Aims to be consistent with ls -lh, so uses 1024 KiB units, 3 or less digits etc.
@@ -74,19 +84,9 @@ format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
   # overhead is higher than the time.
   x[x < 1e-9] <- 1e-9
 
-  find_unit <- function(x) {
-    if (is.na(x) || x == 0) {
-      return(NA_character_)
-    }
-    epsilon <- 1 - (x * (1 / time_units()))
-    tolerance <- sqrt(.Machine$double.eps)
-    names(
-      utils::tail(n = 1,
-        which(epsilon < tolerance)))
-  }
   seconds <- unclass(x)
 
-  unit <- vcapply(x, find_unit)
+  unit <- vcapply(x, find_unit, time_units())
   res <- round(seconds / time_units()[unit], digits = digits)
 
   ## Zero seconds

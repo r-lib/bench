@@ -1,3 +1,4 @@
+#nocov start
 .onLoad <- function(...) {
   register_s3_method("tidyr", "unnest", "bench_mark")
   register_s3_method("ggplot2", "scale_type", "bench_time")
@@ -26,3 +27,5 @@ register_s3_method <- function(pkg, generic, class, fun = NULL) {
     }
   )
 }
+
+#nocov end
