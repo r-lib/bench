@@ -6,3 +6,5 @@
 ^codecov\.yml$
 ^README\.html$
 ^README_cache$
+^docs$
+^_pkgdown\.yml$
