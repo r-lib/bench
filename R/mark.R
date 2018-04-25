@@ -15,6 +15,9 @@ NULL
 #' @param env The environment which to evaluate the expressions
 #' @param min_time The minimum number of seconds to run each expression, set to
 #'   `Inf` to always run `max_iterations` times instead.
+#' @param iterations If not `NULL`, the default, run each expression for
+#'   exactly this number of iterations. This overrides both `min_iterations`
+#'   and `max_iterations`.
 #' @param min_iterations Each expression will be evaluated a minimum of `min_iterations` times.
 #' @param max_iterations Each expression will be evaluated a maximum of `max_iterations` times.
 #' @param check Check if results are consistent. If `TRUE`, checking is done
@@ -34,7 +37,12 @@ NULL
 #'   subset(dat, x > 500))
 #' @export
 mark <- function(..., setup = NULL, parameters = list(),
-  env = parent.frame(), min_time = .5, min_iterations = 1, max_iterations = 10000, check = TRUE) {
+  env = parent.frame(), min_time = .5, iterations = NULL, min_iterations = 1, max_iterations = 10000, check = TRUE) {
+
+  if (!is.null(iterations)) {
+    min_iterations <- iterations
+    max_iterations <- iterations
+  }
 
   # Only use expand.grid if not already a data.frame
   is_simple_list <- is.list(parameters) && !is.object(parameters)
@@ -171,7 +179,7 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
   tibble::as_tibble(results)
 }
 
-summary_cols <- c("min", "mean", "median", "max", "itr/sec", "mem_alloc", "total_time", "n_itr", "n_gc")
+summary_cols <- c("min", "mean", "median", "max", "itr/sec", "mem_alloc", "n_gc", "n_itr", "total_time")
 data_cols <- c("result", "memory", "time", "gc")
 
 #' Summarize [bench::mark] results.
@@ -341,6 +349,16 @@ unnest.bench_mark <- function(data, ...) {
 
   # Add bench_time class back to the time column
   data$time <- bench_time(data$time)
+
+
+  # Add a gc column, a factor with the highest gc performed for each expression.
+  data$gc <-
+    dplyr::case_when(
+      data$level2 > 0 ~ "level2",
+      data$level1 > 0 ~ "level1",
+      data$level0 > 0 ~ "level0",
+      TRUE ~ "none")
+  data$gc <- factor(data$gc, c("none", "level0", "level1", "level2"))
 
   data
 }

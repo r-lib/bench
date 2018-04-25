@@ -173,7 +173,7 @@ describe("summary.bench_mark", {
   })
   it("does not filter gc is `filter_gc` is FALSE", {
     # This should be enough allocations to trigger at least a few GCs
-    res <- mark(1 + 1:1e5, min_iterations = 300, max_iterations = 300)
+    res <- mark(1 + 1:1e6, iterations = 100)
     res2 <- summary(res, filter_gc = FALSE)
 
     expect_gt(res$n_gc, 0)
@@ -193,10 +193,12 @@ describe("unnest.bench_mark", {
     res <- tidyr::unnest(bnch)
 
     gc_cols <- colnames(bnch$gc[[1]])
-    expect_equal(colnames(res),
-      setdiff(
+
+    expected_cols <- c(setdiff(
         c("expression", summary_cols, data_cols, gc_cols),
-        c("result", "memory", "gc")))
+        c("result", "memory", "gc")),
+      "gc")
+    expect_equal(colnames(res), expected_cols)
 
     expect_equal(nrow(res), length(bnch$time[[1]]) + length(bnch$time[[2]]))
   })

@@ -19,7 +19,8 @@ options(width = 120)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/jimhester/bench?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/bench)
 [![Coverage status](https://codecov.io/gh/jimhester/bench/branch/master/graph/badge.svg)](https://codecov.io/github/jimhester/bench?branch=master)
 
-The goal of bench is to benchmark code.
+The goal of bench is to benchmark code, tracking both the execution time,
+memory allocated and number and type of garbage collections.
 
 ## Installation
 
@@ -30,29 +31,65 @@ You can install the development version from [GitHub](https://github.com/) with:
 devtools::install_github("jimhester/bench")
 ```
 
-## Example
+## Features
 
-`bench::mark()` a function to easily benchmark a series of expressions and
-evaluate relative performance.
+`bench::mark()` is used to benchmark one or a series of expressions, it has a
+number of advantages over [alternatives](#alternatives).
 
-```{r example, error = TRUE}
+- Always uses the highest precision APIs available for each operating system (often nanoseconds).
+- Tracks memory allocations for each expression.
+- Tracks the number and type of R garbage collections per expression iteration.
+- Verifies equality of expression results, to avoid accidentally benchmarking inequivalent code.
+- Has two arguments, `setup` and `parameters`, to make running benchmarks over
+  different size datasets more straightforward.
+- Uses adaptive stopping by default, running each expression for a set amount
+  of time rather than for a specific number of iterations.
+- Expressions are run in batches and summary statistics are calculated after
+  filtering for iterations with garbage collections. This allows you to isolate
+  the effects of garbage collection on running time (for more details see [Neal
+  2014](https://radfordneal.wordpress.com/2014/02/02/inaccurate-results-from-microbenchmark/)).
+
+The times and memory usage are returned as custom objects which have human
+readable formatting for display (e.g. `104ns`) and comparisons (e.g.
+`x$mem_alloc > "10MB"`).
+
+There is also full support for [ggplot2](http://ggplot2.tidyverse.org/)
+including custom scales and formatting.
+
+## Usage
+
+Benchmarks can be run with `bench::mark()`, which takes one or more expressions
+to benchmark against each other.
+
+```{r example}
+library(bench)
 set.seed(42)
 dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
+```
 
-# Throws an error if the results are not equivalent, so you don't accidentally
-# benchmark against the wrong answer
-results <- bench::mark(
-  y = dat[dat$x > 500, ],
-  x = dat[which(dat$x > 499), ],
+`bench::mark()` will throw an error if the results are not equivalent, so you
+don't accidentally benchmark inequivalent code.
+```{r example1-1, error = TRUE}
+bench::mark(
+  dat[dat$x > 500, ],
+  dat[which(dat$x > 499), ],
   subset(dat, x > 500))
+```
 
-results <- bench::mark(
+Results are easy to interpret, with human readable units.
+```{r example1-2}
+bench::mark(
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
-
-results
 ```
+
+The `bench::mark` argument `setup` allows you to run code before each
+expression. The argument `parameters` allows you to define a `list()` (or
+`data.frame()`) of parameters to assign before running `setup`. If `parameters`
+is a `list()` all combinations of the parameters will be enumerated by
+`expand.grid()`. This allows you to benchmark a set of expressions
+across a wide variety of input sizes, among other things.
 
 ```{r example2, cache = TRUE}
 set.seed(42)
@@ -69,33 +106,53 @@ results <- bench::mark(
   min_time = .5,
   min_iterations = 100,
 
-  dat[dat$x > 500, ],
-  dat[which(dat$x > 500), ],
-  subset(dat, x > 500))
+  bracket = dat[dat$x > 500, ],
+  which = dat[which(dat$x > 500), ],
+  subset = subset(dat, x > 500))
 ```
 
-```{r pressure, message = FALSE, warning = FALSE, cache = TRUE, dependson = "example2"}
+
+## Plotting
+
+`ggplot2::autoplot()` can be used to generate an informative default plot. This
+plot is colored by gc type and faceted by parameters (if any). By default it
+generates a [beeswarm](https://github.com/eclarke/ggbeeswarm#geom_quasirandom)
+plot, however you can also use specify other plot types (`jitter`, `ridge`,
+`boxplot`, `violin`). See `?autoplot.bench_mark` for full details.
+
+```{r autoplot, message = FALSE, warning = FALSE, cache = TRUE, dependson = "example2"}
+ggplot2::autoplot(results)
+```
+
+You can also produce fully custom plots by unnesting the results and
+working with the data directly.
+
+```{r custom-plot, message = FALSE, cache = TRUE, dependson = "example2"}
 library(tidyverse)
 results %>%
-  select(expression, rows, cols, time, gc) %>%
   unnest() %>%
-  mutate(gc =
-    case_when(
-      level2 > 0 ~ "level2",
-      level1 > 0 ~ "level1",
-      level0 > 0 ~ "level0",
-      TRUE ~ "none")) %>%
-  mutate(gc = factor(gc, c("none", "level0", "level1", "level2"))) %>%
-  ggplot(aes(x = expression, y = time, color = gc)) +
-    geom_jitter() +
-    coord_flip() +
-    scale_color_brewer(type = "qual", palette = 3) +
-    facet_grid(rows ~ cols, labeller = label_both)
+  filter(gc == "none") %>%
+  ggplot(aes(x = mem_alloc, y = time, color = expression)) +
+    geom_point() +
+    geom_smooth(method = "lm", se = F) +
+    scale_color_brewer(type = "qual", palette = 3)
 ```
 
-Also includes `system_time()`, a higher precision replacement for `system.time()`
+## `system_time()`
+
+**bench** also includes `system_time()`, a higher precision alternative to [system.time()].
 
 ```{r}
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 bench::system_time(Sys.sleep(.5))
 ```
+
+## Alternatives
+
+- [rbenchmark](https://cran.r-project.org/package=rbenchmark)
+- [microbenchmark]
+- [tictoc](https://cran.r-project.org/package=tictoc)
+- [system.time()]
+
+[microbenchmark]: https://cran.r-project.org/package=microbenchmark
+[system.time()]: https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time

@@ -196,8 +196,8 @@ type_sum.bench_time <- function(x) {
 #' @keywords internal
 #' @export
 bench_time_trans <- function(base = 10) {
-  trans <- function(x) log(x, base)
-  inv <- function(x) as_bench_time(base ^ x)
+  trans <- function(x) log(as.numeric(x), base)
+  inv <- function(x) as_bench_time(base ^ as.numeric(x))
 
   scales::trans_new(paste0("bch:tm-", format(base)), trans, inv,
     scales::log_breaks(base = base), domain = c(1e-100, Inf))

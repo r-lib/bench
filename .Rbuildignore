@@ -4,3 +4,5 @@
 ^README\.Rmd$
 ^appveyor\.yml$
 ^codecov\.yml$
+^README\.html$
+^README_cache$

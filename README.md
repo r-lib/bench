@@ -10,7 +10,8 @@ status](https://ci.appveyor.com/api/projects/status/github/jimhester/bench?branc
 [![Coverage
 status](https://codecov.io/gh/jimhester/bench/branch/master/graph/badge.svg)](https://codecov.io/github/jimhester/bench?branch=master)
 
-The goal of bench is to benchmark code.
+The goal of bench is to benchmark code, tracking both the execution
+time, memory allocated and number and type of garbage collections.
 
 ## Installation
 
@@ -22,37 +23,78 @@ You can install the development version from
 devtools::install_github("jimhester/bench")
 ```
 
-## Example
+## Features
 
-`bench::mark()` a function to easily benchmark a series of expressions
-and evaluate relative performance.
+`bench::mark()` is used to benchmark one or a series of expressions, it
+has a number of advantages over [alternatives](#alternatives).
+
+  - Always uses the highest precision APIs available for each operating
+    system (often nanoseconds).
+  - Tracks memory allocations for each expression.
+  - Tracks the number and type of R garbage collections per expression
+    iteration.
+  - Verifies equality of expression results, to avoid accidentally
+    benchmarking inequivalent code.
+  - Has two arguments, `setup` and `parameters`, to make running
+    benchmarks over different size datasets easier.
+  - Uses adaptive stopping by default, running each expression for a set
+    amount of time rather than for a specific number of iterations.
+  - Expressions are run in batches and summary statistics are calculated
+    after filtering for iterations with garbage collections. This allows
+    you to isolate the effects of garbage collection on running time
+    (for more details see [Neal
+    2014](https://radfordneal.wordpress.com/2014/02/02/inaccurate-results-from-microbenchmark/)).
+
+The times and memory usage are returned as custom objects which have
+human readable formatting for display (e.g. `104ns`) and comparisons
+(e.g. `x$mem_alloc > "10MB"`).
+
+There is also full support for [ggplot2](http://ggplot2.tidyverse.org/)
+including custom scales and formatting.
+
+## Usage
+
+Benchmarks can be run with `bench::mark()`, which takes one or more
+expressions to benchmark against each other.
 
 ``` r
 set.seed(42)
 dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
+```
 
-# Throws an error if the results are not equivalent, so you don't accidentally
-# benchmark against the wrong answer
-results <- bench::mark(
-  y = dat[dat$x > 500, ],
-  x = dat[which(dat$x > 499), ],
+`bench::mark()` will throw an error if the results are not equivalent,
+so you don’t accidentally benchmark inequivalent code.
+
+``` r
+bench::mark(
+  dat[dat$x > 500, ],
+  dat[which(dat$x > 499), ],
   subset(dat, x > 500))
 #> Error: All results must equal the first result:
 #>   `dat[dat$x > 500, ]` does not equal `dat[which(dat$x > 499), ]`
+```
 
-results <- bench::mark(
+Results are easy to interpret, with human readable units.
+
+``` r
+bench::mark(
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
-
-results
-#> # A tibble: 3 x 10
-#>   expression                     min     mean   median      max `itr/sec` mem_alloc total_time n_itr  n_gc
-#>   <chr>                     <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt>   <bch:tm> <int> <dbl>
-#> 1 dat[dat$x > 500, ]           312µs    443µs    365µs   1.95ms     2255.      426K      425ms   958     5
-#> 2 dat[which(dat$x > 500), ]    244µs    326µs    273µs   1.61ms     3066.      366K      405ms  1240     6
-#> 3 subset(dat, x > 500)         397µs    530µs    439µs   2.29ms     1886.      546K      420ms   792     5
+#> # A tibble: 3 x 14
+#>   expression       min   mean  median    max `itr/sec` mem_alloc  n_gc n_itr total_time result   memory   time  gc     
+#>   <chr>         <bch:> <bch:> <bch:t> <bch:>     <dbl> <bch:byt> <dbl> <int>   <bch:tm> <list>   <list>   <lis> <list> 
+#> 1 dat[dat$x > …  302µs  394µs   344µs 1.56ms     2535.      416K    34   918      362ms <data.f… <Rprofm… <bch… <tibbl…
+#> 2 dat[which(da…  237µs  316µs   269µs 1.28ms     3160.      357K    20  1099      348ms <data.f… <Rprofm… <bch… <tibbl…
+#> 3 subset(dat, …  383µs  493µs   433µs 1.86ms     2027.      548K    21   797      393ms <data.f… <Rprofm… <bch… <tibbl…
 ```
+
+The `bench::mark` argument `setup` allows you to run code before each
+expression. The argument `parameters` allows you to define a `list()`
+(or `data.frame()`) of parameters to assign before running `setup`. If
+`parameters` is a `list()` all combinations of the parameters will be
+enumerated by `expand.grid()`. This allows you to easily benchmark a set
+of expressions across a wide variety of input sizes, among other things.
 
 ``` r
 set.seed(42)
@@ -69,9 +111,9 @@ results <- bench::mark(
   min_time = .5,
   min_iterations = 100,
 
-  dat[dat$x > 500, ],
-  dat[which(dat$x > 500), ],
-  subset(dat, x > 500))
+  bracket = dat[dat$x > 500, ],
+  which = dat[which(dat$x > 500), ],
+  subset = subset(dat, x > 500))
 #> Running benchmark with:
 #>     rows  cols
 #> 1  10000    10
@@ -80,35 +122,52 @@ results <- bench::mark(
 #> 4 100000   100
 ```
 
+## Plotting
+
+`ggplot2::autoplot()` can be used to generate an informative default
+plot.
+
 ``` r
-library(tidyverse)
-results %>%
-  select(expression, rows, cols, time, gc) %>%
-  unnest() %>%
-  mutate(gc =
-    case_when(
-      level2 > 0 ~ "level2",
-      level1 > 0 ~ "level1",
-      level0 > 0 ~ "level0",
-      TRUE ~ "none")) %>%
-  mutate(gc = factor(gc, c("none", "level0", "level1", "level2"))) %>%
-  ggplot(aes(x = expression, y = time, color = gc)) +
-    geom_jitter() +
-    coord_flip() +
-    scale_color_brewer(type = "qual", palette = 3) +
-    facet_grid(rows ~ cols, labeller = label_both)
+ggplot2::autoplot(results)
 ```
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+<img src="man/figures/README-autoplot-1.png" width="100%" />
 
-Also includes `system_time()`, a higher precision replacement for
-`system.time()`
+However you can also easily produce custom plots by unnesting the
+results and working with the data directly.
+
+``` r
+library(bench)
+library(tidyverse)
+results %>%
+  unnest() %>%
+  filter(gc == "none") %>%
+  ggplot(aes(x = mem_alloc, y = time, color = expression)) +
+    geom_point() +
+    geom_smooth(method = "lm", se = F) +
+    scale_color_brewer(type = "qual", palette = 3)
+```
+
+<img src="man/figures/README-custom-plot-1.png" width="100%" />
+
+## `system_time()`
+
+**bench** also includes `system_time()`, a higher precision alternative
+to
+[system.time()](https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time).
 
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   344ms   347ms
+#>   329ms   330ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    76µs   503ms
+#>   117µs   505ms
 ```
+
+## Alternatives
+
+  - [rbenchmark](https://cran.r-project.org/package=rbenchmark)
+  - [microbenchmark](https://cran.r-project.org/package=microbenchmark)
+  - [tictoc](https://cran.r-project.org/package=tictoc)
+  - [system.time()](https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time)

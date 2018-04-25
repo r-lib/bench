@@ -1,7 +1,15 @@
 #nocov start
 .onLoad <- function(...) {
   register_s3_method("tidyr", "unnest", "bench_mark")
+  register_s3_method("ggplot2", "autoplot", "bench_mark")
+
+  register_s3_method("pillar", "pillar_shaft", "bench_time")
+  register_s3_method("pillar", "type_sum", "bench_time")
   register_s3_method("ggplot2", "scale_type", "bench_time")
+
+  register_s3_method("pillar", "pillar_shaft", "bench_bytes")
+  register_s3_method("pillar", "type_sum", "bench_bytes")
+  register_s3_method("ggplot2", "scale_type", "bench_bytes")
 }
 
 register_s3_method <- function(pkg, generic, class, fun = NULL) {

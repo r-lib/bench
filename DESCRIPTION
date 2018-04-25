@@ -23,7 +23,11 @@ Suggests:
     covr,
     ggplot2,
     mockery,
-    testthat
+    testthat,
+    dplyr,
+    ggbeeswarm,
+    ggridges,
+    tidyr
 Remotes: 
     tidyverse/glue
 Encoding: UTF-8

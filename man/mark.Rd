@@ -6,8 +6,8 @@
 \title{Benchmark a series of functions}
 \usage{
 mark(..., setup = NULL, parameters = list(), env = parent.frame(),
-  min_time = 0.5, min_iterations = 1, max_iterations = 10000,
-  check = TRUE)
+  min_time = 0.5, iterations = NULL, min_iterations = 1,
+  max_iterations = 10000, check = TRUE)
 }
 \arguments{
 \item{...}{Expressions to benchmark}
@@ -22,6 +22,10 @@ by \code{expand.grid()}.}
 
 \item{min_time}{The minimum number of seconds to run each expression, set to
 \code{Inf} to always run \code{max_iterations} times instead.}
+
+\item{iterations}{If not \code{NULL}, the default, run each expression for
+exactly this number of iterations. This overrides both \code{min_iterations}
+and \code{max_iterations}.}
 
 \item{min_iterations}{Each expression will be evaluated a minimum of \code{min_iterations} times.}
 
