@@ -141,3 +141,39 @@ pillar_shaft.bench_bytes <- function(x, ...) {
 type_sum.bench_bytes <- function(x) {
   "bch:byt"
 }
+
+
+#' Benchmark time transformation
+#'
+#' This both log transforms the times and formats the labels as a `bench_time`
+#' object.
+#' @inheritParams scales::log_trans
+#' @keywords internal
+#' @export
+bench_bytes_trans <- function(base = 2) {
+  trans <- function(x) log(as.numeric(x), base)
+  inv <- function(x) as_bench_bytes(base ^ as.numeric(x))
+
+  scales::trans_new(paste0("bch:byt-", format(base)), trans, inv,
+    scales::log_breaks(base = base), domain = c(1e-100, Inf))
+}
+
+scale_type.bench_bytes <- function(x) "bench_bytes"
+
+#' Position scales for bench_time data
+#'
+#' Default scales for the [bench_time] class, these are added to plots using
+#' [bench_time] objects automatically.
+#' @name scale_bench_time
+#' @keywords internal
+#' @export
+scale_x_bench_bytes <- function(...) {
+  ggplot2::scale_x_continuous(..., trans = bench_bytes_trans())
+}
+
+#' @rdname scale_bench_time
+#' @keywords internal
+#' @export
+scale_y_bench_bytes <- function(...) {
+  ggplot2::scale_y_continuous(..., trans = bench_bytes_trans())
+}
