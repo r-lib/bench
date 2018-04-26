@@ -29,7 +29,8 @@ Suggests:
     ggridges,
     tidyr
 Remotes: 
-    tidyverse/glue
+    tidyverse/glue,
+    tidyverse/tidyr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

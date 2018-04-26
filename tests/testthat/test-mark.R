@@ -179,8 +179,6 @@ describe("summary.bench_mark", {
     expect_gt(res$n_gc, 0)
     expect_equal(res$n_gc, res2$n_gc)
 
-    expect_equal(res2$n_itr - res2$n_gc, res$n_itr)
-
     # The max should be higher with gc included
     expect_gt(res2$max, res$max)
   })
