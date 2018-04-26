@@ -15,9 +15,9 @@ options(width = 120)
 ```
 # bench
 
-[![Travis build status](https://travis-ci.org/jimhester/bench.svg?branch=master)](https://travis-ci.org/jimhester/bench)
+[![Travis build status](https://travis-ci.org/r-lib/bench.svg?branch=master)](https://travis-ci.org/r-lib/bench)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/jimhester/bench?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/bench)
-[![Coverage status](https://codecov.io/gh/jimhester/bench/branch/master/graph/badge.svg)](https://codecov.io/github/jimhester/bench?branch=master)
+[![Coverage status](https://codecov.io/gh/r-lib/bench/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/bench?branch=master)
 
 The goal of bench is to benchmark code, tracking both the execution time,
 memory allocated and number and type of garbage collections.
@@ -28,7 +28,7 @@ You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("jimhester/bench")
+devtools::install_github("r-lib/bench")
 ```
 
 ## Features
