@@ -4,11 +4,11 @@
 # bench
 
 [![Travis build
-status](https://travis-ci.org/jimhester/bench.svg?branch=master)](https://travis-ci.org/jimhester/bench)
+status](https://travis-ci.org/r-lib/bench.svg?branch=master)](https://travis-ci.org/r-lib/bench)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/jimhester/bench?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/bench)
 [![Coverage
-status](https://codecov.io/gh/jimhester/bench/branch/master/graph/badge.svg)](https://codecov.io/github/jimhester/bench?branch=master)
+status](https://codecov.io/gh/r-lib/bench/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/bench?branch=master)
 
 The goal of bench is to benchmark code, tracking both the execution
 time, memory allocated and number and type of garbage collections.
@@ -20,7 +20,7 @@ You can install the development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("jimhester/bench")
+devtools::install_github("r-lib/bench")
 ```
 
 ## Features
@@ -36,7 +36,7 @@ has a number of advantages over [alternatives](#alternatives).
   - Verifies equality of expression results, to avoid accidentally
     benchmarking inequivalent code.
   - Has two arguments, `setup` and `parameters`, to make running
-    benchmarks over different size datasets easier.
+    benchmarks over different size datasets more straightforward.
   - Uses adaptive stopping by default, running each expression for a set
     amount of time rather than for a specific number of iterations.
   - Expressions are run in batches and summary statistics are calculated
@@ -58,6 +58,7 @@ Benchmarks can be run with `bench::mark()`, which takes one or more
 expressions to benchmark against each other.
 
 ``` r
+library(bench)
 set.seed(42)
 dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 ```
@@ -81,20 +82,20 @@ bench::mark(
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
-#> # A tibble: 3 x 14
-#>   expression       min   mean  median    max `itr/sec` mem_alloc  n_gc n_itr total_time result   memory   time  gc     
-#>   <chr>         <bch:> <bch:> <bch:t> <bch:>     <dbl> <bch:byt> <dbl> <int>   <bch:tm> <list>   <list>   <lis> <list> 
-#> 1 dat[dat$x > …  302µs  394µs   344µs 1.56ms     2535.      416K    34   918      362ms <data.f… <Rprofm… <bch… <tibbl…
-#> 2 dat[which(da…  237µs  316µs   269µs 1.28ms     3160.      357K    20  1099      348ms <data.f… <Rprofm… <bch… <tibbl…
-#> 3 subset(dat, …  383µs  493µs   433µs 1.86ms     2027.      548K    21   797      393ms <data.f… <Rprofm… <bch… <tibbl…
+#> # A tibble: 3 x 10
+#>   expression                     min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
+#>   <chr>                     <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
+#> 1 dat[dat$x > 500, ]           300µs    398µs    345µs    1.3ms     2513.      416K    46   837      333ms
+#> 2 dat[which(dat$x > 500), ]    229µs    291µs    262µs   1.37ms     3439.      357K    65  1172      341ms
+#> 3 subset(dat, x > 500)         374µs    453µs    409µs    1.5ms     2210.      548K    42   833      377ms
 ```
 
 The `bench::mark` argument `setup` allows you to run code before each
 expression. The argument `parameters` allows you to define a `list()`
 (or `data.frame()`) of parameters to assign before running `setup`. If
 `parameters` is a `list()` all combinations of the parameters will be
-enumerated by `expand.grid()`. This allows you to easily benchmark a set
-of expressions across a wide variety of input sizes, among other things.
+enumerated by `expand.grid()`. This allows you to benchmark a set of
+expressions across a wide variety of input sizes, among other things.
 
 ``` r
 set.seed(42)
@@ -125,7 +126,11 @@ results <- bench::mark(
 ## Plotting
 
 `ggplot2::autoplot()` can be used to generate an informative default
-plot.
+plot. This plot is colored by gc type and faceted by parameters (if
+any). By default it generates a
+[beeswarm](https://github.com/eclarke/ggbeeswarm#geom_quasirandom) plot,
+however you can also use specify other plot types (`jitter`, `ridge`,
+`boxplot`, `violin`). See `?autoplot.bench_mark` for full details.
 
 ``` r
 ggplot2::autoplot(results)
@@ -133,11 +138,10 @@ ggplot2::autoplot(results)
 
 <img src="man/figures/README-autoplot-1.png" width="100%" />
 
-However you can also easily produce custom plots by unnesting the
-results and working with the data directly.
+You can also produce fully custom plots by unnesting the results and
+working with the data directly.
 
 ``` r
-library(bench)
 library(tidyverse)
 results %>%
   unnest() %>%
@@ -159,10 +163,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   329ms   330ms
+#>   345ms   347ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>   117µs   505ms
+#>    80µs   503ms
 ```
 
 ## Alternatives
