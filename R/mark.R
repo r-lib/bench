@@ -7,12 +7,8 @@ NULL
 #' least twice, once to measure the memory allocation and store results and one
 #' or more times to measure timing.
 #'
-#' @param ... Expressions to benchmark
-#' @param setup code to evaluated before _each_ benchmark group, this code will
-#'   be reevaluated for each row in parameters.
-#' @param parameters Variable values to assign, all values will be enumerated
-#'   by `expand.grid()`.
-#' @param env The environment which to evaluate the expressions
+#' @param ... Expressions to benchmark, if named the `expression` column will
+#'   be the name, otherwise it will be the deparsed expression.
 #' @param min_time The minimum number of seconds to run each expression, set to
 #'   `Inf` to always run `max_iterations` times instead.
 #' @param iterations If not `NULL`, the default, run each expression for
@@ -24,91 +20,26 @@ NULL
 #'   with [all.equal()], if `FALSE` checking is disabled. If `check` is a
 #'   function that function will be called with each pair of results to
 #'   determine consistency.
+#' @param env The environment which to evaluate the expressions
 #' @inherit summary.bench_mark return
 #' @aliases bench_mark
+#' @seealso [press()] to run benchmarks across a grid of parameters.
 #' @examples
+#' dat <- data.frame(x = runif(100, 1, 1000), y=runif(10, 1, 1000))
 #' mark(
-#'   setup = dat <- data.frame(x = runif(num_x, 1, 1000), y=runif(num_y, 1, 1000)),
-#'   parameters = list(num_x = c(1000, 10000), num_y = c(1000, 10000)),
 #'   min_time = .1,
 #'
 #'   dat[dat$x > 500, ],
 #'   dat[which(dat$x > 500), ],
 #'   subset(dat, x > 500))
 #' @export
-mark <- function(..., setup = NULL, parameters = list(),
-  env = parent.frame(), min_time = .5, iterations = NULL, min_iterations = 1, max_iterations = 10000, check = TRUE) {
+mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
+                 max_iterations = 10000, check = TRUE, env = parent.frame()) {
 
   if (!is.null(iterations)) {
     min_iterations <- iterations
     max_iterations <- iterations
   }
-
-  # Only use expand.grid if not already a data.frame
-  is_simple_list <- is.list(parameters) && !is.object(parameters)
-  if (is_simple_list) {
-    parameters <- expand.grid(parameters)
-  }
-
-  setup <- substitute(setup)
-
-  if (nrow(parameters) == 0) {
-    e <- new.env(parent = env)
-    res <- mark_internal(
-      ...,
-      setup = setup,
-      env = e,
-      min_time = min_time,
-      min_iterations = min_iterations,
-      max_iterations = max_iterations,
-      check = check)
-
-  } else {
-    out <- list()
-    p_out <- format(tibble::as_tibble(parameters), n = Inf)
-
-    # Output a status message
-    message("Running benchmark with:\n",
-      paste0(p_out[[2]], collapse = "\n"), sep = "")
-    for (i in seq_len(nrow(parameters))) {
-
-      # Assign parameters in the execution environment
-      e <- new.env(parent = env)
-      for (j in seq_along(parameters)) {
-        var <- names(parameters)[[j]]
-        value <- parameters[i, j]
-        assign(var, value, envir = e)
-      }
-
-      message(p_out[[i + 3]])
-      out[[i]] <- mark_internal(
-        ...,
-        setup = setup,
-        env = e,
-        min_time = min_time,
-        min_iterations = min_iterations,
-        max_iterations = max_iterations,
-        check = check)
-
-      # Add parameters to the output result
-      for (j in seq_along(parameters)) {
-        var <- names(parameters)[[j]]
-        value <- parameters[i, j]
-        out[[i]][[var]] <- value
-      }
-    }
-    res <- do.call(rbind, out)
-  }
-
-  summary(bench_mark(res))
-}
-
-bench_mark <- function(x) {
-  class(x) <- unique(c("bench_mark", class(x)))
-  x
-}
-
-mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterations, check) {
 
   if (isTRUE(check)) {
     check_fun <- all.equal
@@ -122,11 +53,6 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
   exprs <- dots(...)
 
   results <- list(expression = auto_name(exprs), result = list(), memory = list(), time = list(), gc = list())
-
-  # Run setup code
-  if (!is.null(setup)) {
-    eval(setup, env)
-  }
 
   # Helper for evaluating with memory profiling
   eval_one <- function(e) {
@@ -176,7 +102,12 @@ mark_internal <- function(..., setup, env, min_time, min_iterations, max_iterati
     results$gc[[i]] <- parse_gc(gc_msg)
   }
 
-  tibble::as_tibble(results)
+  summary(bench_mark(tibble::as_tibble(results)))
+}
+
+bench_mark <- function(x) {
+  class(x) <- unique(c("bench_mark", class(x)))
+  x
 }
 
 summary_cols <- c("min", "mean", "median", "max", "itr/sec", "mem_alloc", "n_gc", "n_itr", "total_time")
@@ -296,7 +227,7 @@ auto_name <- function(exprs) {
 }
 
 dots <- function(...) {
-  eval(substitute(alist(...)))
+  substitute(...())
 }
 
 #nocov start
@@ -329,7 +260,7 @@ knit_print.bench_mark <- function(x, ..., options) {
 #nocov end
 
 parse_gc <- function(x) {
-  # \x1E is Record Seperator 
+  # \x1E is Record Separator 
   x <- strsplit(glue::glue_collapse(x, ""), "\x1E")[[1]]
   tibble::as_tibble(.Call(parse_gc_, x))
 }

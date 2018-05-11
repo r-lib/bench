@@ -5,20 +5,12 @@
 \alias{bench_mark}
 \title{Benchmark a series of functions}
 \usage{
-mark(..., setup = NULL, parameters = list(), env = parent.frame(),
-  min_time = 0.5, iterations = NULL, min_iterations = 1,
-  max_iterations = 10000, check = TRUE)
+mark(..., min_time = 0.5, iterations = NULL, min_iterations = 1,
+  max_iterations = 10000, check = TRUE, env = parent.frame())
 }
 \arguments{
-\item{...}{Expressions to benchmark}
-
-\item{setup}{code to evaluated before \emph{each} benchmark group, this code will
-be reevaluated for each row in parameters.}
-
-\item{parameters}{Variable values to assign, all values will be enumerated
-by \code{expand.grid()}.}
-
-\item{env}{The environment which to evaluate the expressions}
+\item{...}{Expressions to benchmark, if named the \code{expression} column will
+be the name, otherwise it will be the deparsed expression.}
 
 \item{min_time}{The minimum number of seconds to run each expression, set to
 \code{Inf} to always run \code{max_iterations} times instead.}
@@ -35,6 +27,8 @@ and \code{max_iterations}.}
 with \code{\link[=all.equal]{all.equal()}}, if \code{FALSE} checking is disabled. If \code{check} is a
 function that function will be called with each pair of results to
 determine consistency.}
+
+\item{env}{The environment which to evaluate the expressions}
 }
 \value{
 A \link[tibble:tibble]{tibble} with the additional summary columns.
@@ -57,12 +51,14 @@ least twice, once to measure the memory allocation and store results and one
 or more times to measure timing.
 }
 \examples{
+dat <- data.frame(x = runif(100, 1, 1000), y=runif(10, 1, 1000))
 mark(
-  setup = dat <- data.frame(x = runif(num_x, 1, 1000), y=runif(num_y, 1, 1000)),
-  parameters = list(num_x = c(1000, 10000), num_y = c(1000, 10000)),
   min_time = .1,
 
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
+}
+\seealso{
+\code{\link[=press]{press()}} to run benchmarks across a grid of parameters.
 }

@@ -15,6 +15,7 @@ Imports:
     methods,
     pillar,
     profmem,
+    rlang,
     scales,
     stats,
     tibble,

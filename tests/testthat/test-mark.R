@@ -31,11 +31,9 @@ describe("mark_", {
   })
 })
 
-describe("mark_internal", {
+describe("mark", {
   it("Uses all.equal to check results by default", {
-    res <- mark_internal(1 + 1, 1L + 1L, check = NULL,
-      setup = NULL, env = new.env(), min_time = Inf,
-      min_iterations = as.integer(1), max_iterations = as.integer(1))
+    res <- mark(1 + 1, 1L + 1L, check = NULL, iterations = 1)
 
     expect_is(res$result, "list")
     expect_true(all.equal(res$result[[1]], res$result[[2]]))
@@ -44,29 +42,21 @@ describe("mark_internal", {
 
     # numerics and integers not identical
     expect_error(regexp = "All results must equal the first result",
-      mark_internal(1 + 1, 1L + 1L, check = identical,
-        setup = NULL, env = new.env(), min_time = Inf,
-        min_iterations = as.integer(1), max_iterations = as.integer(1)))
+      mark(1 + 1, 1L + 1L, check = identical, iterations = 1))
 
     # Function that always returns false
     expect_error(regexp = "All results must equal the first result",
-      mark_internal(1 + 1, 1 + 1, check = function(x, y) FALSE,
-        setup = NULL, env = new.env(), min_time = Inf,
-        min_iterations = as.integer(1), max_iterations = as.integer(1)))
+      mark(1 + 1, 1 + 1, check = function(x, y) FALSE, iterations = 1))
 
     # Function that always returns true
-    res <- mark_internal(1 + 1, 1 + 2, check = function(x, y) TRUE,
-      setup = NULL, env = new.env(), min_time = Inf,
-      min_iterations = as.integer(1), max_iterations = as.integer(1))
+    res <- mark(1 + 1, 1 + 2, check = function(x, y) TRUE, iterations = 1)
 
     expect_is(res$result, "list")
     expect_equal(res$result[[1]], 2)
     expect_equal(res$result[[2]], 3)
 
     # Using check = FALSE is equivalent
-    res2 <- mark_internal(1 + 1, 1 + 2, check = FALSE,
-      setup = NULL, env = new.env(), min_time = Inf,
-      min_iterations = as.integer(1), max_iterations = as.integer(1))
+    res2 <- mark(1 + 1, 1 + 2, check = FALSE, iterations = 1)
 
     expect_is(res2$result, "list")
     expect_equal(res2$result[[1]], 2)
@@ -76,9 +66,7 @@ describe("mark_internal", {
   it("works with capabilities('profmem')", {
     skip_if_not(capabilities("profmem")[[1]])
 
-    res <- mark_internal(1, 2, check = NULL,
-      setup = NULL, env = new.env(), min_time = Inf,
-      min_iterations = as.integer(1), max_iterations = as.integer(1))
+    res <- mark(1, 2, check = NULL, iterations = 1)
 
     expect_equal(length(res$memory), 2)
 
@@ -88,11 +76,9 @@ describe("mark_internal", {
   })
 
   it("works without capabilities('profmem')", {
-    mockery::stub(mark_internal, "capabilities", FALSE)
+    mockery::stub(mark, "capabilities", FALSE)
 
-    res <- mark_internal(1, 2, check = NULL,
-      setup = NULL, env = new.env(), min_time = Inf,
-      min_iterations = as.integer(1), max_iterations = as.integer(1))
+    res <- mark(1, 2, check = NULL, iterations = 1)
 
     expect_equal(length(res$memory), 2)
 
@@ -103,53 +89,14 @@ describe("mark_internal", {
 })
 
 describe("mark", {
-  it("just runs mark_internal if there are no parameters", {
+  it("just runs mark if there are no parameters", {
     res <- mark(1, max_iterations = 10)
     expect_equal(colnames(res), c("expression", summary_cols, data_cols))
     expect_equal(nrow(res), 1)
   })
-  it("Adds parameters to output if there are parameters", {
-    res <- mark(1, parameters = list(x = 1), max_iterations = 10)
-    expect_equal(colnames(res), c("expression", "x", summary_cols, data_cols))
-    expect_equal(nrow(res), 1)
-
-    res2 <- mark(1, parameters = list(x = 1:3), max_iterations = 10)
-    expect_equal(colnames(res2), c("expression", "x", summary_cols, data_cols))
-    expect_equal(nrow(res2), 3)
-  })
-  it("Outputs status message when running each parameter", {
-    expect_message(regexp = "Running benchmark with:\n.*x",
-      res <- mark(1, parameters = list(x = 1), max_iterations = 10))
-    expect_equal(colnames(res), c("expression", "x", summary_cols, data_cols))
-    expect_equal(nrow(res), 1)
-
-    res2 <- mark(1, parameters = list(x = 1:3), max_iterations = 10)
-    expect_equal(colnames(res2), c("expression", "x", summary_cols, data_cols))
-    expect_equal(nrow(res2), 3)
-  })
-  it("expands the grid if parameters is a list", {
-    res <- mark(1, parameters = list(x = c(1, 2), y = c(1,3)), max_iterations = 10)
-    expect_equal(res$x, c(1, 2, 1, 2))
-    expect_equal(res$y, c(1, 1, 3, 3))
-  })
-  it("takes values as-is if parameters is a data.frame", {
-    res <- mark(1, parameters = data.frame(x = c(1, 2), y = c(1,3)), max_iterations = 10)
-    expect_equal(res$x, c(1, 2))
-    expect_equal(res$y, c(1, 3))
-  })
-  it("takes values as-is if parameters is a data.frame", {
-    res <- mark(1, parameters = data.frame(x = c(1, 2), y = c(1,3)), max_iterations = 10)
-    expect_equal(res$x, c(1, 2))
-    expect_equal(res$y, c(1, 3))
-  })
   it("Can handle `NULL` results", {
     res <- mark(if (FALSE) 1, max_iterations = 10)
     expect_equal(res$result[[1]], NULL)
-  })
-  it("runs `setup` with the parameters evaluated", {
-    x <- 1
-    res <- mark(x, setup = x <- y, parameters = list(y = 2))
-    expect_equal(res$result[[1]], 2)
   })
 })
 
