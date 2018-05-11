@@ -18,6 +18,9 @@ Construct, manipulate and display vectors of byte sizes. These are numeric
 vectors, so you can compare them numerically, but they can also be compared
 to human readable values such as '10MB'.
 }
+\details{
+These memory sizes are always assumed to be base 1024, rather than 1000.
+}
 \examples{
 bench_bytes("1")
 bench_bytes("1K")

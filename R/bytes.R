@@ -9,6 +9,8 @@ byte_units <- c('B' = 1, 'K' = 1024, 'M' = 1024 ^ 2, 'G' = 1024 ^ 3, 'T' = 1024 
 #' vectors, so you can compare them numerically, but they can also be compared
 #' to human readable values such as '10MB'.
 #'
+#' These memory sizes are always assumed to be base 1024, rather than 1000.
+#'
 #' @param x A numeric or character vector. Character representations can use
 #'   shorthand sizes (see examples).
 #' @examples
@@ -70,6 +72,10 @@ format.bench_bytes <- function(x, scientific = FALSE, digits = 3, ...) {
   res[is.na(bytes)] <- NA_real_
   res[is.nan(bytes)] <- NaN
   unit[is.na(bytes)] <- ""            # Includes NaN as well
+
+  # Append an extra B to each unit
+  large_units <- unit %in% names(byte_units)[-1]
+  unit[large_units] <- paste0(unit[large_units], "B")
 
   res <- format(res, scientific = scientific, digits = digits, drop0trailing = TRUE, ...)
 

@@ -25,14 +25,14 @@ describe("format.bench_bytes", {
     expect_equal(format(bench_bytes(1023)), "1023B")
   })
   it("formats bytes 1024 and up as abbreviated numbers", {
-    expect_equal(format(bench_bytes(1024)), "1K")
-    expect_equal(format(bench_bytes(1025)), "1K")
-    expect_equal(format(bench_bytes(2^16)), "64K")
-    expect_equal(format(bench_bytes(2^24)), "16M")
-    expect_equal(format(bench_bytes(2^24 + 555555)), "16.5M")
-    expect_equal(format(bench_bytes(2^32)), "4G")
-    expect_equal(format(bench_bytes(2^48)), "256T")
-    expect_equal(format(bench_bytes(2^64)), "16E")
+    expect_equal(format(bench_bytes(1024)), "1KB")
+    expect_equal(format(bench_bytes(1025)), "1KB")
+    expect_equal(format(bench_bytes(2^16)), "64KB")
+    expect_equal(format(bench_bytes(2^24)), "16MB")
+    expect_equal(format(bench_bytes(2^24 + 555555)), "16.5MB")
+    expect_equal(format(bench_bytes(2^32)), "4GB")
+    expect_equal(format(bench_bytes(2^48)), "256TB")
+    expect_equal(format(bench_bytes(2^64)), "16EB")
   })
   it("handles NA and NaN", {
     expect_equal(format(bench_bytes(NA)), "NA")
@@ -42,7 +42,7 @@ describe("format.bench_bytes", {
     v <- c(NA, 1, 2^13, 2^20, NaN, 2^15)
     expect_equal(
       format(bench_bytes(v), trim = TRUE),
-      c("NA", "1B", "8K", "1M", "NaN", "32K"))
+      c("NA", "1B", "8KB", "1MB", "NaN", "32KB"))
 
     expect_equal(format(bench_bytes(numeric())), character())
   })
