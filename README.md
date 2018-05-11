@@ -85,17 +85,18 @@ bench::mark(
 #> # A tibble: 3 x 10
 #>   expression                     min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
 #>   <chr>                     <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
-#> 1 dat[dat$x > 500, ]           300µs    398µs    345µs    1.3ms     2513.      416K    46   837      333ms
-#> 2 dat[which(dat$x > 500), ]    229µs    291µs    262µs   1.37ms     3439.      357K    65  1172      341ms
-#> 3 subset(dat, x > 500)         374µs    453µs    409µs    1.5ms     2210.      548K    42   833      377ms
+#> 1 dat[dat$x > 500, ]           301µs    363µs    327µs    1.1ms     2756.     416KB    53   973      353ms
+#> 2 dat[which(dat$x > 500), ]    231µs    299µs    266µs   1.29ms     3341.     357KB    58  1171      350ms
+#> 3 subset(dat, x > 500)         371µs    422µs    397µs   1.69ms     2370.     548KB    62   754      318ms
 ```
 
-The `bench::mark` argument `setup` allows you to run code before each
-expression. The argument `parameters` allows you to define a `list()`
-(or `data.frame()`) of parameters to assign before running `setup`. If
-`parameters` is a `list()` all combinations of the parameters will be
-enumerated by `expand.grid()`. This allows you to benchmark a set of
-expressions across a wide variety of input sizes, among other things.
+The `bench::press()` can be used to run benchmarks against a grid of
+parameters. Define values to use as named arguments to `press()` and the
+full combination of values will be enumerated. Then put setup and
+benchmarking code as a single unnamed argument. The results and
+parameters used are then *pressed* together in the result. This allows
+you to benchmark a set of expressions across a wide variety of input
+sizes, perform replications and other useful tasks.
 
 ``` r
 set.seed(42)
@@ -106,27 +107,25 @@ create_df <- function(rows, cols) {
     rep_len(c("x", letters), cols)))
 }
 
-results <- bench::mark(
-  setup = dat <- create_df(rows, cols),
-  parameters = list(rows = c(10000, 100000), cols = c(10, 100)),
-  min_time = .5,
-  min_iterations = 100,
-
-  bracket = dat[dat$x > 500, ],
-  which = dat[which(dat$x > 500), ],
-  subset = subset(dat, x > 500))
-#> Running benchmark with:
-#>     rows  cols
-#> 1  10000    10
-#> 2 100000    10
-#> 3  10000   100
-#> 4 100000   100
+results <- bench::press(
+  rows = c(10000, 100000),
+  cols = c(10, 100),
+  {
+    dat <- create_df(rows, cols)
+    bench::mark(
+      min_iterations = 100,
+      bracket = dat[dat$x > 500, ],
+      which = dat[which(dat$x > 500), ],
+      subset = subset(dat, x > 500)
+    )
+  }
+)
 ```
 
 ## Plotting
 
 `ggplot2::autoplot()` can be used to generate an informative default
-plot. This plot is colored by gc type and faceted by parameters (if
+plot. This plot is colored by gc level and faceted by parameters (if
 any). By default it generates a
 [beeswarm](https://github.com/eclarke/ggbeeswarm#geom_quasirandom) plot,
 however you can also use specify other plot types (`jitter`, `ridge`,
@@ -138,7 +137,7 @@ ggplot2::autoplot(results)
 
 <img src="man/figures/README-autoplot-1.png" width="100%" />
 
-You can also produce fully custom plots by unnesting the results and
+You can also produce fully custom plots by un-nesting the results and
 working with the data directly.
 
 ``` r
@@ -148,8 +147,8 @@ results %>%
   filter(gc == "none") %>%
   ggplot(aes(x = mem_alloc, y = time, color = expression)) +
     geom_point() +
-    geom_smooth(method = "lm", se = F) +
-    scale_color_brewer(type = "qual", palette = 3)
+    scale_color_brewer(type = "qual", palette = 3) +
+    facet_grid(cols ~ rows)
 ```
 
 <img src="man/figures/README-custom-plot-1.png" width="100%" />
@@ -163,10 +162,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   345ms   347ms
+#>   351ms   353ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    80µs   503ms
+#>   102µs   504ms
 ```
 
 ## Alternatives

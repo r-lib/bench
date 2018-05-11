@@ -84,12 +84,13 @@ bench::mark(
   subset(dat, x > 500))
 ```
 
-The `bench::mark` argument `setup` allows you to run code before each
-expression. The argument `parameters` allows you to define a `list()` (or
-`data.frame()`) of parameters to assign before running `setup`. If `parameters`
-is a `list()` all combinations of the parameters will be enumerated by
-`expand.grid()`. This allows you to benchmark a set of expressions
-across a wide variety of input sizes, among other things.
+The `bench::press()` can be used to run benchmarks against a grid of
+parameters. Define values to use as named arguments to `press()` and the full
+combination of values will be enumerated. Then put setup and benchmarking code
+as a single unnamed argument. The results and parameters used are then
+_pressed_ together in the result. This allows you to benchmark a set of
+expressions across a wide variety of input sizes, perform replications and
+other useful tasks.
 
 ```{r example2, cache = TRUE}
 set.seed(42)
@@ -100,22 +101,25 @@ create_df <- function(rows, cols) {
     rep_len(c("x", letters), cols)))
 }
 
-results <- bench::mark(
-  setup = dat <- create_df(rows, cols),
-  parameters = list(rows = c(10000, 100000), cols = c(10, 100)),
-  min_time = .5,
-  min_iterations = 100,
-
-  bracket = dat[dat$x > 500, ],
-  which = dat[which(dat$x > 500), ],
-  subset = subset(dat, x > 500))
+results <- bench::press(
+  rows = c(10000, 100000),
+  cols = c(10, 100),
+  {
+    dat <- create_df(rows, cols)
+    bench::mark(
+      min_iterations = 100,
+      bracket = dat[dat$x > 500, ],
+      which = dat[which(dat$x > 500), ],
+      subset = subset(dat, x > 500)
+    )
+  }
+)
 ```
-
 
 ## Plotting
 
 `ggplot2::autoplot()` can be used to generate an informative default plot. This
-plot is colored by gc type and faceted by parameters (if any). By default it
+plot is colored by gc level and faceted by parameters (if any). By default it
 generates a [beeswarm](https://github.com/eclarke/ggbeeswarm#geom_quasirandom)
 plot, however you can also use specify other plot types (`jitter`, `ridge`,
 `boxplot`, `violin`). See `?autoplot.bench_mark` for full details.
@@ -124,7 +128,7 @@ plot, however you can also use specify other plot types (`jitter`, `ridge`,
 ggplot2::autoplot(results)
 ```
 
-You can also produce fully custom plots by unnesting the results and
+You can also produce fully custom plots by un-nesting the results and
 working with the data directly.
 
 ```{r custom-plot, message = FALSE, cache = TRUE, dependson = "example2"}
@@ -134,7 +138,6 @@ results %>%
   filter(gc == "none") %>%
   ggplot(aes(x = mem_alloc, y = time, color = expression)) +
     geom_point() +
-    geom_smooth(method = "lm", se = F) +
     scale_color_brewer(type = "qual", palette = 3)
 ```
 
