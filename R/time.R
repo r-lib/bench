@@ -47,7 +47,7 @@ as_bench_time.default <- function(x) {
   x <- as.character(x)
   re <- glue::glue("
       ^(?<size>[[:digit:].]+)\\s*(?<unit>{nms}?)$
-      ", nms = glue::glue_collapse(names(time_units()), "|"))
+      ", nms = paste0(names(time_units()), collapse = "|"))
 
   m <- captures(x, regexpr(re, x, perl = TRUE))
   m$unit[m$unit == ""] <- "s"
