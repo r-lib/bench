@@ -86,17 +86,13 @@ describe("mark", {
     expect_equal(ncol(res$memory[[1]]), 3)
     expect_equal(nrow(res$memory[[1]]), 0)
   })
-})
-
-describe("mark", {
-  it("just runs mark if there are no parameters", {
-    res <- mark(1, max_iterations = 10)
-    expect_equal(colnames(res), c("expression", summary_cols, data_cols))
-    expect_equal(nrow(res), 1)
-  })
   it("Can handle `NULL` results", {
     res <- mark(if (FALSE) 1, max_iterations = 10)
     expect_equal(res$result[[1]], NULL)
+  })
+  it("Can errors with the deparsed expressions", {
+    expect_error(msg = "`1` does not equal `3`",
+      mark(1, 1, 3, max_iterations = 10))
   })
 })
 

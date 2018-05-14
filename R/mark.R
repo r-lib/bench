@@ -88,7 +88,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
               `{first}` does not equal `{current}`
             ",
             first = deparse(exprs[[1]]),
-            current = deparse(exprs[[2]])),
+            current = deparse(exprs[[i]])),
           call. = FALSE)
       }
     }
