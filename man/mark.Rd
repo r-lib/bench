@@ -6,7 +6,8 @@
 \title{Benchmark a series of functions}
 \usage{
 mark(..., min_time = 0.5, iterations = NULL, min_iterations = 1,
-  max_iterations = 10000, check = TRUE, env = parent.frame())
+  max_iterations = 10000, check = TRUE, env = parent.frame(),
+  check.attributes = TRUE, check.names = TRUE)
 }
 \arguments{
 \item{...}{Expressions to benchmark, if named the \code{expression} column will
@@ -29,6 +30,8 @@ function that function will be called with each pair of results to
 determine consistency.}
 
 \item{env}{The environment which to evaluate the expressions}
+
+\item{check.attributes, check.names}{arguments passed on to \code{\link[=all.equal]{all.equal()}} if \code{check = TRUE}}
 }
 \value{
 A \link[tibble:tibble]{tibble} with the additional summary columns.
