@@ -16,18 +16,18 @@ Imports:
     pillar,
     profmem,
     rlang,
-    scales,
     stats,
     tibble,
     utils
 Suggests: 
     covr,
-    ggplot2,
-    mockery,
-    testthat,
     dplyr,
     ggbeeswarm,
+    ggplot2,
     ggridges,
+    mockery,
+    scales,
+    testthat,
     tidyr
 Remotes: 
     tidyverse/tidyr
