@@ -122,7 +122,7 @@ results <- bench::press(
 plot is colored by gc level (0, 1, or 2) and faceted by parameters (if any). By
 default it generates a
 [beeswarm](https://github.com/eclarke/ggbeeswarm#geom_quasirandom) plot,
-however you can also use specify other plot types (`jitter`, `ridge`,
+however you can also specify other plot types (`jitter`, `ridge`,
 `boxplot`, `violin`). See `?autoplot.bench_mark` for full details.
 
 ```{r autoplot, message = FALSE, warning = FALSE, cache = TRUE, dependson = "example2"}
