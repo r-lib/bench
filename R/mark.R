@@ -110,6 +110,16 @@ bench_mark <- function(x) {
   x
 }
 
+#' Coerce to a bench mark object Bench mark objects
+#'
+#' This is typically needed only if you are performing additional manipulations
+#' after calling [bench::mark()].
+#' @param x Object to be coerced
+#' @export
+as_bench_mark <- function(x) {
+  bench_mark(tibble::as_tibble(x))
+}
+
 summary_cols <- c("min", "mean", "median", "max", "itr/sec", "mem_alloc", "n_gc", "n_itr", "total_time")
 data_cols <- c("result", "memory", "time", "gc")
 
