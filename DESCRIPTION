@@ -22,6 +22,7 @@ Imports:
 Suggests: 
     covr,
     dplyr,
+    forcats,
     ggbeeswarm,
     ggplot2,
     ggridges,
