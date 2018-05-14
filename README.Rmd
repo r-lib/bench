@@ -19,8 +19,8 @@ options(width = 120)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/jimhester/bench?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/bench)
 [![Coverage status](https://codecov.io/gh/r-lib/bench/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/bench?branch=master)
 
-The goal of bench is to benchmark code, tracking both the execution time,
-memory allocated and number and type of garbage collections.
+The goal of bench is to benchmark code, tracking execution time,
+memory allocations and garbage collections.
 
 ## Installation
 
@@ -33,27 +33,28 @@ devtools::install_github("r-lib/bench")
 
 ## Features
 
-`bench::mark()` is used to benchmark one or a series of expressions, it has a
+`bench::mark()` is used to benchmark one or a series of expressions, we feel it has a
 number of advantages over [alternatives](#alternatives).
 
 - Always uses the highest precision APIs available for each operating system (often nanoseconds).
 - Tracks memory allocations for each expression.
 - Tracks the number and type of R garbage collections per expression iteration.
-- Verifies equality of expression results, to avoid accidentally benchmarking inequivalent code.
-- Has two arguments, `setup` and `parameters`, to make running benchmarks over
-  different size datasets more straightforward.
+- Verifies equality of expression results by default, to avoid accidentally
+  benchmarking inequivalent code.
+- Has `bench::press()`, which allows you to easily perform and combine
+  benchmarks across a large grid of values.
 - Uses adaptive stopping by default, running each expression for a set amount
   of time rather than for a specific number of iterations.
 - Expressions are run in batches and summary statistics are calculated after
-  filtering for iterations with garbage collections. This allows you to isolate
-  the effects of garbage collection on running time (for more details see [Neal
+  filtering out iterations with garbage collections. This allows you to isolate
+  the performance  and effects of garbage collection on running time (for more details see [Neal
   2014](https://radfordneal.wordpress.com/2014/02/02/inaccurate-results-from-microbenchmark/)).
 
 The times and memory usage are returned as custom objects which have human
 readable formatting for display (e.g. `104ns`) and comparisons (e.g.
 `x$mem_alloc > "10MB"`).
 
-There is also full support for [ggplot2](http://ggplot2.tidyverse.org/)
+There is also full support for plotting with [ggplot2](http://ggplot2.tidyverse.org/)
 including custom scales and formatting.
 
 ## Usage
@@ -84,13 +85,12 @@ bench::mark(
   subset(dat, x > 500))
 ```
 
-The `bench::press()` can be used to run benchmarks against a grid of
-parameters. Define values to use as named arguments to `press()` and the full
-combination of values will be enumerated. Then put setup and benchmarking code
-as a single unnamed argument. The results and parameters used are then
-_pressed_ together in the result. This allows you to benchmark a set of
-expressions across a wide variety of input sizes, perform replications and
-other useful tasks.
+`bench::press()` is used to run benchmarks against a grid of parameters.
+Provide setup and benchmarking code as a single unnamed argument then define
+sets of values as named arguments. The full combination of values will be
+expanded and the benchmarks are then _pressed_ together in the result. This
+allows you to benchmark a set of expressions across a wide variety of input
+sizes, perform replications and other useful tasks.
 
 ```{r example2, cache = TRUE}
 set.seed(42)
@@ -119,9 +119,10 @@ results <- bench::press(
 ## Plotting
 
 `ggplot2::autoplot()` can be used to generate an informative default plot. This
-plot is colored by gc level and faceted by parameters (if any). By default it
-generates a [beeswarm](https://github.com/eclarke/ggbeeswarm#geom_quasirandom)
-plot, however you can also use specify other plot types (`jitter`, `ridge`,
+plot is colored by gc level (0, 1, or 2) and faceted by parameters (if any). By
+default it generates a
+[beeswarm](https://github.com/eclarke/ggbeeswarm#geom_quasirandom) plot,
+however you can also use specify other plot types (`jitter`, `ridge`,
 `boxplot`, `violin`). See `?autoplot.bench_mark` for full details.
 
 ```{r autoplot, message = FALSE, warning = FALSE, cache = TRUE, dependson = "example2"}
