@@ -20,7 +20,9 @@ NULL
 #'   with [all.equal()], if `FALSE` checking is disabled. If `check` is a
 #'   function that function will be called with each pair of results to
 #'   determine consistency.
+#' @param check.attributes,check.names arguments passed on to [all.equal()] if `check = TRUE`
 #' @param env The environment which to evaluate the expressions
+#'
 #' @inherit summary.bench_mark return
 #' @aliases bench_mark
 #' @seealso [press()] to run benchmarks across a grid of parameters.
@@ -34,7 +36,8 @@ NULL
 #'   subset(dat, x > 500))
 #' @export
 mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
-                 max_iterations = 10000, check = TRUE, env = parent.frame()) {
+                 max_iterations = 10000, check = TRUE, env = parent.frame(),
+                 check.attributes = TRUE, check.names = TRUE) {
 
   if (!is.null(iterations)) {
     min_iterations <- iterations
@@ -42,7 +45,9 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
   }
 
   if (isTRUE(check)) {
-    check_fun <- all.equal
+    check_fun <- function(...) {
+      all.equal(..., check.attributes = check.attributes, check.names = check.names)
+    }
   } else if (is.function(check)) {
     check_fun <- check
     check <- TRUE
