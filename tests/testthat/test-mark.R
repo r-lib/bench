@@ -125,6 +125,43 @@ describe("summary.bench_mark", {
     # The max should be higher with gc included
     expect_gt(res2$max, res$max)
   })
+
+  it("does not issue warnings if there are no garbage collections", {
+    # This is artificial, but it avoids differences in gc on different
+    # platforms / memory loads, so we can ensure the first has no gcs, and the
+    # second has all gcs
+    x <- bench_mark(tibble::tibble(
+      expression = c(1, 2),
+      result = list(1, 2),
+      time = list(
+        as_bench_time(c(0.166, 0.161, 0.162)),
+        as_bench_time(c(0.276, 0.4))
+      ),
+      memory = list(NULL, NULL),
+      gc = list(
+        tibble::tibble(level0 = integer(0), level1 = integer(0), level2 = integer(0)),
+        tibble::tibble(level0 = c(1L, 1L), level1 = c(0L, 0L), level2 = c(0L, 0L))
+      )
+    ))
+
+    expect_warning(regexp = "Some expressions had a GC in every iteration",
+      res <- summary(x, filter_gc = TRUE))
+
+    expect_equal(res$min, as_bench_time(c(.161, .276)))
+    expect_equal(res$mean, as_bench_time(c(.163, .338)))
+    expect_equal(res$median, as_bench_time(c(.162, .338)))
+    expect_equal(res$max, as_bench_time(c(.166, .400)))
+    expect_equal(res$`itr/sec`, c(6.134969, 2.958580), tolerance = 1e-5)
+    expect_equal(res$mem_alloc, as_bench_bytes(c(NA, NA)))
+    expect_equal(res$n_gc, c(0, 2))
+    expect_equal(res$n_itr, c(3, 2))
+    expect_equal(res$total_time, as_bench_time(c(.489, .676)))
+
+    expect_warning(regexp = NA,
+      res2 <- summary(x, filter_gc = FALSE))
+
+    expect_identical(res, res2)
+  })
 })
 
 describe("unnest.bench_mark", {

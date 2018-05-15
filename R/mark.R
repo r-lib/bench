@@ -172,12 +172,27 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, ...) 
   nms <- colnames(object)
   parameters <- setdiff(nms, c("expression", summary_cols, data_cols))
 
-  num_gc <- lapply(object$gc, function(x) rowSums(x))
+  num_gc <- lapply(object$gc,
+    function(x) {
+      res <- rowSums(x)
+      if (length(res) == 0) {
+        res <- rep(0, length(x))
+      }
+      res
+    }
+  )
   if (isTRUE(filter_gc)) {
     no_gc <- lapply(num_gc, `==`, 0)
     times <- Map(`[`, object$time, no_gc)
   } else {
     times <- object$time
+  }
+
+  if (filter_gc && any(lengths(times) == 0)) {
+    times <- object$time
+    warning(call. = FALSE,
+        "Some expressions had a GC in every iteration; so filtering is disabled."
+    )
   }
 
   object$mean <- new_bench_time(vdapply(times, mean))

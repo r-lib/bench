@@ -61,14 +61,14 @@ as_bench_time.bench_time <- function(x) {
 
 #' @export
 as_bench_time.numeric <- function(x) {
-  is_small <- x < 1e-9
+  is_small <- x < 1e-9 & !is.infinite(x) & x != 0
   x[is_small] <- 1e-9
 
   new_bench_time(x)
 }
 tolerance <- sqrt(.Machine$double.eps)
 find_unit <- function(x, units) {
-  if (is.na(x) || x == 0) {
+  if (is.na(x) || is.nan(x) || x <= 0 || is.infinite(x)) {
     return(NA_character_)
   }
   epsilon <- 1 - (x * (1 / units))
@@ -85,7 +85,7 @@ format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
 
   # convert negative times to 1ns, this can happen if the minimum calculated
   # overhead is higher than the time.
-  x[x < 1e-9] <- 1e-9
+  x[x < 1e-9 & !is.infinite(x) & x != 0] <- 1e-9
 
   seconds <- unclass(x)
 
@@ -96,13 +96,12 @@ format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
   res[seconds == 0] <- 0
   unit[seconds == 0] <- ""
 
-  ## NA and NaN seconds
+  ## NA, NaN, Inf, -Inf, seconds
   res[is.na(seconds)] <- NA_real_
   res[is.nan(seconds)] <- NaN
-  unit[is.na(seconds)] <- ""            # Includes NaN as well
-
-  ## Inf and -Inf
-  unit[is.infinite(seconds)] <- ""            # Includes NaN as well
+  res[is.infinite(seconds)] <- Inf
+  res[is.infinite(seconds) & seconds < 0] <- -Inf
+  unit[is.na(seconds) | is.infinite(seconds)] <- ""
 
   res <- format(res, scientific = scientific, digits = digits, drop0trailing = TRUE, ...)
 
