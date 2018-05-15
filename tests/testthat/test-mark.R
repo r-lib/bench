@@ -41,11 +41,11 @@ describe("mark", {
   it("Can use other functions to check results like identical to check results", {
 
     # numerics and integers not identical
-    expect_error(regexp = "All results must equal the first result",
+    expect_error(regexp = "Each result must equal the first result",
       mark(1 + 1, 1L + 1L, check = identical, iterations = 1))
 
     # Function that always returns false
-    expect_error(regexp = "All results must equal the first result",
+    expect_error(regexp = "Each result must equal the first result",
       mark(1 + 1, 1 + 1, check = function(x, y) FALSE, iterations = 1))
 
     # Function that always returns true

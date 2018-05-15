@@ -86,12 +86,14 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
       comp <- check_fun(results$result[[1]], results$result[[i]])
       if (!isTRUE(comp)) {
         stop(glue::glue("
-            All results must equal the first result:
+            Each result must equal the first result:
               `{first}` does not equal `{current}`
             ",
-            first = deparse(exprs[[1]]),
-            current = deparse(exprs[[i]])),
-          call. = FALSE)
+            first = results$expression[[1]],
+            current = results$expression[[i]]
+            ),
+          call. = FALSE
+        )
       }
     }
   }
