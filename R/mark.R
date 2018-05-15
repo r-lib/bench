@@ -21,6 +21,7 @@ NULL
 #'   function that function will be called with each pair of results to
 #'   determine consistency.
 #' @param env The environment which to evaluate the expressions
+#' @inheritParams summary.bench_mark
 #' @inherit summary.bench_mark return
 #' @aliases bench_mark
 #' @seealso [press()] to run benchmarks across a grid of parameters.
@@ -34,7 +35,8 @@ NULL
 #'   subset(dat, x > 500))
 #' @export
 mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
-                 max_iterations = 10000, check = TRUE, env = parent.frame()) {
+                 max_iterations = 10000, check = TRUE, filter_gc = TRUE,
+                 relative = FALSE, env = parent.frame()) {
 
   if (!is.null(iterations)) {
     min_iterations <- iterations
@@ -102,7 +104,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     results$gc[[i]] <- parse_gc(gc_msg)
   }
 
-  summary(bench_mark(tibble::as_tibble(results)))
+  summary(bench_mark(tibble::as_tibble(results)), filter_gc = filter_gc, relative = relative)
 }
 
 bench_mark <- function(x) {

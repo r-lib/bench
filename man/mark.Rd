@@ -6,7 +6,8 @@
 \title{Benchmark a series of functions}
 \usage{
 mark(..., min_time = 0.5, iterations = NULL, min_iterations = 1,
-  max_iterations = 10000, check = TRUE, env = parent.frame())
+  max_iterations = 10000, check = TRUE, filter_gc = TRUE,
+  relative = FALSE, env = parent.frame())
 }
 \arguments{
 \item{...}{Expressions to benchmark, if named the \code{expression} column will
@@ -27,6 +28,12 @@ and \code{max_iterations}.}
 with \code{\link[=all.equal]{all.equal()}}, if \code{FALSE} checking is disabled. If \code{check} is a
 function that function will be called with each pair of results to
 determine consistency.}
+
+\item{filter_gc}{If \code{TRUE} filter iterations that contained at least one
+garbage collection before summarizing.}
+
+\item{relative}{If \code{TRUE} all summaries are computed relative to the minimum
+execution time rather than absolute time.}
 
 \item{env}{The environment which to evaluate the expressions}
 }
