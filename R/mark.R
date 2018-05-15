@@ -277,7 +277,6 @@ dots <- function(...) {
 #'       subset(mtcars, cyl == 3),
 #'       mtcars[mtcars$cyl == 3, ])
 #'     ```
-#' @export
 knit_print.bench_mark <- function(x, ..., options) {
   if (isTRUE(options$bench.all_columns)) {
     print(x)
