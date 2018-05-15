@@ -101,6 +101,8 @@ format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
   res[is.nan(seconds)] <- NaN
   unit[is.na(seconds)] <- ""            # Includes NaN as well
 
+  ## Inf and -Inf
+  unit[is.infinite(seconds)] <- ""            # Includes NaN as well
 
   res <- format(res, scientific = scientific, digits = digits, drop0trailing = TRUE, ...)
 
