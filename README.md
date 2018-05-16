@@ -55,11 +55,14 @@ formatting.
 
 ## Usage
 
+### `bench::mark()`
+
 Benchmarks can be run with `bench::mark()`, which takes one or more
 expressions to benchmark against each other.
 
 ``` r
 library(bench)
+#> Warning: package 'bench' was built under R version 3.5.0
 set.seed(42)
 dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 ```
@@ -72,24 +75,41 @@ bench::mark(
   dat[dat$x > 500, ],
   dat[which(dat$x > 499), ],
   subset(dat, x > 500))
-#> Error: All results must equal the first result:
+#> Error: Each result must equal the first result:
 #>   `dat[dat$x > 500, ]` does not equal `dat[which(dat$x > 499), ]`
 ```
 
 Results are easy to interpret, with human readable units.
 
 ``` r
-bench::mark(
+bnch <- bench::mark(
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
+bnch
 #> # A tibble: 3 x 10
 #>   expression                     min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
 #>   <chr>                     <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
-#> 1 dat[dat$x > 500, ]           306µs    390µs    341µs   1.27ms     2561.     416KB    44   848      331ms
-#> 2 dat[which(dat$x > 500), ]    231µs    280µs    255µs    1.2ms     3572.     357KB    60  1283      359ms
-#> 3 subset(dat, x > 500)         372µs    411µs    395µs   1.38ms     2431.     548KB    63   789      325ms
+#> 1 dat[dat$x > 500, ]           300µs    382µs    331µs   1.05ms     2619.     416KB    54   948      362ms
+#> 2 dat[which(dat$x > 500), ]    232µs    271µs    252µs   1.13ms     3684.     357KB    73  1314      357ms
+#> 3 subset(dat, x > 500)         378µs    467µs    426µs   1.27ms     2140.     548KB    41   750      350ms
 ```
+
+By default the summary uses absolute measures, however relative results
+can be obtained by using `relative = TRUE` in your call to
+`bench::mark()` or calling `summary(relative = TRUE)` on the results.
+
+``` r
+summary(bnch, relative = TRUE)
+#> # A tibble: 3 x 10
+#>   expression                  min  mean median   max `itr/sec` mem_alloc  n_gc n_itr total_time
+#>   <chr>                     <dbl> <dbl>  <dbl> <dbl>     <dbl>     <dbl> <dbl> <dbl>      <dbl>
+#> 1 dat[dat$x > 500, ]         1.30  1.41   1.32  1         1.22      1.16  1.32  1.26       1.03
+#> 2 dat[which(dat$x > 500), ]  1     1      1     1.08      1.72      1     1.78  1.75       1.02
+#> 3 subset(dat, x > 500)       1.63  1.72   1.69  1.21      1         1.53  1     1          1
+```
+
+### `bench::press()`
 
 `bench::press()` is used to run benchmarks against a grid of parameters.
 Provide setup and benchmarking code as a single unnamed argument then
@@ -120,6 +140,22 @@ results <- bench::press(
     )
   }
 )
+results
+#> # A tibble: 12 x 12
+#>    expression   rows  cols      min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
+#>    <chr>       <dbl> <dbl> <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
+#>  1 bracket     10000    10 787.15µs   1.04ms 960.52µs   2.16ms    960.      1.17MB    36   261   271.87ms
+#>  2 which       10000    10 438.68µs 567.76µs 520.88µs   1.48ms   1761.    827.04KB    44   497   282.18ms
+#>  3 subset      10000    10 883.83µs   1.14ms   1.06ms   2.16ms    874.      1.28MB    38   244   279.11ms
+#>  4 bracket    100000    10  13.29ms  15.35ms  15.15ms   18.3ms     65.2    11.54MB    52    48   736.71ms
+#>  5 which      100000    10   8.99ms  10.63ms   10.4ms   13.7ms     94.0     7.91MB    34    66   701.81ms
+#>  6 subset     100000    10  15.91ms  17.79ms  17.12ms  24.82ms     56.2    12.68MB    74    26   462.46ms
+#>  7 bracket     10000   100   6.95ms   8.54ms   8.21ms  11.67ms    117.      9.71MB    34    66   563.77ms
+#>  8 which       10000   100   2.83ms   3.62ms   3.69ms   5.17ms    276.      5.91MB    27    88   318.52ms
+#>  9 subset      10000   100   6.98ms   8.62ms   8.48ms  11.83ms    116.      9.84MB    44    56   482.46ms
+#> 10 bracket    100000   100  94.66ms  99.77ms  99.99ms 104.45ms     10.0    97.47MB    97     4   399.08ms
+#> 11 which      100000   100  51.09ms  54.41ms  54.13ms  60.37ms     18.4    59.51MB    57    43      2.34s
+#> 12 subset     100000   100  96.94ms 100.78ms 100.61ms 106.91ms      9.92   98.62MB    88    14      1.41s
 ```
 
 ## Plotting
@@ -128,7 +164,7 @@ results <- bench::press(
 plot. This plot is colored by gc level (0, 1, or 2) and faceted by
 parameters (if any). By default it generates a
 [beeswarm](https://github.com/eclarke/ggbeeswarm#geom_quasirandom) plot,
-however you can also use specify other plot types (`jitter`, `ridge`,
+however you can also specify other plot types (`jitter`, `ridge`,
 `boxplot`, `violin`). See `?autoplot.bench_mark` for full details.
 
 ``` r
@@ -161,10 +197,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   333ms   333ms
+#>   337ms   338ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    86µs   502ms
+#>    96µs   500ms
 ```
 
 ## Alternatives

@@ -59,6 +59,8 @@ including custom scales and formatting.
 
 ## Usage
 
+### `bench::mark()`
+
 Benchmarks can be run with `bench::mark()`, which takes one or more expressions
 to benchmark against each other.
 
@@ -79,11 +81,21 @@ bench::mark(
 
 Results are easy to interpret, with human readable units.
 ```{r example1-2}
-bench::mark(
+bnch <- bench::mark(
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
+bnch
 ```
+
+By default the summary uses absolute measures, however relative results can be
+obtained by using `relative = TRUE` in your call to `bench::mark()` or calling
+`summary(relative = TRUE)` on the results.
+```{r example1-3}
+summary(bnch, relative = TRUE)
+```
+
+### `bench::press()`
 
 `bench::press()` is used to run benchmarks against a grid of parameters.
 Provide setup and benchmarking code as a single unnamed argument then define
@@ -114,6 +126,7 @@ results <- bench::press(
     )
   }
 )
+results
 ```
 
 ## Plotting
