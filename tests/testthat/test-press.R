@@ -17,16 +17,29 @@ describe("press", {
     expect_equal(colnames(res2), c("expression", "x", summary_cols, data_cols))
     expect_equal(nrow(res2), 3)
   })
-  #it("Outputs status message when running each parameter", {
-    #expect_message(regexp = "Running benchmark with:\n.*x",
-      #res <- mark(1, parameters = list(x = 1), max_iterations = 10))
-    #expect_equal(colnames(res), c("expression", "x", summary_cols, data_cols))
-    #expect_equal(nrow(res), 1)
 
-    #res2 <- mark(1, parameters = list(x = 1:3), max_iterations = 10)
-    #expect_equal(colnames(res2), c("expression", "x", summary_cols, data_cols))
-    #expect_equal(nrow(res2), 3)
-  #})
+  it("Outputs status message before evaluating each parameter", {
+    expect_message(regexp = "Running with:\n.*x",
+      res <- press(
+        x = 1,
+        mark(rep(1, x), max_iterations = 10)
+      )
+    )
+    expect_equal(colnames(res), c("expression", "x", summary_cols, data_cols))
+    expect_equal(nrow(res), 1)
+
+    msgs <- character()
+    withCallingHandlers(message = function(e) msgs <<- append(msgs, conditionMessage(e)),
+      res2 <- press(
+        x = 1:3,
+        mark(rep(1, x), max_iterations = 10)
+      )
+    )
+    expect_true(grepl("Running with:\n.*x\n.*1\n.*2\n.*3\n", paste(msgs, collapse = "")))
+
+    expect_equal(colnames(res2), c("expression", "x", summary_cols, data_cols))
+    expect_equal(nrow(res2), 3)
+  })
 
   it("expands the grid if has named parameters", {
     res <- press(

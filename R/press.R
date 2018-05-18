@@ -63,6 +63,10 @@ press <- function(..., .grid = NULL) {
     parameters <- expand.grid(lapply(args[!unnamed], rlang::eval_tidy))
   }
 
+  status <- format(tibble::as_tibble(parameters), n = Inf)
+  message(glue::glue("
+      Running with:
+      {status[[2]]}"))
   eval_one <- function(row) {
     e <- new.env(parent = emptyenv())
     for (col in seq_along(parameters)) {
@@ -70,6 +74,7 @@ press <- function(..., .grid = NULL) {
       value <- parameters[row, col]
       assign(var, value, envir = e)
     }
+    message(status[[row + 3L]])
     rlang::eval_tidy(args[[which(unnamed)]], data = e)
   }
 
