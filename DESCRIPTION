@@ -29,7 +29,7 @@ Suggests:
     mockery,
     scales,
     testthat,
-    tidyr
+    tidyr (>= 0.8.0.9000)
 Remotes: 
     tidyverse/tidyr
 Encoding: UTF-8
