@@ -29,7 +29,8 @@ Suggests:
     mockery,
     scales,
     testthat,
-    tidyr (>= 0.8.1)
+    tidyr (>= 0.8.1),
+    withr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
