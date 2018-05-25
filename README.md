@@ -62,7 +62,6 @@ expressions to benchmark against each other.
 
 ``` r
 library(bench)
-#> Warning: package 'bench' was built under R version 3.5.0
 set.seed(42)
 dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 ```
@@ -90,9 +89,9 @@ bnch
 #> # A tibble: 3 x 10
 #>   expression                     min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
 #>   <chr>                     <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
-#> 1 dat[dat$x > 500, ]           302µs    377µs    332µs   1.25ms     2651.     416KB    47   916      345ms
-#> 2 dat[which(dat$x > 500), ]    233µs    285µs    259µs   1.17ms     3504.     357KB    58  1268      362ms
-#> 3 subset(dat, x > 500)         376µs    441µs    411µs   1.39ms     2266.     548KB    55   727      321ms
+#> 1 dat[dat$x > 500, ]           303µs    390µs    332µs   1.66ms     2562.     416KB    43   889      347ms
+#> 2 dat[which(dat$x > 500), ]    232µs    297µs    261µs   1.59ms     3372.     357KB    55  1174      348ms
+#> 3 subset(dat, x > 500)         375µs    447µs    410µs   1.51ms     2236.     548KB    56   705      315ms
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -104,9 +103,9 @@ summary(bnch, relative = TRUE)
 #> # A tibble: 3 x 10
 #>   expression                  min  mean median   max `itr/sec` mem_alloc  n_gc n_itr total_time
 #>   <chr>                     <dbl> <dbl>  <dbl> <dbl>     <dbl>     <dbl> <dbl> <dbl>      <dbl>
-#> 1 dat[dat$x > 500, ]         1.30  1.32   1.28  1.07      1.17      1.16  1     1.26       1.08
-#> 2 dat[which(dat$x > 500), ]  1     1      1     1         1.55      1     1.23  1.74       1.13
-#> 3 subset(dat, x > 500)       1.62  1.55   1.59  1.19      1         1.53  1.17  1          1
+#> 1 dat[dat$x > 500, ]         1.31  1.32   1.27  1.10      1.15      1.16  1     1.26       1.10
+#> 2 dat[which(dat$x > 500), ]  1     1      1     1.05      1.51      1     1.28  1.67       1.10
+#> 3 subset(dat, x > 500)       1.62  1.51   1.57  1         1         1.53  1.30  1          1
 ```
 
 ### `bench::press()`
@@ -197,10 +196,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   331ms   332ms
+#>   336ms   337ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    89µs   500ms
+#>    77µs   504ms
 ```
 
 ## Alternatives
