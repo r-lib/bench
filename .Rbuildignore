@@ -8,3 +8,4 @@
 ^README_cache$
 ^docs$
 ^_pkgdown\.yml$
+^cran-comments\.md$
