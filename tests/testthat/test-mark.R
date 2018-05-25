@@ -97,15 +97,34 @@ describe("mark", {
 })
 
 describe("summary.bench_mark", {
+  res <- bench_mark(
+    tibble::tibble(
+      expression = "1 + 1:1e+06",
+      result = list(1:10),
+      memory = list(NULL),
+      time = list(
+        c(
+          0.088492998, 0.109396977, 0.141906863, 0.005378346, 0.007563524,
+          0.002439451, 0.079715252, 0.003022223, 0.005948069, 0.002276121
+          )
+        ),
+      gc = list(
+        tibble::tibble(
+          level0 = c(1, 0, 0, 0, 1, 0, 0, 0, 1, 0),
+          level1 = c(0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+          level2 = c(0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+          )
+        )
+      )
+    )
   it("computes relative summaries if called with relative = TRUE", {
-    res <- mark(1+1, 2+0, max_iterations = 10)
-
-    # remove memory columns, as there likely are no allocations or gc in these
+    # remove memory column, as there likely are no allocations or gc in these
     # benchmarks
-    for (col in setdiff(summary_cols, c("mem_alloc", "n_gc"))) {
+    res1 <- summary(res)
+    for (col in setdiff(summary_cols, "mem_alloc")) {
 
       # Absolute values should always be positive
-      expect_true(all(res[[!!col]] >= 0))
+      expect_true(all(res1[[!!col]] >= 0))
     }
 
     # Relative values should always be greater than or equal to 1
@@ -115,15 +134,14 @@ describe("summary.bench_mark", {
     }
   })
   it("does not filter gc is `filter_gc` is FALSE", {
-    # This should be enough allocations to trigger at least a few GCs
-    res <- mark(1 + 1:1e6, iterations = 100)
+    res1 <- summary(res, filter_gc = TRUE)
     res2 <- summary(res, filter_gc = FALSE)
 
-    expect_gt(res$n_gc, 0)
-    expect_equal(res$n_gc, res2$n_gc)
+    expect_equal(res1$n_gc, 6)
+    expect_equal(res1$n_gc, res2$n_gc)
 
     # The max should be higher with gc included
-    expect_gt(res2$max, res$max)
+    expect_gt(res2$max, res1$max)
   })
 
   it("does not issue warnings if there are no garbage collections", {
