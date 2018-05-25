@@ -6,7 +6,7 @@
 [![Travis build
 status](https://travis-ci.org/r-lib/bench.svg?branch=master)](https://travis-ci.org/r-lib/bench)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/jimhester/bench?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/bench)
+status](https://ci.appveyor.com/api/projects/status/github/r-lib/bench?branch=master&svg=true)](https://ci.appveyor.com/project/r-lib/bench)
 [![Coverage
 status](https://codecov.io/gh/r-lib/bench/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/bench?branch=master)
 
@@ -90,9 +90,9 @@ bnch
 #> # A tibble: 3 x 10
 #>   expression                     min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
 #>   <chr>                     <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
-#> 1 dat[dat$x > 500, ]           300µs    382µs    331µs   1.05ms     2619.     416KB    54   948      362ms
-#> 2 dat[which(dat$x > 500), ]    232µs    271µs    252µs   1.13ms     3684.     357KB    73  1314      357ms
-#> 3 subset(dat, x > 500)         378µs    467µs    426µs   1.27ms     2140.     548KB    41   750      350ms
+#> 1 dat[dat$x > 500, ]           302µs    377µs    332µs   1.25ms     2651.     416KB    47   916      345ms
+#> 2 dat[which(dat$x > 500), ]    233µs    285µs    259µs   1.17ms     3504.     357KB    58  1268      362ms
+#> 3 subset(dat, x > 500)         376µs    441µs    411µs   1.39ms     2266.     548KB    55   727      321ms
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -104,9 +104,9 @@ summary(bnch, relative = TRUE)
 #> # A tibble: 3 x 10
 #>   expression                  min  mean median   max `itr/sec` mem_alloc  n_gc n_itr total_time
 #>   <chr>                     <dbl> <dbl>  <dbl> <dbl>     <dbl>     <dbl> <dbl> <dbl>      <dbl>
-#> 1 dat[dat$x > 500, ]         1.30  1.41   1.32  1         1.22      1.16  1.32  1.26       1.03
-#> 2 dat[which(dat$x > 500), ]  1     1      1     1.08      1.72      1     1.78  1.75       1.02
-#> 3 subset(dat, x > 500)       1.63  1.72   1.69  1.21      1         1.53  1     1          1
+#> 1 dat[dat$x > 500, ]         1.30  1.32   1.28  1.07      1.17      1.16  1     1.26       1.08
+#> 2 dat[which(dat$x > 500), ]  1     1      1     1         1.55      1     1.23  1.74       1.13
+#> 3 subset(dat, x > 500)       1.62  1.55   1.59  1.19      1         1.53  1.17  1          1
 ```
 
 ### `bench::press()`
@@ -197,10 +197,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   337ms   338ms
+#>   331ms   332ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    96µs   500ms
+#>    89µs   500ms
 ```
 
 ## Alternatives
