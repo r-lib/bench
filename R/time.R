@@ -40,7 +40,7 @@ bench_time <- as_bench_time
 new_bench_time <- function(x) {
   structure(x, class = c("bench_time", "numeric"))
 }
-methods::setOldClass(c("bench_time", "numeric"), numeric())
+setOldClass(c("bench_time", "numeric"), numeric())
 
 #' @export
 as_bench_time.default <- function(x) {

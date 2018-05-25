@@ -9,3 +9,4 @@
 ^docs$
 ^_pkgdown\.yml$
 ^cran-comments\.md$
+^CRAN-RELEASE$
