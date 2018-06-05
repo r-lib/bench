@@ -3,6 +3,8 @@
 
 # bench
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/bench)](https://cran.r-project.org/package=bench)
 [![Travis build
 status](https://travis-ci.org/r-lib/bench.svg?branch=master)](https://travis-ci.org/r-lib/bench)
 [![AppVeyor build
@@ -89,9 +91,9 @@ bnch
 #> # A tibble: 3 x 10
 #>   expression                     min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
 #>   <chr>                     <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
-#> 1 dat[dat$x > 500, ]           303µs    390µs    332µs   1.66ms     2562.     416KB    43   889      347ms
-#> 2 dat[which(dat$x > 500), ]    232µs    297µs    261µs   1.59ms     3372.     357KB    55  1174      348ms
-#> 3 subset(dat, x > 500)         375µs    447µs    410µs   1.51ms     2236.     548KB    56   705      315ms
+#> 1 dat[dat$x > 500, ]           306µs    361µs    327µs   1.23ms     2770.     416KB    48   989      357ms
+#> 2 dat[which(dat$x > 500), ]    231µs    288µs    258µs   1.29ms     3471.     357KB    54  1170      337ms
+#> 3 subset(dat, x > 500)         374µs    443µs    405µs   1.59ms     2257.     548KB    55   702      311ms
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -103,9 +105,9 @@ summary(bnch, relative = TRUE)
 #> # A tibble: 3 x 10
 #>   expression                  min  mean median   max `itr/sec` mem_alloc  n_gc n_itr total_time
 #>   <chr>                     <dbl> <dbl>  <dbl> <dbl>     <dbl>     <dbl> <dbl> <dbl>      <dbl>
-#> 1 dat[dat$x > 500, ]         1.31  1.32   1.27  1.10      1.15      1.16  1     1.26       1.10
-#> 2 dat[which(dat$x > 500), ]  1     1      1     1.05      1.51      1     1.28  1.67       1.10
-#> 3 subset(dat, x > 500)       1.62  1.51   1.57  1         1         1.53  1.30  1          1
+#> 1 dat[dat$x > 500, ]         1.32  1.25   1.27  1         1.23      1.16  1     1.41       1.15
+#> 2 dat[which(dat$x > 500), ]  1     1      1     1.05      1.54      1     1.12  1.67       1.08
+#> 3 subset(dat, x > 500)       1.62  1.54   1.57  1.30      1         1.53  1.15  1          1
 ```
 
 ### `bench::press()`
@@ -196,10 +198,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   336ms   337ms
+#>   330ms   331ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    77µs   504ms
+#>    83µs   501ms
 ```
 
 ## Alternatives
