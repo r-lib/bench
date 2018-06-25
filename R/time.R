@@ -80,7 +80,7 @@ find_unit <- function(x, units) {
 # Adapted from https://github.com/gaborcsardi/prettyunits
 # Aims to be consistent with ls -lh, so uses 1024 KiB units, 3 or less digits etc.
 #' @export
-format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
+format.bench_time <- function(x, scientific = FALSE, digits = 3, drop0trailing = TRUE, ...) {
   nms <- names(x)
 
   # convert negative times to 1ns, this can happen if the minimum calculated
@@ -103,7 +103,7 @@ format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
   res[is.infinite(seconds) & seconds < 0] <- -Inf
   unit[is.na(seconds) | is.infinite(seconds)] <- ""
 
-  res <- format(res, scientific = scientific, digits = digits, drop0trailing = TRUE, ...)
+  res <- format(res, scientific = scientific, digits = digits, drop0trailing = drop0trailing, ...)
 
   stats::setNames(paste0(res, unit), nms)
 }
