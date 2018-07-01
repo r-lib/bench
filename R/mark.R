@@ -130,8 +130,9 @@ data_cols <- c("result", "memory", "time", "gc")
 #' Summarize [bench::mark] results.
 #'
 #' @param object [bench_mark] object to summarize.
-#' @param filter_gc If `TRUE` filter iterations that contained at least one
-#'   garbage collection before summarizing.
+#' @param filter_gc If `TRUE` remove iterations that contained at least one
+#'   garbage collection before summarizing. If any expression had a garbage
+#'   collection in every iteration, filtering is disabled, with a warning.
 #' @param relative If `TRUE` all summaries are computed relative to the minimum
 #'   execution time rather than absolute time.
 #' @param ... Additional arguments ignored.
