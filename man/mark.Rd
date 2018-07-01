@@ -30,8 +30,8 @@ function that function will be called with each pair of results to
 determine consistency.}
 
 \item{filter_gc}{If \code{TRUE} remove iterations that contained at least one
-garbage collection before summarizing. If any expression had a garbage
-collection in every iteration, filtering is disabled, with a warning.}
+garbage collection before summarizing. If \code{TRUE} but an expression had 
+a garbage collection in every iteration, filtering is disabled, with a warning.}
 
 \item{relative}{If \code{TRUE} all summaries are computed relative to the minimum
 execution time rather than absolute time.}
