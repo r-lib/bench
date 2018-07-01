@@ -41,11 +41,11 @@ describe("mark", {
   it("Can use other functions to check results like identical to check results", {
 
     # numerics and integers not identical
-    expect_error(regexp = "All results must equal the first result",
+    expect_error(regexp = "Each result must equal the first result",
       mark(1 + 1, 1L + 1L, check = identical, iterations = 1))
 
     # Function that always returns false
-    expect_error(regexp = "All results must equal the first result",
+    expect_error(regexp = "Each result must equal the first result",
       mark(1 + 1, 1 + 1, check = function(x, y) FALSE, iterations = 1))
 
     # Function that always returns true
@@ -97,15 +97,34 @@ describe("mark", {
 })
 
 describe("summary.bench_mark", {
+  res <- bench_mark(
+    tibble::tibble(
+      expression = "1 + 1:1e+06",
+      result = list(1:10),
+      memory = list(NULL),
+      time = list(
+        c(
+          0.088492998, 0.109396977, 0.141906863, 0.005378346, 0.007563524,
+          0.002439451, 0.079715252, 0.003022223, 0.005948069, 0.002276121
+          )
+        ),
+      gc = list(
+        tibble::tibble(
+          level0 = c(1, 0, 0, 0, 1, 0, 0, 0, 1, 0),
+          level1 = c(0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+          level2 = c(0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+          )
+        )
+      )
+    )
   it("computes relative summaries if called with relative = TRUE", {
-    res <- mark(1+1, 2+0, max_iterations = 10)
-
-    # remove memory columns, as there likely are no allocations or gc in these
+    # remove memory column, as there likely are no allocations or gc in these
     # benchmarks
-    for (col in setdiff(summary_cols, c("mem_alloc", "n_gc"))) {
+    res1 <- summary(res)
+    for (col in setdiff(summary_cols, "mem_alloc")) {
 
       # Absolute values should always be positive
-      expect_true(all(res[[!!col]] >= 0))
+      expect_true(all(res1[[!!col]] >= 0))
     }
 
     # Relative values should always be greater than or equal to 1
@@ -115,15 +134,51 @@ describe("summary.bench_mark", {
     }
   })
   it("does not filter gc is `filter_gc` is FALSE", {
-    # This should be enough allocations to trigger at least a few GCs
-    res <- mark(1 + 1:1e6, iterations = 100)
+    res1 <- summary(res, filter_gc = TRUE)
     res2 <- summary(res, filter_gc = FALSE)
 
-    expect_gt(res$n_gc, 0)
-    expect_equal(res$n_gc, res2$n_gc)
+    expect_equal(res1$n_gc, 6)
+    expect_equal(res1$n_gc, res2$n_gc)
 
     # The max should be higher with gc included
-    expect_gt(res2$max, res$max)
+    expect_gt(res2$max, res1$max)
+  })
+
+  it("does not issue warnings if there are no garbage collections", {
+    # This is artificial, but it avoids differences in gc on different
+    # platforms / memory loads, so we can ensure the first has no gcs, and the
+    # second has all gcs
+    x <- bench_mark(tibble::tibble(
+      expression = c(1, 2),
+      result = list(1, 2),
+      time = list(
+        as_bench_time(c(0.166, 0.161, 0.162)),
+        as_bench_time(c(0.276, 0.4))
+      ),
+      memory = list(NULL, NULL),
+      gc = list(
+        tibble::tibble(level0 = integer(0), level1 = integer(0), level2 = integer(0)),
+        tibble::tibble(level0 = c(1L, 1L), level1 = c(0L, 0L), level2 = c(0L, 0L))
+      )
+    ))
+
+    expect_warning(regexp = "Some expressions had a GC in every iteration",
+      res <- summary(x, filter_gc = TRUE))
+
+    expect_equal(res$min, as_bench_time(c(.161, .276)))
+    expect_equal(res$mean, as_bench_time(c(.163, .338)))
+    expect_equal(res$median, as_bench_time(c(.162, .338)))
+    expect_equal(res$max, as_bench_time(c(.166, .400)))
+    expect_equal(res$`itr/sec`, c(6.134969, 2.958580), tolerance = 1e-5)
+    expect_equal(res$mem_alloc, as_bench_bytes(c(NA, NA)))
+    expect_equal(res$n_gc, c(0, 2))
+    expect_equal(res$n_itr, c(3, 2))
+    expect_equal(res$total_time, as_bench_time(c(.489, .676)))
+
+    expect_warning(regexp = NA,
+      res2 <- summary(x, filter_gc = FALSE))
+
+    expect_identical(res, res2)
   })
 })
 

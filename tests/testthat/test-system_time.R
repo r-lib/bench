@@ -1,6 +1,8 @@
 context("test-system_time.R")
 
 describe("system_time", {
+  skip_on_cran()
+
   res <- system_time(1 + 1:1e7)
   it("returns process and real time", {
     expect_equal(names(res), c("process", "real"))

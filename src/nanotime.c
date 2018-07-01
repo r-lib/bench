@@ -6,6 +6,7 @@
 #include <mach/mach_time.h>
 #include <time.h>
 #include <sys/time.h>
+#include <sys/resource.h>
 #else
 #define __EXTENSIONS__
 #include <time.h>
@@ -67,8 +68,8 @@ long double real_time() {
 }
 #endif
 
-#if defined(_WIN32) || defined(_WIN64)
 long double process_cpu_time() {
+#if defined(_WIN32) || defined(_WIN64)
   HANDLE proc = GetCurrentProcess();
   FILETIME creation_time;
   FILETIME exit_time;
@@ -85,23 +86,26 @@ long double process_cpu_time() {
   user.HighPart = user_time.dwHighDateTime;
   user.LowPart = user_time.dwLowDateTime;
   return (((long double)kernel.QuadPart + (long double)user.QuadPart) * 1e-7);
-}
 #elif defined(__sun)
-long double process_cpu_time() {
   hrtime_t time = gethrvtime();
   // The man page doesn't mention any error return values
 
   return (long double)time / NSEC_PER_SEC;
-}
-#else
-long double process_cpu_time() {
+#elif defined(CLOCK_PROCESS_CPUTIME_ID)
   struct timespec ts;
   if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts) != 0) {
     Rf_error("clock_gettime(CLOCK_PROCESS_CPUTIME_ID, ...) failed");
   }
   return ts.tv_sec + (long double)ts.tv_nsec / NSEC_PER_SEC;
-}
+#else
+  struct rusage ru;
+  if (getrusage(RUSAGE_SELF, &ru) != 0) {
+    Rf_error("getrusage(RUSAGE_SELF, ...) failed");
+  }
+  return ru.ru_utime.tv_sec + (long double) ru.ru_utime.tv_usec * 1e-6 +
+    ru.ru_stime.tv_sec + (long double) ru.ru_stime.tv_usec * 1e-6;
 #endif
+}
 
 long double expr_elapsed_time(SEXP expr, SEXP env) {
   long double start = real_time();

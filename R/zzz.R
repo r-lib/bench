@@ -10,6 +10,8 @@
   register_s3_method("pillar", "pillar_shaft", "bench_bytes")
   register_s3_method("pillar", "type_sum", "bench_bytes")
   register_s3_method("ggplot2", "scale_type", "bench_bytes")
+
+  register_s3_method("knitr", "knit_print", "bench_mark")
 }
 
 register_s3_method <- function(pkg, generic, class, fun = NULL) {

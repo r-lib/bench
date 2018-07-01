@@ -40,7 +40,7 @@ bench_time <- as_bench_time
 new_bench_time <- function(x) {
   structure(x, class = c("bench_time", "numeric"))
 }
-methods::setOldClass(c("bench_time", "numeric"), numeric())
+setOldClass(c("bench_time", "numeric"), numeric())
 
 #' @export
 as_bench_time.default <- function(x) {
@@ -61,14 +61,14 @@ as_bench_time.bench_time <- function(x) {
 
 #' @export
 as_bench_time.numeric <- function(x) {
-  is_small <- x < 1e-9
+  is_small <- x < 1e-9 & !is.infinite(x) & x != 0
   x[is_small] <- 1e-9
 
   new_bench_time(x)
 }
 tolerance <- sqrt(.Machine$double.eps)
 find_unit <- function(x, units) {
-  if (is.na(x) || x == 0) {
+  if (is.na(x) || is.nan(x) || x <= 0 || is.infinite(x)) {
     return(NA_character_)
   }
   epsilon <- 1 - (x * (1 / units))
@@ -80,12 +80,12 @@ find_unit <- function(x, units) {
 # Adapted from https://github.com/gaborcsardi/prettyunits
 # Aims to be consistent with ls -lh, so uses 1024 KiB units, 3 or less digits etc.
 #' @export
-format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
+format.bench_time <- function(x, scientific = FALSE, digits = 3, drop0trailing = TRUE, ...) {
   nms <- names(x)
 
   # convert negative times to 1ns, this can happen if the minimum calculated
   # overhead is higher than the time.
-  x[x < 1e-9] <- 1e-9
+  x[x < 1e-9 & !is.infinite(x) & x != 0] <- 1e-9
 
   seconds <- unclass(x)
 
@@ -96,13 +96,14 @@ format.bench_time <- function(x, scientific = FALSE, digits = 3, ...) {
   res[seconds == 0] <- 0
   unit[seconds == 0] <- ""
 
-  ## NA and NaN seconds
+  ## NA, NaN, Inf, -Inf, seconds
   res[is.na(seconds)] <- NA_real_
   res[is.nan(seconds)] <- NaN
-  unit[is.na(seconds)] <- ""            # Includes NaN as well
+  res[is.infinite(seconds)] <- Inf
+  res[is.infinite(seconds) & seconds < 0] <- -Inf
+  unit[is.na(seconds) | is.infinite(seconds)] <- ""
 
-
-  res <- format(res, scientific = scientific, digits = digits, drop0trailing = TRUE, ...)
+  res <- format(res, scientific = scientific, digits = digits, drop0trailing = drop0trailing, ...)
 
   stats::setNames(paste0(res, unit), nms)
 }

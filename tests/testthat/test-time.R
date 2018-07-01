@@ -43,9 +43,11 @@ describe("format.bench_time", {
       expect_equal(format(bench_time(10.5 * 24 * 60 * 60)), "1.5w")
     })
   })
-  it("handles NA and NaN", {
+  it("handles NA and NaN and Inf", {
     expect_equal(format(bench_time(NA)), "NA")
     expect_equal(format(bench_time(NaN)), "NaN")
+    expect_equal(format(bench_time(Inf)), "Inf")
+    expect_equal(format(bench_time(-Inf)), "-Inf")
   })
   it("works with vectors", {
     v <- c(NA, .001, 60, 600, NaN, 6000)

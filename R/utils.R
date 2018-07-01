@@ -114,3 +114,11 @@ capture_output <- function(..., file = NULL, append = FALSE,
     else rval
 }
 #nocov end
+
+collapse <- function(x, sep) {
+  paste0(x, collapse = sep)
+}
+
+lengths <- function(x, use.names = TRUE) {
+  viapply(x, length, USE.NAMES = use.names)
+}

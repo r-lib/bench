@@ -15,8 +15,9 @@ options(width = 120)
 ```
 # bench
 
+[![CRAN status](https://www.r-pkg.org/badges/version/bench)](https://cran.r-project.org/package=bench)
 [![Travis build status](https://travis-ci.org/r-lib/bench.svg?branch=master)](https://travis-ci.org/r-lib/bench)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/jimhester/bench?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/bench)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/r-lib/bench?branch=master&svg=true)](https://ci.appveyor.com/project/r-lib/bench)
 [![Coverage status](https://codecov.io/gh/r-lib/bench/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/bench?branch=master)
 
 The goal of bench is to benchmark code, tracking execution time,
@@ -59,6 +60,8 @@ including custom scales and formatting.
 
 ## Usage
 
+### `bench::mark()`
+
 Benchmarks can be run with `bench::mark()`, which takes one or more expressions
 to benchmark against each other.
 
@@ -79,11 +82,21 @@ bench::mark(
 
 Results are easy to interpret, with human readable units.
 ```{r example1-2}
-bench::mark(
+bnch <- bench::mark(
   dat[dat$x > 500, ],
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
+bnch
 ```
+
+By default the summary uses absolute measures, however relative results can be
+obtained by using `relative = TRUE` in your call to `bench::mark()` or calling
+`summary(relative = TRUE)` on the results.
+```{r example1-3}
+summary(bnch, relative = TRUE)
+```
+
+### `bench::press()`
 
 `bench::press()` is used to run benchmarks against a grid of parameters.
 Provide setup and benchmarking code as a single unnamed argument then define
@@ -114,6 +127,7 @@ results <- bench::press(
     )
   }
 )
+results
 ```
 
 ## Plotting

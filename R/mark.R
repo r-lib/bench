@@ -21,6 +21,7 @@ NULL
 #'   function that function will be called with each pair of results to
 #'   determine consistency.
 #' @param env The environment which to evaluate the expressions
+#' @inheritParams summary.bench_mark
 #' @inherit summary.bench_mark return
 #' @aliases bench_mark
 #' @seealso [press()] to run benchmarks across a grid of parameters.
@@ -34,7 +35,8 @@ NULL
 #'   subset(dat, x > 500))
 #' @export
 mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
-                 max_iterations = 10000, check = TRUE, env = parent.frame()) {
+                 max_iterations = 10000, check = TRUE, filter_gc = TRUE,
+                 relative = FALSE, env = parent.frame()) {
 
   if (!is.null(iterations)) {
     min_iterations <- iterations
@@ -84,12 +86,14 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
       comp <- check_fun(results$result[[1]], results$result[[i]])
       if (!isTRUE(comp)) {
         stop(glue::glue("
-            All results must equal the first result:
+            Each result must equal the first result:
               `{first}` does not equal `{current}`
             ",
-            first = deparse(exprs[[1]]),
-            current = deparse(exprs[[i]])),
-          call. = FALSE)
+            first = results$expression[[1]],
+            current = results$expression[[i]]
+            ),
+          call. = FALSE
+        )
       }
     }
   }
@@ -102,7 +106,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     results$gc[[i]] <- parse_gc(gc_msg)
   }
 
-  summary(bench_mark(tibble::as_tibble(results)))
+  summary(bench_mark(tibble::as_tibble(results)), filter_gc = filter_gc, relative = relative)
 }
 
 bench_mark <- function(x) {
@@ -168,12 +172,27 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, ...) 
   nms <- colnames(object)
   parameters <- setdiff(nms, c("expression", summary_cols, data_cols))
 
-  num_gc <- lapply(object$gc, function(x) rowSums(x))
+  num_gc <- lapply(object$gc,
+    function(x) {
+      res <- rowSums(x)
+      if (length(res) == 0) {
+        res <- rep(0, length(x))
+      }
+      res
+    }
+  )
   if (isTRUE(filter_gc)) {
     no_gc <- lapply(num_gc, `==`, 0)
     times <- Map(`[`, object$time, no_gc)
   } else {
     times <- object$time
+  }
+
+  if (filter_gc && any(lengths(times) == 0)) {
+    times <- object$time
+    warning(call. = FALSE,
+        "Some expressions had a GC in every iteration; so filtering is disabled."
+    )
   }
 
   object$mean <- new_bench_time(vdapply(times, mean))
@@ -258,7 +277,6 @@ dots <- function(...) {
 #'       subset(mtcars, cyl == 3),
 #'       mtcars[mtcars$cyl == 3, ])
 #'     ```
-#' @export
 knit_print.bench_mark <- function(x, ..., options) {
   if (isTRUE(options$bench.all_columns)) {
     print(x)
