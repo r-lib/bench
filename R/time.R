@@ -138,7 +138,7 @@ max.bench_time <- function(x, ...) {
 
 #' @export
 `[[.bench_time` <- function(x, i, ...) {
-  new_bench_time(NextMethod("["))
+  new_bench_time(NextMethod("[["))
 }
 
 #' @export
