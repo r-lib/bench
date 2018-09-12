@@ -77,7 +77,10 @@ bench::mark(
   dat[which(dat$x > 499), ],
   subset(dat, x > 500))
 #> Error: Each result must equal the first result:
-#>   `dat[dat$x > 500, ]` does not equal `dat[which(dat$x > 499), ]`
+#>   `[` does not equal `[`Each result must equal the first result:
+#>   `dat` does not equal `dat`Each result must equal the first result:
+#>   `dat$x > 500` does not equal `which(dat$x > 499)`Each result must equal the first result:
+#>   `` does not equal ``
 ```
 
 Results are easy to interpret, with human readable units.
@@ -90,10 +93,10 @@ bnch <- bench::mark(
 bnch
 #> # A tibble: 3 x 10
 #>   expression                     min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
-#>   <chr>                     <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
-#> 1 dat[dat$x > 500, ]           306µs    361µs    327µs   1.23ms     2770.     416KB    48   989      357ms
-#> 2 dat[which(dat$x > 500), ]    231µs    288µs    258µs   1.29ms     3471.     357KB    54  1170      337ms
-#> 3 subset(dat, x > 500)         374µs    443µs    405µs   1.59ms     2257.     548KB    55   702      311ms
+#>   <bch:expr>                <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
+#> 1 dat[dat$x > 500, ]           311µs    391µs    338µs   1.23ms     2555.     377KB     6   783      306ms
+#> 2 dat[which(dat$x > 500), ]    235µs    298µs    255µs   1.36ms     3358.     260KB     7  1340      399ms
+#> 3 subset(dat, x > 500)         389µs    494µs    422µs   1.45ms     2024.     494KB     8   786      388ms
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -104,10 +107,10 @@ can be obtained by using `relative = TRUE` in your call to
 summary(bnch, relative = TRUE)
 #> # A tibble: 3 x 10
 #>   expression                  min  mean median   max `itr/sec` mem_alloc  n_gc n_itr total_time
-#>   <chr>                     <dbl> <dbl>  <dbl> <dbl>     <dbl>     <dbl> <dbl> <dbl>      <dbl>
-#> 1 dat[dat$x > 500, ]         1.32  1.25   1.27  1         1.23      1.16  1     1.41       1.15
-#> 2 dat[which(dat$x > 500), ]  1     1      1     1.05      1.54      1     1.12  1.67       1.08
-#> 3 subset(dat, x > 500)       1.62  1.54   1.57  1.30      1         1.53  1.15  1          1
+#>   <bch:expr>                <dbl> <dbl>  <dbl> <dbl>     <dbl>     <dbl> <dbl> <dbl>      <dbl>
+#> 1 dat[dat$x > 500, ]         1.32  1.31   1.32  1         1.26      1.45  1     1          1   
+#> 2 dat[which(dat$x > 500), ]  1     1      1     1.10      1.66      1     1.17  1.71       1.30
+#> 3 subset(dat, x > 500)       1.66  1.66   1.65  1.18      1         1.90  1.33  1.00       1.27
 ```
 
 ### `bench::press()`
@@ -124,13 +127,13 @@ set.seed(42)
 
 create_df <- function(rows, cols) {
   as.data.frame(setNames(
-    replicate(cols, runif(rows, 1, 1000), simplify = FALSE),
+    replicate(cols, runif(rows, 1, 100), simplify = FALSE),
     rep_len(c("x", letters), cols)))
 }
 
 results <- bench::press(
-  rows = c(10000, 100000),
-  cols = c(10, 100),
+  rows = c(1000, 10000),
+  cols = c(2, 10),
   {
     dat <- create_df(rows, cols)
     bench::mark(
@@ -141,22 +144,28 @@ results <- bench::press(
     )
   }
 )
+#> Running with:
+#>    rows  cols
+#> 1  1000     2
+#> 2 10000     2
+#> 3  1000    10
+#> 4 10000    10
 results
 #> # A tibble: 12 x 12
-#>    expression   rows  cols      min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
-#>    <chr>       <dbl> <dbl> <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
-#>  1 bracket     10000    10 787.15µs   1.04ms 960.52µs   2.16ms    960.      1.17MB    36   261   271.87ms
-#>  2 which       10000    10 438.68µs 567.76µs 520.88µs   1.48ms   1761.    827.04KB    44   497   282.18ms
-#>  3 subset      10000    10 883.83µs   1.14ms   1.06ms   2.16ms    874.      1.28MB    38   244   279.11ms
-#>  4 bracket    100000    10  13.29ms  15.35ms  15.15ms   18.3ms     65.2    11.54MB    52    48   736.71ms
-#>  5 which      100000    10   8.99ms  10.63ms   10.4ms   13.7ms     94.0     7.91MB    34    66   701.81ms
-#>  6 subset     100000    10  15.91ms  17.79ms  17.12ms  24.82ms     56.2    12.68MB    74    26   462.46ms
-#>  7 bracket     10000   100   6.95ms   8.54ms   8.21ms  11.67ms    117.      9.71MB    34    66   563.77ms
-#>  8 which       10000   100   2.83ms   3.62ms   3.69ms   5.17ms    276.      5.91MB    27    88   318.52ms
-#>  9 subset      10000   100   6.98ms   8.62ms   8.48ms  11.83ms    116.      9.84MB    44    56   482.46ms
-#> 10 bracket    100000   100  94.66ms  99.77ms  99.99ms 104.45ms     10.0    97.47MB    97     4   399.08ms
-#> 11 which      100000   100  51.09ms  54.41ms  54.13ms  60.37ms     18.4    59.51MB    57    43      2.34s
-#> 12 subset     100000   100  96.94ms 100.78ms 100.61ms 106.91ms      9.92   98.62MB    88    14      1.41s
+#>    expression  rows  cols      min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
+#>    <bch:expr> <dbl> <dbl> <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
+#>  1 bracket     1000     2   32.5µs   44.2µs   38.6µs 952.96µs    22643.   15.84KB     4  9996      441ms
+#>  2 which       1000     2   32.4µs   39.2µs   37.3µs 547.92µs    25526.    7.91KB     5  9995      392ms
+#>  3 subset      1000     2   51.5µs   63.1µs   57.9µs 912.45µs    15838.    27.7KB     5  7034      444ms
+#>  4 bracket    10000     2   61.6µs   91.4µs   69.9µs  966.9µs    10943.  156.46KB    14  2991      273ms
+#>  5 which      10000     2     52µs   68.6µs   58.3µs   1.34ms    14575.   78.23KB    12  5533      380ms
+#>  6 subset     10000     2  101.9µs  144.9µs  115.7µs   1.11ms     6899.  273.79KB    18  2257      327ms
+#>  7 bracket     1000    10   73.7µs     92µs   82.2µs   1.03ms    10873.   47.52KB     6  4760      438ms
+#>  8 which       1000    10   66.5µs   78.8µs   73.5µs 915.93µs    12696.    7.91KB     7  5630      443ms
+#>  9 subset      1000    10   94.2µs    113µs  104.1µs 984.53µs     8849.   59.38KB     6  3826      432ms
+#> 10 bracket    10000    10  135.9µs  195.7µs  147.1µs   1.09ms     5110.   469.4KB    22  1510      296ms
+#> 11 which      10000    10   86.4µs  106.3µs     96µs   1.03ms     9406.   78.23KB     9  3921      417ms
+#> 12 subset     10000    10  175.7µs  263.7µs  199.8µs   1.18ms     3792.  586.73KB    20  1111      293ms
 ```
 
 ## Plotting
@@ -184,7 +193,7 @@ results %>%
   filter(gc == "none") %>%
   ggplot(aes(x = mem_alloc, y = time, color = expression)) +
     geom_point() +
-    scale_color_brewer(type = "qual", palette = 3)
+    scale_color_bench_expr(scales::brewer_pal(type = "qual", palette = 3))
 ```
 
 <img src="man/figures/README-custom-plot-1.png" width="100%" />
@@ -198,10 +207,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   330ms   331ms
+#>   404ms   406ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    83µs   501ms
+#>    36µs   501ms
 ```
 
 ## Alternatives

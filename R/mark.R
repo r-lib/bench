@@ -54,7 +54,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
 
   exprs <- dots(...)
 
-  results <- list(expression = auto_name(exprs), result = list(), memory = list(), time = list(), gc = list())
+  results <- list(expression = new_bench_expr(exprs), result = list(), memory = list(), time = list(), gc = list())
 
   # Helper for evaluating with memory profiling
   eval_one <- function(e) {
@@ -106,7 +106,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     results$gc[[i]] <- parse_gc(gc_msg)
   }
 
-  summary(bench_mark(tibble::as_tibble(results)), filter_gc = filter_gc, relative = relative)
+  summary(bench_mark(tibble::as_tibble(results, validate = FALSE)), filter_gc = filter_gc, relative = relative)
 }
 
 bench_mark <- function(x) {
@@ -239,20 +239,8 @@ parse_allocations <- function(filename) {
   profmem::readRprofmem(filename)
 }
 
-auto_name <- function(exprs) {
-  nms <- names(exprs)
-
-  if (is.null(nms)) {
-    nms <- rep("", length(exprs))
-  }
-  is_missing <- nms == ""
-  nms[is_missing] <- vapply(exprs[is_missing], deparse_trunc, character(1))
-
-  nms
-}
-
 dots <- function(...) {
-  substitute(...())
+  as.list(substitute(...()))
 }
 
 #nocov start
@@ -290,16 +278,12 @@ parse_gc <- function(x) {
 }
 
 unnest.bench_mark <- function(data, ...) {
-  # remove columns which don't make sense to unnest
-  data[c("result", "memory")] <- list(NULL)
-
   # suppressWarnings to avoid 'elements may not preserve their attributes'
   # warnings from dplyr::collapse
-  data <- suppressWarnings(NextMethod(.Generic))
+  data <- suppressWarnings(NextMethod(.Generic, data, time, gc, .drop = FALSE))
 
   # Add bench_time class back to the time column
   data$time <- bench_time(data$time)
-
 
   # Add a gc column, a factor with the highest gc performed for each expression.
   data$gc <-
@@ -311,4 +295,23 @@ unnest.bench_mark <- function(data, ...) {
   data$gc <- factor(data$gc, c("none", "level0", "level1", "level2"))
 
   data
+}
+
+#' @export
+rbind.bench_mark <- function(..., deparse.level = 1) {
+  args <- list(...)
+  desc <- unlist(lapply(args, function(x) as.character(x$expression)))
+  res <- rbind.data.frame(...)
+  attr(res$expression, "description") <- desc
+  res
+}
+
+filter.bench_mark <- function(.data, ...) {
+  dots <- rlang::quos(...)
+  idx <- Reduce(`&&`, lapply(dots, rlang::eval_tidy, data = .data))
+  .data[idx, ]
+}
+
+group_by.bench_mark <- function(.data, ...) {
+  bench_mark(NextMethod())
 }

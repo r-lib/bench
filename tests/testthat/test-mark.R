@@ -190,11 +190,7 @@ describe("unnest.bench_mark", {
 
     gc_cols <- colnames(bnch$gc[[1]])
 
-    expected_cols <- c(setdiff(
-        c("expression", summary_cols, data_cols, gc_cols),
-        c("result", "memory", "gc")),
-      "gc")
-    expect_equal(colnames(res), expected_cols)
+    expect_equal(colnames(res), c(head(colnames(bnch), n = -1), c(gc_cols, "gc")))
 
     expect_equal(nrow(res), length(bnch$time[[1]]) + length(bnch$time[[2]]))
   })
