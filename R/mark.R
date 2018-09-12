@@ -222,11 +222,6 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, ...) 
   bench_mark(NextMethod("["))
 }
 
-#' @export
-`[[.bench_mark` <- function(x, i, ...) {
-  bench_mark(NextMethod("[["))
-}
-
 parse_allocations <- function(filename) {
 
   if (!file.exists(filename)) {
@@ -292,11 +287,6 @@ parse_gc <- function(x) {
   # \x1E is Record Separator 
   x <- strsplit(paste0(x, collapse = ""), "\x1E")[[1]]
   tibble::as_tibble(.Call(parse_gc_, x))
-}
-
-#' @export
-`[.bench_mark` <- function(x, ...) {
-  bench_mark(NextMethod())
 }
 
 unnest.bench_mark <- function(data, ...) {

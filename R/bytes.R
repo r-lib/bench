@@ -113,6 +113,11 @@ max.bench_bytes <- function(x, ...) {
 }
 
 #' @export
+`[[.bench_bytes` <- function(x, i) {
+  new_bench_bytes(NextMethod("[["))
+}
+
+#' @export
 # Adapted from Ops.numeric_version
 Ops.bench_bytes <- function (e1, e2) {
   if (nargs() == 1L) {

@@ -3,7 +3,7 @@
 S3method("[",bench_bytes)
 S3method("[",bench_mark)
 S3method("[",bench_time)
-S3method("[[",bench_mark)
+S3method("[[",bench_bytes)
 S3method("[[",bench_time)
 S3method(Ops,bench_bytes)
 S3method(Ops,bench_time)

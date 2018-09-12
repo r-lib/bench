@@ -60,7 +60,7 @@ press <- function(..., .grid = NULL) {
     }
     parameters <- .grid
   } else {
-    parameters <- expand.grid(lapply(args[!unnamed], rlang::eval_tidy))
+    parameters <- expand.grid(lapply(args[!unnamed], rlang::eval_tidy), stringsAsFactors = FALSE)
   }
 
   status <- format(tibble::as_tibble(parameters), n = Inf)
@@ -68,7 +68,7 @@ press <- function(..., .grid = NULL) {
       Running with:
       {status[[2]]}"))
   eval_one <- function(row) {
-    e <- new.env(parent = emptyenv())
+    e <- rlang::new_data_mask(new.env(parent = emptyenv()))
     for (col in seq_along(parameters)) {
       var <- names(parameters)[[col]]
       value <- parameters[row, col]
@@ -85,7 +85,7 @@ press <- function(..., .grid = NULL) {
     stop("Results must have equal rows", call. = FALSE)
     # TODO: print parameters / results that are unequal?
   }
-  res <- do.call(rbind, c(res, list(stringsAsFactors = FALSE)))
+  res <- do.call(rbind, res)
   parameters <- parameters[rep(seq_len(nrow(parameters)), each = rows[[1]]), , drop = FALSE]
-  bench_mark(tibble::as_tibble(cbind(res[1], parameters, res[-1], stringsAsFactors = FALSE)))
+  bench_mark(tibble::as_tibble(cbind(res[1], parameters, res[-1])))
 }
