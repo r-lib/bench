@@ -85,7 +85,7 @@ press <- function(..., .grid = NULL) {
     stop("Results must have equal rows", call. = FALSE)
     # TODO: print parameters / results that are unequal?
   }
-  res <- do.call(rbind, res)
+  res <- do.call(rbind, c(res, list(stringsAsFactors = FALSE)))
   parameters <- parameters[rep(seq_len(nrow(parameters)), each = rows[[1]]), , drop = FALSE]
-  bench_mark(tibble::as_tibble(cbind(res[1], parameters, res[-1])))
+  bench_mark(tibble::as_tibble(cbind(res[1], parameters, res[-1], stringsAsFactors = FALSE)))
 }
