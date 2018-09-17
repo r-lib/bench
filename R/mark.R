@@ -308,7 +308,7 @@ rbind.bench_mark <- function(..., deparse.level = 1) {
 
 filter.bench_mark <- function(.data, ...) {
   dots <- rlang::quos(...)
-  idx <- Reduce(`&&`, lapply(dots, rlang::eval_tidy, data = .data))
+  idx <- Reduce(`&`, lapply(dots, rlang::eval_tidy, data = .data))
   .data[idx, ]
 }
 
