@@ -8,13 +8,17 @@
 \alias{scale_y_bench_time}
 \title{Position scales for bench_time data}
 \usage{
-scale_x_bench_bytes(...)
+scale_x_bench_bytes(base = 10, ...)
 
-scale_y_bench_bytes(...)
+scale_y_bench_bytes(base = 10, ...)
 
-scale_x_bench_time(...)
+scale_x_bench_time(base = 10, ...)
 
-scale_y_bench_time(...)
+scale_y_bench_time(base = 10, ...)
+}
+\arguments{
+\item{base}{The base of the logarithm, if \code{NULL} instead use a
+non-logarithmic scale.}
 }
 \description{
 Default scales for the \link{bench_time} class, these are added to plots using

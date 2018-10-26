@@ -160,10 +160,17 @@ type_sum.bench_bytes <- function(x) {
 #'
 #' This both log transforms the times and formats the labels as a `bench_time`
 #' object.
-#' @inheritParams scales::log_trans
+#' @inheritParams bench_time_trans
 #' @keywords internal
 #' @export
 bench_bytes_trans <- function(base = 2) {
+  if (is.null(base)) {
+    return(
+      scales::trans_new("bch:byt", as.numeric, as_bench_bytes,
+        scales::pretty_breaks(), domain = c(1e-100, Inf)
+      )
+    )
+  }
   trans <- function(x) log(as.numeric(x), base)
   inv <- function(x) as_bench_bytes(base ^ as.numeric(x))
 
@@ -180,13 +187,13 @@ scale_type.bench_bytes <- function(x) "bench_bytes"
 #' @name scale_bench_time
 #' @keywords internal
 #' @export
-scale_x_bench_bytes <- function(...) {
-  ggplot2::scale_x_continuous(..., trans = bench_bytes_trans())
+scale_x_bench_bytes <- function(base = 10, ...) {
+  ggplot2::scale_x_continuous(..., trans = bench_bytes_trans(base = base))
 }
 
 #' @rdname scale_bench_time
 #' @keywords internal
 #' @export
-scale_y_bench_bytes <- function(...) {
-  ggplot2::scale_y_continuous(..., trans = bench_bytes_trans())
+scale_y_bench_bytes <- function(base = 10, ...) {
+  ggplot2::scale_y_continuous(..., trans = bench_bytes_trans(base = base))
 }

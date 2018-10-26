@@ -197,6 +197,14 @@ type_sum.bench_time <- function(x) {
 #' @keywords internal
 #' @export
 bench_time_trans <- function(base = 10) {
+  if (is.null(base)) {
+    return(
+      scales::trans_new("bch:tm", as.numeric, as_bench_time,
+        scales::pretty_breaks(), domain = c(1e-100, Inf)
+      )
+    )
+  }
+
   trans <- function(x) log(as.numeric(x), base)
   inv <- function(x) as_bench_time(base ^ as.numeric(x))
 
@@ -211,15 +219,17 @@ scale_type.bench_time <- function(x) "bench_time"
 #' Default scales for the [bench_time] class, these are added to plots using
 #' [bench_time] objects automatically.
 #' @name scale_bench_time
+#' @param base The base of the logarithm, if `NULL` instead use a
+#'   non-logarithmic scale.
 #' @keywords internal
 #' @export
-scale_x_bench_time <- function(...) {
-  ggplot2::scale_x_continuous(..., trans = bench_time_trans())
+scale_x_bench_time <- function(base = 10, ...) {
+  ggplot2::scale_x_continuous(..., trans = bench_time_trans(base = base))
 }
 
 #' @rdname scale_bench_time
 #' @keywords internal
 #' @export
-scale_y_bench_time <- function(...) {
-  ggplot2::scale_y_continuous(..., trans = bench_time_trans())
+scale_y_bench_time <- function(base = 10, ...) {
+  ggplot2::scale_y_continuous(..., trans = bench_time_trans(base = base))
 }
