@@ -1,5 +1,7 @@
 # bench 1.0.1.9000
 
+* Errors during evaluation now halt execution (#28, #43)
+
 * `scale_bench_time()` and `scale_bench_bytes()` now allow you to use a non-logarithmic scale.
 
 # bench 1.0.1

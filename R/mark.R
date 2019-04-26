@@ -99,9 +99,16 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
   }
 
   for (i in seq_len(length(exprs))) {
+    error <- NULL
     gc_msg <- with_gcinfo({
+      tryCatch(error = function(e) { e$call <- NULL; error <<- e},
       res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(min_iterations), as.integer(max_iterations))
+      )
     })
+    if (!is.null(error)) {
+      stop(error)
+    }
+
     results$time[[i]] <- as_bench_time(res)
     results$gc[[i]] <- parse_gc(gc_msg)
   }
