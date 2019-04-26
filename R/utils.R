@@ -38,6 +38,8 @@ auto_name_vec <- function(names) {
   names
 }
 
+utils::globalVariables("_rval_")
+
 with_gcinfo <- function(expr) {
   con <- textConnection("_rval_", "w", local = TRUE)
   sink(con, type = "message")
