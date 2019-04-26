@@ -19,7 +19,7 @@ scale_color_bench_expr(palette = scales::hue_pal(...), ...,
   aesthetics = "colour")
 }
 \description{
-Default scales for the \link{bench_expr} class, these are added to plots using
-\link{bench_expr} objects automatically.
+Default scales for the \code{bench_expr} class, these are added to plots using
+\code{bench_expr} objects automatically.
 }
 \keyword{internal}

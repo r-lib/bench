@@ -65,7 +65,7 @@ if (require(ggplot2)) {
   if (require(dplyr) && require(forcats)) {
 
     res \%>\%
-      mutate(expression = forcats::fct_reorder(expression, min, .desc = TRUE)) \%>\%
+      mutate(expression = forcats::fct_reorder(as.character(expression), min, .desc = TRUE)) \%>\%
       as_bench_mark() \%>\%
       autoplot("violin")
   }

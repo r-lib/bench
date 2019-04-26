@@ -2,15 +2,14 @@ new_bench_expr <- function(x, description = names(x)) {
   if (is.null(description)) {
     description <- rep("", length(x))
   }
-  attr(x, "description") <- description
-  names(x) <- NULL
+  names(x) <- description
 
   structure(x, class = c("bench_expr", "expression"))
 }
 
 #' @export
-format.bench_expr <- function(x) {
-  desc <- attr(x, "description")
+format.bench_expr <- function(x, ...) {
+  desc <- names(x)
   is_missing <- desc == ""
   desc[is_missing] <- vapply(x[is_missing], deparse_trunc, character(1))
   desc
@@ -22,8 +21,6 @@ as.character.bench_expr <- format.bench_expr
 #' @export
 print.bench_expr <- function(x, ...) {
   x <- unclass(x)
-  names(x) <- attr(x, "description")
-  attr(x, "description") <- NULL
   NextMethod()
 }
 
@@ -34,8 +31,7 @@ type_sum.bench_expr <- function(x) {
 #' @export
 `[.bench_expr` <- function(x, i, ...) {
   new_x <- NextMethod("[")
-  desc <- attr(x, "description")[i]
-  new_bench_expr(new_x, desc)
+  new_bench_expr(new_x)
 }
 
 pillar_shaft.bench_expr <- function(x, ...) {
@@ -50,8 +46,8 @@ setOldClass(c("bench_expr", "expression"), expression())
 
 #' Position and color scales for bench_expr data
 #'
-#' Default scales for the [bench_expr] class, these are added to plots using
-#' [bench_expr] objects automatically.
+#' Default scales for the `bench_expr` class, these are added to plots using
+#' `bench_expr` objects automatically.
 #' @name scale_bench_expr
 #' @keywords internal
 #' @export

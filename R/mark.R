@@ -284,6 +284,8 @@ parse_gc <- function(x) {
   tibble::as_tibble(.Call(parse_gc_, x))
 }
 
+utils::globalVariables(c("time", "gc"))
+
 unnest.bench_mark <- function(data, ...) {
   # suppressWarnings to avoid 'elements may not preserve their attributes'
   # warnings from dplyr::collapse
