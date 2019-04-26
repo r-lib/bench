@@ -10,3 +10,4 @@
 ^_pkgdown\.yml$
 ^cran-comments\.md$
 ^CRAN-RELEASE$
+^.*\.tar\.gz$
