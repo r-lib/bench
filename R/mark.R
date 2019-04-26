@@ -135,8 +135,8 @@ as_bench_mark <- function(x) {
   bench_mark(tibble::as_tibble(x))
 }
 
-summary_cols <- c("min", "mean", "median", "max", "itr/sec", "mem_alloc", "n_gc", "n_itr", "total_time")
-data_cols <- c("result", "memory", "time", "gc")
+summary_cols <- c("min", "median", "itr/sec", "mem_alloc", "gc/sec")
+data_cols <- c("n_itr", "n_gc", "total_time", "result", "memory", "time", "gc")
 
 #' Summarize [bench::mark] results.
 #'
@@ -207,19 +207,21 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, ...) 
     )
   }
 
-  object$mean <- new_bench_time(vdapply(times, mean))
-  object$min <- new_bench_time(vdapply(times, min))
-  object$median <- new_bench_time(vdapply(times, stats::median))
-  object$max <- new_bench_time(vdapply(times, max))
-  object$total_time <- new_bench_time(vdapply(times, sum))
+  object$time <- times
+
+  object$min <- new_bench_time(vdapply(object$time, min))
+  object$median <- new_bench_time(vdapply(object$time, stats::median))
+  object$total_time <- new_bench_time(vdapply(object$time, sum))
+
   object$n_itr <- viapply(times, length)
   object$`itr/sec` <-  as.numeric(object$n_itr / object$total_time)
+
+  object$n_gc <- vdapply(num_gc, sum)
+  object$`gc/sec` <-  as.numeric(object$n_gc / object$total_time)
 
   object$mem_alloc <-
     bench_bytes(
       vdapply(object$memory, function(x) if (is.null(x)) NA else sum(x$bytes, na.rm = TRUE)))
-
-  object$n_gc <- vdapply(num_gc, sum)
 
   if (isTRUE(relative)) {
     object[summary_cols] <- lapply(object[summary_cols], function(x) as.numeric(x / min(x)))
