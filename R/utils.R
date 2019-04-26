@@ -57,7 +57,11 @@ deparse_trunc <- function(x, width = getOption("width")) {
   text <- deparse(x, width.cutoff = width)
   if (length(text) == 1 && nchar(text) < width) return(text)
 
-  paste0(substr(text[1], 1, width - 3), "...")
+  # Remove any leading spaces
+  text <- sub("^[[:space:]]*", "", text)
+
+  # Collapse all together
+  glue::glue_collapse(text, " ", width = width)
 }
 
 # inlined from https://github.com/r-lib/cli/blob/master/R/utf8.R
