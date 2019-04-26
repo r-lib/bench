@@ -14,6 +14,8 @@ NULL
 #' @param iterations If not `NULL`, the default, run each expression for
 #'   exactly this number of iterations. This overrides both `min_iterations`
 #'   and `max_iterations`.
+#' @param exprs A list of quoted expressions. If supplied overrides expressions
+#'   defined in `...`.
 #' @param min_iterations Each expression will be evaluated a minimum of `min_iterations` times.
 #' @param max_iterations Each expression will be evaluated a maximum of `max_iterations` times.
 #' @param check Check if results are consistent. If `TRUE`, checking is done
@@ -36,7 +38,7 @@ NULL
 #' @export
 mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
                  max_iterations = 10000, check = TRUE, filter_gc = TRUE,
-                 relative = FALSE, env = parent.frame()) {
+                 relative = FALSE, exprs = NULL, env = parent.frame()) {
 
   if (!is.null(iterations)) {
     min_iterations <- iterations
@@ -52,7 +54,9 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     check <- FALSE
   }
 
-  exprs <- dots(...)
+  if (is.null(exprs)) {
+    exprs <- dots(...)
+  }
 
   results <- list(expression = new_bench_expr(exprs), result = list(), memory = list(), time = list(), gc = list())
 

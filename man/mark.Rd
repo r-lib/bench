@@ -7,7 +7,7 @@
 \usage{
 mark(..., min_time = 0.5, iterations = NULL, min_iterations = 1,
   max_iterations = 10000, check = TRUE, filter_gc = TRUE,
-  relative = FALSE, env = parent.frame())
+  relative = FALSE, exprs = NULL, env = parent.frame())
 }
 \arguments{
 \item{...}{Expressions to benchmark, if named the \code{expression} column will
@@ -35,6 +35,9 @@ a garbage collection in every iteration, filtering is disabled, with a warning.}
 
 \item{relative}{If \code{TRUE} all summaries are computed relative to the minimum
 execution time rather than absolute time.}
+
+\item{exprs}{A list of quoted expressions. If supplied overrides expressions
+defined in \code{...}.}
 
 \item{env}{The environment which to evaluate the expressions}
 }
