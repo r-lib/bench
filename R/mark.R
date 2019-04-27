@@ -207,11 +207,9 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, ...) 
     )
   }
 
-  object$time <- times
-
-  object$min <- new_bench_time(vdapply(object$time, min))
-  object$median <- new_bench_time(vdapply(object$time, stats::median))
-  object$total_time <- new_bench_time(vdapply(object$time, sum))
+  object$min <- new_bench_time(vdapply(times, min))
+  object$median <- new_bench_time(vdapply(times, stats::median))
+  object$total_time <- new_bench_time(vdapply(times, sum))
 
   object$n_itr <- viapply(times, length)
   object$`itr/sec` <-  as.numeric(object$n_itr / object$total_time)
