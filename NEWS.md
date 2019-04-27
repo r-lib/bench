@@ -1,5 +1,9 @@
 # bench 1.0.1.9000
 
+* `mark()` now internally uses a tempfile rather than a
+  textConnection, as the latter has a 100,000 character limit on
+  some platforms (#27)
+
 * `mark()` no longer returns the mean or max values and the column order has
   been tweaked to try and put the most interesting columns first (#37)
 

@@ -41,7 +41,8 @@ auto_name_vec <- function(names) {
 utils::globalVariables("_rval_")
 
 with_gcinfo <- function(expr) {
-  con <- textConnection("_rval_", "w", local = TRUE)
+  tf <- tempfile()
+  con <- file(tf, "wb")
   sink(con, type = "message")
   {
     old <- gcinfo(TRUE)
@@ -49,7 +50,9 @@ with_gcinfo <- function(expr) {
       gcinfo(old)
       sink(NULL, type = "message")
       close(con)
-      return(`_rval_`)
+      output <- readLines(tf, warn = FALSE)
+      unlink(tf)
+      return(output)
     })
     force(expr)
   }
