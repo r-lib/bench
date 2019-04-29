@@ -10,7 +10,7 @@ matrix:
   - r: release
     after_success:
     - Rscript -e 'covr::codecov()'
-    before_cache: Rscript -e 'remotes::install_cran(c("pkgdown"))'
+    before_cache: Rscript -e 'remotes::install_cran(c("pkgdown", "tidyverse"))'
     deploy:
       provider: script
       script: Rscript -e 'pkgdown::deploy_site_github(verbose = TRUE)'
