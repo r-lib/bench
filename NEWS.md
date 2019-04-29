@@ -1,4 +1,4 @@
-# bench 1.0.1.9000
+# bench 1.0.2
 
 * `workout()` a new function which makes timing multiple expressions in turn
   simpler.
