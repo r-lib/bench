@@ -139,9 +139,6 @@ describe("summary.bench_mark", {
 
     expect_equal(res1$n_gc, 6)
     expect_equal(res1$n_gc, res2$n_gc)
-
-    # The max should be higher with gc included
-    expect_gt(vdapply(res2$time, max), vdapply(res1$time, max))
   })
 
   it("does not issue warnings if there are no garbage collections", {
