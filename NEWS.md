@@ -1,5 +1,8 @@
 # bench 1.0.1.9000
 
+* `workout()` a new function which makes timing multiple expressions in turn
+  simpler.
+
 * `mark()` now internally uses a tempfile rather than a
   textConnection, as the latter has a 100,000 character limit on
   some platforms (#27)

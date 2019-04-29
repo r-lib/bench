@@ -2,7 +2,7 @@
 % Please edit documentation in R/workout.R
 \name{workout}
 \alias{workout}
-\title{Time a group of expressions individually}
+\title{Workout a group of expressions individually}
 \usage{
 workout(expr, description = NULL)
 }
@@ -10,9 +10,20 @@ workout(expr, description = NULL)
 \item{expr}{one or more expressions to workout, use \code{{}} to pass multiple
 expressions.}
 
-\item{description}{A name to call each expression}
+\item{description}{A name to label each expression, if not supplied the
+deparsed expression will be used.}
 }
 \description{
 Given an block of expressions in \code{{}} \code{\link[=workout]{workout()}} individually times each
 expression in the group.
+}
+\examples{
+workout({
+  x <- 1:1000
+  evens <- x \%\% 2 == 0
+  y <- x[evens]
+  length(y)
+  length(which(evens))
+  sum(evens)
+})
 }
