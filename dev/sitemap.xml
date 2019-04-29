@@ -48,4 +48,7 @@
   <url>
     <loc>http://bench.r-lib.org/reference/workout.html</loc>
   </url>
+  <url>
+    <loc>http://bench.r-lib.org/articles/releases/bench-1.0.1.html</loc>
+  </url>
 </urlset>
