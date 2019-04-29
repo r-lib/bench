@@ -151,6 +151,7 @@ library(tidyverse)
 results %>%
   unnest() %>%
   filter(gc == "none") %>%
+  mutate(expression = as.character(expression)) %>%
   ggplot(aes(x = mem_alloc, y = time, color = expression)) +
     geom_point() +
     scale_color_bench_expr(scales::brewer_pal(type = "qual", palette = 3))

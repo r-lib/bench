@@ -91,12 +91,12 @@ bnch <- bench::mark(
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
 bnch
-#> # A tibble: 3 x 10
-#>   expression                     min     mean   median      max `itr/sec` mem_alloc  n_gc n_itr total_time
-#>   <bch:expr>                <bch:tm> <bch:tm> <bch:tm> <bch:tm>     <dbl> <bch:byt> <dbl> <int>   <bch:tm>
-#> 1 dat[dat$x > 500, ]           311µs    391µs    338µs   1.23ms     2555.     377KB     6   783      306ms
-#> 2 dat[which(dat$x > 500), ]    235µs    298µs    255µs   1.36ms     3358.     260KB     7  1340      399ms
-#> 3 subset(dat, x > 500)         389µs    494µs    422µs   1.45ms     2024.     494KB     8   786      388ms
+#> # A tibble: 3 x 6
+#>   expression                     min   median `itr/sec` mem_alloc `gc/sec`
+#>   <bch:expr>                <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+#> 1 dat[dat$x > 500, ]           408µs    491µs     1998.     377KB     0   
+#> 2 dat[which(dat$x > 500), ]    250µs    371µs     2798.     260KB     2.31
+#> 3 subset(dat, x > 500)         407µs    606µs     1750.     494KB     2.27
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -105,12 +105,12 @@ can be obtained by using `relative = TRUE` in your call to
 
 ``` r
 summary(bnch, relative = TRUE)
-#> # A tibble: 3 x 10
-#>   expression                  min  mean median   max `itr/sec` mem_alloc  n_gc n_itr total_time
-#>   <bch:expr>                <dbl> <dbl>  <dbl> <dbl>     <dbl>     <dbl> <dbl> <dbl>      <dbl>
-#> 1 dat[dat$x > 500, ]         1.32  1.31   1.32  1         1.26      1.45  1     1          1   
-#> 2 dat[which(dat$x > 500), ]  1     1      1     1.10      1.66      1     1.17  1.71       1.30
-#> 3 subset(dat, x > 500)       1.66  1.66   1.65  1.18      1         1.90  1.33  1.00       1.27
+#> # A tibble: 3 x 6
+#>   expression                  min median `itr/sec` mem_alloc `gc/sec`
+#>   <bch:expr>                <dbl>  <dbl>     <dbl>     <dbl>    <dbl>
+#> 1 dat[dat$x > 500, ]         1.63   1.32      1.14      1.45      NaN
+#> 2 dat[which(dat$x > 500), ]  1      1         1.60      1         Inf
+#> 3 subset(dat, x > 500)       1.63   1.63      1         1.90      Inf
 ```
 
 ### `bench::press()`
@@ -191,6 +191,7 @@ library(tidyverse)
 results %>%
   unnest() %>%
   filter(gc == "none") %>%
+  mutate(expression = as.character(expression)) %>%
   ggplot(aes(x = mem_alloc, y = time, color = expression)) +
     geom_point() +
     scale_color_bench_expr(scales::brewer_pal(type = "qual", palette = 3))
@@ -207,10 +208,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   404ms   406ms
+#>   388ms   388ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    36µs   501ms
+#>   913µs   500ms
 ```
 
 ## Alternatives
