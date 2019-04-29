@@ -11,3 +11,5 @@
 ^cran-comments\.md$
 ^CRAN-RELEASE$
 ^.*\.tar\.gz$
+^revdep$
+^vignettes$
