@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">bench</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.2.9000</span>
       </span>
     </div>
 
@@ -141,16 +141,16 @@
 <pre><code>## # A tibble: 3 x 6
 ##   expression                     min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 dat[dat$x &gt; 500, ]           435µs    469µs     2016.     377KB     12.8
-## 2 dat[which(dat$x &gt; 500), ]    342µs    366µs     2663.     260KB     12.7
-## 3 subset(dat, x &gt; 500)         557µs    591µs     1668.     509KB     15.1</code></pre>
+## 1 dat[dat$x &gt; 500, ]           431µs    457µs     2061.     377KB     12.7
+## 2 dat[which(dat$x &gt; 500), ]    340µs    359µs     2733.     260KB     12.7
+## 3 subset(dat, x &gt; 500)         554µs    577µs     1702.     509KB     15.0</code></pre>
 <p>By default the summary uses absolute measures, however relative results can be obtained by using <code>relative = TRUE</code> in your call to <code><a href="../../reference/mark.html">bench::mark()</a></code> or calling <code><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary(relative = TRUE)</a></code> on the results.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(bnch, <span class="dt">relative =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 6
 ##   expression                  min median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 dat[dat$x &gt; 500, ]         1.27   1.28      1.21      1.45     1.00
-## 2 dat[which(dat$x &gt; 500), ]  1      1         1.60      1        1   
+## 1 dat[dat$x &gt; 500, ]         1.27   1.28      1.21      1.45     1   
+## 2 dat[which(dat$x &gt; 500), ]  1      1         1.61      1        1.00
 ## 3 subset(dat, x &gt; 500)       1.63   1.61      1         1.96     1.19</code></pre>
 </div>
 <div id="benchpress" class="section level4">
@@ -189,18 +189,18 @@
 <pre><code>## # A tibble: 12 x 8
 ##    expression   rows  cols      min   median `itr/sec` mem_alloc `gc/sec`
 ##    &lt;bch:expr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-##  1 bracket     10000    10 993.62µs   1.04ms     941.     1.13MB     20.1
-##  2 which       10000    10 516.26µs 557.66µs    1756.    572.7KB     20.2
-##  3 subset      10000    10   1.13ms   1.18ms     830.     1.25MB     22.7
-##  4 bracket    100000    10  14.87ms   15.3ms      63.9   11.16MB     44.4
-##  5 which      100000    10  10.01ms  10.32ms      95.1    5.44MB     20.9
-##  6 subset     100000    10  15.89ms  16.34ms      60.6    12.3MB     45.7
-##  7 bracket     10000   100   7.83ms   8.04ms     124.     9.68MB     69.9
-##  8 which       10000   100   2.85ms   3.09ms     321.     3.96MB     45.9
-##  9 subset      10000   100   8.05ms   8.24ms     121.      9.8MB     44.8
-## 10 bracket    100000   100  81.29ms  82.59ms      11.5   97.09MB     42.5
-## 11 which      100000   100  31.35ms  31.89ms      28.8   39.84MB     14.8
-## 12 subset     100000   100  82.11ms  85.78ms      11.2   98.24MB     39.6</code></pre>
+##  1 bracket     10000    10 975.58µs   1.01ms     973.     1.13MB     22.4
+##  2 which       10000    10 513.39µs 536.25µs    1831.    572.7KB     20.0
+##  3 subset      10000    10   1.12ms   1.15ms     859.     1.25MB     22.3
+##  4 bracket    100000    10  14.63ms  14.93ms      66.0   11.16MB     45.9
+##  5 which      100000    10   9.71ms   9.98ms      97.6    5.44MB     22.9
+##  6 subset     100000    10  15.56ms  16.01ms      62.0    12.3MB     43.1
+##  7 bracket     10000   100   7.65ms   7.79ms     128.     9.68MB     72.1
+##  8 which       10000   100   2.86ms   3.01ms     329.     3.96MB     44.4
+##  9 subset      10000   100   7.84ms   7.97ms     125.      9.8MB     48.5
+## 10 bracket    100000   100  78.45ms  79.31ms      12.2   97.09MB     66.3
+## 11 which      100000   100  28.95ms  30.74ms      30.6   39.84MB     15.1
+## 12 subset     100000   100  82.66ms  83.64ms      11.7   98.24MB     43.9</code></pre>
 </div>
 </div>
 <div id="plotting" class="section level3">

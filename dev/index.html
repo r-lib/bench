@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">bench</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.2.9000</span>
       </span>
     </div>
 
@@ -143,17 +143,17 @@
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; # A tibble: 3 x 6</span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;   expression                     min   median `itr/sec` mem_alloc `gc/sec`</span></a>
 <a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;   &lt;bch:expr&gt;                &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]           436µs    485µs     1902.     377KB     12.8</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]    343µs    365µs     2654.     260KB     10.6</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 3 subset(dat, x &gt; 500)         559µs    590µs     1656.     509KB     15.2</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]           433µs    461µs     1990.     377KB     12.7</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]    340µs    359µs     2732.     260KB     12.6</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 3 subset(dat, x &gt; 500)         555µs    581µs     1698.     509KB     15.0</span></a></code></pre></div>
 <p>By default the summary uses absolute measures, however relative results can be obtained by using <code>relative = TRUE</code> in your call to <code><a href="reference/mark.html">bench::mark()</a></code> or calling <code><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary(relative = TRUE)</a></code> on the results.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(bnch, <span class="dt">relative =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 6</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;   expression                  min median `itr/sec` mem_alloc `gc/sec`</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   &lt;bch:expr&gt;                &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]         1.27   1.33      1.15      1.45     1.21</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]  1      1         1.60      1        1   </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 3 subset(dat, x &gt; 500)       1.63   1.62      1         1.96     1.44</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]         1.27   1.28      1.17      1.45     1.00</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]  1      1         1.61      1        1   </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 3 subset(dat, x &gt; 500)       1.63   1.62      1         1.96     1.19</span></a></code></pre></div>
 </div>
 <div id="benchpress" class="section level3">
 <h3 class="hasAnchor">
@@ -191,18 +191,18 @@
 <a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; # A tibble: 12 x 8</span></a>
 <a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">#&gt;    expression  rows  cols      min   median `itr/sec` mem_alloc `gc/sec`</span></a>
 <a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co">#&gt;    &lt;bch:expr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co">#&gt;  1 bracket     1000     2   33.3µs   38.5µs    24544.   15.84KB     14.7</span></a>
-<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt;  2 which       1000     2   33.1µs   38.6µs    24340.    7.91KB     14.6</span></a>
-<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt;  3 subset      1000     2   56.2µs   64.8µs    14590.    27.7KB     13.1</span></a>
-<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt;  4 bracket    10000     2   95.1µs  108.2µs     8888.  156.46KB     24.8</span></a>
-<a class="sourceLine" id="cb6-36" data-line-number="36"><span class="co">#&gt;  5 which      10000     2   89.4µs  100.3µs     9501.   78.23KB     15.0</span></a>
-<a class="sourceLine" id="cb6-37" data-line-number="37"><span class="co">#&gt;  6 subset     10000     2  151.7µs  172.9µs     5537.  273.79KB     27.5</span></a>
-<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="co">#&gt;  7 bracket     1000    10   78.9µs   92.1µs    10344.   47.52KB     17.6</span></a>
-<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="co">#&gt;  8 which       1000    10   74.1µs   86.4µs    10974.    7.91KB     19.8</span></a>
-<a class="sourceLine" id="cb6-40" data-line-number="40"><span class="co">#&gt;  9 subset      1000    10  105.6µs    122µs     7745.   59.38KB     17.6</span></a>
-<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="co">#&gt; 10 bracket    10000    10  166.7µs  188.3µs     5142.   469.4KB     45.1</span></a>
-<a class="sourceLine" id="cb6-42" data-line-number="42"><span class="co">#&gt; 11 which      10000    10  127.4µs  142.9µs     6837.   78.23KB     12.7</span></a>
-<a class="sourceLine" id="cb6-43" data-line-number="43"><span class="co">#&gt; 12 subset     10000    10    227µs  251.8µs     3876.  586.73KB     43.4</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co">#&gt;  1 bracket     1000     2   33.2µs   37.8µs    25072.   15.84KB     15.1</span></a>
+<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt;  2 which       1000     2   33.1µs   37.7µs    24721.    7.91KB     14.8</span></a>
+<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt;  3 subset      1000     2   56.1µs     63µs    15171.    27.7KB     13.0</span></a>
+<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt;  4 bracket    10000     2     95µs  104.6µs     9098.  156.46KB     26.9</span></a>
+<a class="sourceLine" id="cb6-36" data-line-number="36"><span class="co">#&gt;  5 which      10000     2   88.6µs   96.8µs     9831.   78.23KB     14.9</span></a>
+<a class="sourceLine" id="cb6-37" data-line-number="37"><span class="co">#&gt;  6 subset     10000     2  150.9µs  168.1µs     5691.  273.79KB     29.2</span></a>
+<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="co">#&gt;  7 bracket     1000    10   79.5µs   89.5µs    10724.   47.52KB     17.6</span></a>
+<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="co">#&gt;  8 which       1000    10   72.6µs   83.4µs    11432.    7.91KB     22.0</span></a>
+<a class="sourceLine" id="cb6-40" data-line-number="40"><span class="co">#&gt;  9 subset      1000    10  103.9µs  117.8µs     8146.   59.38KB     17.4</span></a>
+<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="co">#&gt; 10 bracket    10000    10  166.9µs  186.2µs     5255.   469.4KB     45.7</span></a>
+<a class="sourceLine" id="cb6-42" data-line-number="42"><span class="co">#&gt; 11 which      10000    10  127.6µs  136.6µs     7027.   78.23KB     12.6</span></a>
+<a class="sourceLine" id="cb6-43" data-line-number="43"><span class="co">#&gt; 12 subset     10000    10  227.2µs  249.4µs     3894.  586.73KB     45.1</span></a></code></pre></div>
 </div>
 </div>
 <div id="plotting" class="section level2">
@@ -229,10 +229,10 @@
 <p><strong>bench</strong> also includes <code><a href="reference/system_time.html">system_time()</a></code>, a higher precision alternative to <a href="https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time">system.time()</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">bench<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bench/topics/system_time">system_time</a></span>({ i &lt;-<span class="st"> </span><span class="dv">1</span>; <span class="cf">while</span>(i <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e7</span>) i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span> })</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; process    real </span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;   380ms   380ms</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;   353ms   353ms</span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">bench<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bench/topics/system_time">system_time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.sleep">Sys.sleep</a></span>(.<span class="dv">5</span>))</a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; process    real </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  87.2µs 500.6ms</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  85.7µs 500.7ms</span></a></code></pre></div>
 </div>
 <div id="alternatives" class="section level2">
 <h2 class="hasAnchor">
