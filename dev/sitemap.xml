@@ -25,6 +25,9 @@
     <loc>http://bench.r-lib.org/reference/bench_time_trans.html</loc>
   </url>
   <url>
+    <loc>http://bench.r-lib.org/reference/hires_time.html</loc>
+  </url>
+  <url>
     <loc>http://bench.r-lib.org/reference/knit_print.bench_mark.html</loc>
   </url>
   <url>

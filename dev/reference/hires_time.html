@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Return Process CPU and real time that an expression used. — system_time • bench</title>
+<title>Return the current high-resolution real time. — hires_time • bench</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,13 @@
 
 
 
-<meta property="og:title" content="Return Process CPU and real time that an expression used. — system_time" />
+<meta property="og:title" content="Return the current high-resolution real time. — hires_time" />
 
-<meta property="og:description" content="Return Process CPU and real time that an expression used." />
+<meta property="og:description" content="Time is expressed as seconds since some arbitrary time in the past; it
+is not correlated in any way to the time of day, and thus is not subject to
+resetting or drifting. The hi-res
+timer is ideally suited to performance measurement tasks, where cheap,
+accurate interval timing is required." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -113,57 +117,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Return Process CPU and real time that an expression used.</h1>
+    <h1>Return the current high-resolution real time.</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/system_time.R'><code>R/system_time.R</code></a></small>
-    <div class="hidden name"><code>system_time.Rd</code></div>
+    <div class="hidden name"><code>hires_time.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Return Process CPU and real time that an expression used.</p>
+    <p>Time is expressed as seconds since some arbitrary time in the past; it
+is not correlated in any way to the time of day, and thus is not subject to
+resetting or drifting. The hi-res
+timer is ideally suited to performance measurement tasks, where cheap,
+accurate interval timing is required.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>system_time</span>(<span class='no'>expr</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>expr</th>
-      <td><p>A expression to be timed.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A <a href='bench_time.html'>bench_time</a> object with two values.</p><ul>
-<li><p><code>process</code> - The process CPU usage of the expression evaluation.</p></li>
-<li><p><code>real</code> - The wallclock time of the expression evaluation.</p></li>
-</ul>
-
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>On some systems (such as macOS) the process clock has lower
-precision than the realtime clock, as a result there may be cases where the
-process time is larger than the real time for fast expressions.</p>
-    
+    <pre class="usage"><span class='fu'>hires_time</span>()</pre>
+        
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># This will use ~.5 seconds of real time, but very little process time.</span>
-<span class='fu'>system_time</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.sleep'>Sys.sleep</a></span>(<span class='fl'>.5</span>))</div><div class='output co'>#&gt; process    real 
-#&gt;   105µs   501ms </div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>hires_time</span>()</div><div class='output co'>#&gt; [1] 1565358388</div><div class='input'><span class='co'># R rounds doubles to 7 digits by default, see greater precision by setting</span>
+<span class='co'># the digits argument when printing</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='fu'>hires_time</span>(), <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; [1] 1565358387.9879956245</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

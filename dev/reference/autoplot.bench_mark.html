@@ -142,10 +142,10 @@
       <th>type</th>
       <td><p>The type of plot. Plotting geoms used for each type are</p><ul>
 <li><p>beeswarm - <code><a href='https://www.rdocumentation.org/packages/ggbeeswarm/topics/geom_quasirandom'>ggbeeswarm::geom_quasirandom()</a></code></p></li>
-<li><p>jitter - <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_jitter'>ggplot2::geom_jitter()</a></code></p></li>
+<li><p>jitter - <code><a href='https://ggplot2.tidyverse.org/reference/geom_jitter.html'>ggplot2::geom_jitter()</a></code></p></li>
 <li><p>ridge - <code><a href='https://www.rdocumentation.org/packages/ggridges/topics/geom_density_ridges'>ggridges::geom_density_ridges()</a></code></p></li>
-<li><p>boxplot - <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_boxplot'>ggplot2::geom_boxplot()</a></code></p></li>
-<li><p>violin - <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_violin'>ggplot2::geom_violin()</a></code></p></li>
+<li><p>boxplot - <code><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>ggplot2::geom_boxplot()</a></code></p></li>
+<li><p>violin - <code><a href='https://ggplot2.tidyverse.org/reference/geom_violin.html'>ggplot2::geom_violin()</a></code></p></li>
 </ul></td>
     </tr>
     <tr>
@@ -164,13 +164,13 @@
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function requires some optional dependencies. <a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot2-package'>ggplot2</a>,
+    <p>This function requires some optional dependencies. <a href='https://ggplot2.tidyverse.org/reference/ggplot2-package.html'>ggplot2</a>,
 <a href='https://tidyr.tidyverse.org/reference/tidyr-package.html'>tidyr</a>, and depending on the plot type
 <a href='https://www.rdocumentation.org/packages/ggbeeswarm/topics/ggbeeswarm'>ggbeeswarm</a>, <a href='https://www.rdocumentation.org/packages/ggridges/topics/ggridges'>ggridges</a>.</p>
 <p>For <code>type</code> of <code>beeswarm</code> and <code>jitter</code> the points are colored by the highest
 level garbage collection performed during each iteration.</p>
-<p>For plots with 2 parameters <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>ggplot2::facet_grid()</a></code> is used to construct a
-2d facet. For other numbers of parameters <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap()</a></code> is used
+<p>For plots with 2 parameters <code><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>ggplot2::facet_grid()</a></code> is used to construct a
+2d facet. For other numbers of parameters <code><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>ggplot2::facet_wrap()</a></code> is used
 instead.</p>
     
 
@@ -185,10 +185,10 @@ instead.</p>
 <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>require</a></span>(<span class='no'>ggplot2</span>)) {
 
   <span class='co'># Beeswarm plot</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/autoplot'>autoplot</a></span>(<span class='no'>res</span>)
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span>(<span class='no'>res</span>)
 
   <span class='co'># ridge (joyplot)</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/autoplot'>autoplot</a></span>(<span class='no'>res</span>, <span class='st'>"ridge"</span>)
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span>(<span class='no'>res</span>, <span class='st'>"ridge"</span>)
 
   <span class='co'># If you want to have the plots ordered by execution time you can do so by</span>
   <span class='co'># ordering factor levels in the expressions.</span>
@@ -197,13 +197,9 @@ instead.</p>
     <span class='no'>res</span> <span class='kw'>%&gt;%</span>
       <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>expression</span> <span class='kw'>=</span> <span class='kw pkg'>forcats</span><span class='kw ns'>::</span><span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_reorder.html'>fct_reorder</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='no'>expression</span>), <span class='no'>min</span>, <span class='kw'>.desc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) <span class='kw'>%&gt;%</span>
       <span class='fu'><a href='as_bench_mark.html'>as_bench_mark</a></span>() <span class='kw'>%&gt;%</span>
-      <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/autoplot'>autoplot</a></span>(<span class='st'>"violin"</span>)
+      <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span>(<span class='st'>"violin"</span>)
   }
-}</div><div class='output co'>#&gt; <span class='message'>Loading required package: ggplot2</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 methods overwritten by 'ggplot2':</span>
-#&gt; <span class='message'>  method         from </span>
-#&gt; <span class='message'>  [.quosures     rlang</span>
-#&gt; <span class='message'>  c.quosures     rlang</span>
-#&gt; <span class='message'>  print.quosures rlang</span></div><div class='output co'>#&gt; <span class='message'>Loading required namespace: tidyr</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: dplyr</span></div><div class='output co'>#&gt; <span class='message'></span>
+}</div><div class='output co'>#&gt; <span class='message'>Loading required package: ggplot2</span></div><div class='output co'>#&gt; <span class='message'>Loading required namespace: tidyr</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: dplyr</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
