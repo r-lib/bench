@@ -67,6 +67,15 @@ SEXP system_time_(SEXP expr, SEXP env) {
   return out;
 }
 
+SEXP hires_time_() {
+  double time = real_time();
+  SEXP out = PROTECT(Rf_allocVector(REALSXP, 1));
+  REAL(out)[0] = time;
+
+  UNPROTECT(1);
+  return out;
+}
+
 SEXP parse_gc_(SEXP x) {
 
   R_xlen_t n = Rf_xlength(x);
@@ -104,6 +113,7 @@ SEXP parse_gc_(SEXP x) {
 static const R_CallMethodDef CallEntries[] = {
     {"mark_", (DL_FUNC) &mark_, 5},
     {"system_time_", (DL_FUNC) &system_time_, 2},
+    {"hires_time_", (DL_FUNC) &hires_time_, 0},
     {"parse_gc_", (DL_FUNC) &parse_gc_, 1},
     {NULL, NULL, 0}
 };

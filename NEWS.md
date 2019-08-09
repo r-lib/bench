@@ -1,5 +1,8 @@
 # bench (development version)
 
+* New `hires_time()` allows you to explicitly capture high resolution time
+  points.
+
 # bench 1.0.2
 
 * `workout()` a new function which makes timing multiple expressions in turn
