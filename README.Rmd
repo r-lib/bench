@@ -25,7 +25,13 @@ memory allocations and garbage collections.
 
 ## Installation
 
-You can install the development version from [GitHub](https://github.com/) with:
+You can install the release version from [CRAN](https://cran.r-project.org/) with:
+
+```{r, eval = FALSE}
+install.packages("bench")
+```
+
+Or you can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
