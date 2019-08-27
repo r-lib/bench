@@ -1,4 +1,4 @@
-# bench (development version)
+# bench 1.0.3
 
 * `summary.bench_mark()` gains a `time_unit` argument, so you can report all
   times in a consistent scale if desired (#18, #26).
