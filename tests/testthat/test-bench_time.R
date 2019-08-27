@@ -1,9 +1,7 @@
-context("test-system_time.R")
-
-describe("system_time", {
+describe("bench_time", {
   skip_on_cran()
 
-  res <- system_time(1 + 1:1e7)
+  res <- bench_time(1 + 1:1e7)
   it("returns process and real time", {
     expect_equal(names(res), c("process", "real"))
   })
@@ -14,8 +12,20 @@ describe("system_time", {
   })
   it("returns times that are reasonable, system and real time are far apart
     for non-process bound expressions", {
-    res <- system_time(Sys.sleep(.5))
+    res <- bench_time(Sys.sleep(.5))
     epsilon <- abs(res[[1]] - res[[2]])
     expect_true((epsilon / res[[1]]) > 100)
   })
+})
+
+describe("bench_memory", {
+  skip_on_cran()
+
+  res <- bench_memory(1 + 1:1e7)
+  it("returns memory allocation and the raw memory used", {
+    expect_equal(names(res), c("mem_alloc", "memory"))
+  })
+  it("returns reasonable memory allocation", {
+      expect_true(res[["mem_alloc"]] > "10MB")
+    })
 })

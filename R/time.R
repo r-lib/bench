@@ -33,10 +33,6 @@ as_bench_time <- function(x) {
   UseMethod("as_bench_time")
 }
 
-#' @export
-#' @rdname bench_time
-bench_time <- as_bench_time
-
 new_bench_time <- function(x) {
   structure(x, class = c("bench_time", "numeric"))
 }

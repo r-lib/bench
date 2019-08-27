@@ -1,6 +1,10 @@
 # bench (development version)
 
-* `unnest.bench_mark()` is not compatible with the upcoming tidyr 1.0.0 (#48, #51)
+* New `bench_memory()` to capture just the memory allocated by an expression.
+
+* `bench_time()` is now an alias for `system_time()`.
+
+* `unnest.bench_mark()` is now compatible with the upcoming tidyr 1.0.0 (#48, #51)
 
 * New `hires_time()` allows you to explicitly capture high resolution time
   points.
