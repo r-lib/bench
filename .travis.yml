@@ -23,4 +23,4 @@ matrix:
   - r: 3.2
   - r: release
     name: "dev tidyr"
-    r_github_packages: r-lib/tidyr
+    r_github_packages: tidyverse/tidyr
