@@ -21,3 +21,6 @@ matrix:
   - r: oldrel
   - r: 3.3
   - r: 3.2
+  - r: release
+    name: "dev tidyr"
+    r_github_packages: r-lib/tidyr
