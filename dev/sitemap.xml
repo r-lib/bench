@@ -19,6 +19,9 @@
     <loc>http://bench.r-lib.org/reference/bench_bytes_trans.html</loc>
   </url>
   <url>
+    <loc>http://bench.r-lib.org/reference/bench_memory.html</loc>
+  </url>
+  <url>
     <loc>http://bench.r-lib.org/reference/bench_time.html</loc>
   </url>
   <url>
@@ -44,9 +47,6 @@
   </url>
   <url>
     <loc>http://bench.r-lib.org/reference/summary.bench_mark.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/system_time.html</loc>
   </url>
   <url>
     <loc>http://bench.r-lib.org/reference/workout.html</loc>
