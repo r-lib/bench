@@ -1,5 +1,8 @@
 # bench (development version)
 
+* `summary.bench_mark()` gains a `time_unit` argument, so you can report all
+  times in a consistent scale if desired (#18, #26).
+
 * `bench_mark()` now checks for user interrupts, to allow you to stop benchmarking 
   if it takes longer than you were expecting (#49).
 

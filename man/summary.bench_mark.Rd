@@ -5,7 +5,7 @@
 \title{Summarize \link[bench:mark]{bench::mark} results.}
 \usage{
 \method{summary}{bench_mark}(object, filter_gc = TRUE,
-  relative = FALSE, ...)
+  relative = FALSE, time_unit = NULL, ...)
 }
 \arguments{
 \item{object}{\link{bench_mark} object to summarize.}
@@ -16,6 +16,11 @@ a garbage collection in every iteration, filtering is disabled, with a warning.}
 
 \item{relative}{If \code{TRUE} all summaries are computed relative to the minimum
 execution time rather than absolute time.}
+
+\item{time_unit}{If \code{NULL} the times are reported in a human readable
+fashion depending on each value. If one of 'ns', 'us', 'ms', 's', 'm', 'h',
+'d', 'w' the time units are instead expressed as nanoseconds, microseconds,
+milliseconds, seconds, hours, minutes, days or weeks respectively.}
 
 \item{...}{Additional arguments ignored.}
 }

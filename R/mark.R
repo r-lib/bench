@@ -38,7 +38,7 @@ NULL
 #' @export
 mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
                  max_iterations = 10000, check = TRUE, filter_gc = TRUE,
-                 relative = FALSE, exprs = NULL, env = parent.frame()) {
+                 relative = FALSE, time_unit = NULL, exprs = NULL, env = parent.frame()) {
 
   if (!is.null(iterations)) {
     min_iterations <- iterations
@@ -117,7 +117,8 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     results$gc[[i]] <- parse_gc(gc_msg)
   }
 
-  summary(bench_mark(tibble::as_tibble(results, validate = FALSE)), filter_gc = filter_gc, relative = relative)
+  summary(bench_mark(tibble::as_tibble(results, validate = FALSE)),
+          filter_gc = filter_gc, relative = relative, time_unit = time_unit)
 }
 
 bench_mark <- function(x) {
@@ -137,6 +138,7 @@ as_bench_mark <- function(x) {
 
 summary_cols <- c("min", "median", "itr/sec", "mem_alloc", "gc/sec")
 data_cols <- c("n_itr", "n_gc", "total_time", "result", "memory", "time", "gc")
+time_cols <- c("min", "median", "total_time")
 
 #' Summarize [bench::mark] results.
 #'
@@ -146,6 +148,10 @@ data_cols <- c("n_itr", "n_gc", "total_time", "result", "memory", "time", "gc")
 #'   a garbage collection in every iteration, filtering is disabled, with a warning.
 #' @param relative If `TRUE` all summaries are computed relative to the minimum
 #'   execution time rather than absolute time.
+#' @param time_unit If `NULL` the times are reported in a human readable
+#'   fashion depending on each value. If one of 'ns', 'us', 'ms', 's', 'm', 'h',
+#'   'd', 'w' the time units are instead expressed as nanoseconds, microseconds,
+#'   milliseconds, seconds, hours, minutes, days or weeks respectively.
 #' @param ... Additional arguments ignored.
 #' @details
 #'   If `filter_gc == TRUE` (the default) runs that contain a garbage
@@ -180,7 +186,7 @@ data_cols <- c("n_itr", "n_gc", "total_time", "result", "memory", "time", "gc")
 #' # Or output relative times
 #' summary(results, relative = TRUE)
 #' @export
-summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, ...) {
+summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, time_unit = NULL, ...) {
   nms <- colnames(object)
   parameters <- setdiff(nms, c("expression", summary_cols, data_cols))
 
@@ -223,6 +229,11 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, ...) 
 
   if (isTRUE(relative)) {
     object[summary_cols] <- lapply(object[summary_cols], function(x) as.numeric(x / min(x)))
+  }
+
+  if (!is.null(time_unit)) {
+    time_unit <- match.arg(time_unit, names(time_units()))
+    object[time_cols] <- lapply(object[time_cols], function(x) as.numeric(x / time_units()[time_unit]))
   }
 
   bench_mark(object[c("expression", parameters, summary_cols, data_cols)])
