@@ -27,7 +27,7 @@
 #'   dat[which(dat$x > 500), ],
 #'   subset(dat, x > 500))
 #'
-#' if (require(ggplot2)) {
+#' if (require(ggplot2) && require(tidyr)) {
 #'
 #'   # Beeswarm plot
 #'   autoplot(res)
