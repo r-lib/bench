@@ -1,5 +1,8 @@
 # bench (development version)
 
+* `bench_mark()` now checks for user interrupts, to allow you to stop benchmarking 
+  if it takes longer than you were expecting (#49).
+
 * New `bench_memory()` to capture just the memory allocated by an expression.
 
 * `bench_time()` is now an alias for `system_time()`.

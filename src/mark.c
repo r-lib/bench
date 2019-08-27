@@ -43,6 +43,11 @@ SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP min_itr, SEXP max_itr) {
     REprintf("\x1E");
     REAL(out)[i] = elapsed - overhead;
     total+=elapsed;
+
+    // We could do this less than every iteration, but even with 500,000 iterations
+    // the overhead seems to be less than 200 ms, so it seems ok and simpler
+    // to just do it unconditionally on every iteration.
+    R_CheckUserInterrupt();
   }
 
   out = Rf_xlengthgets(out, i);
