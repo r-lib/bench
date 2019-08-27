@@ -305,10 +305,11 @@ parse_gc <- function(x) {
 utils::globalVariables(c("time", "gc"))
 
 unnest.bench_mark <- function(data, ...) {
+  data[["expression"]] <- as.character(data[["expression"]])
+
   # suppressWarnings to avoid 'elements may not preserve their attributes'
   # warnings from dplyr::collapse
   if (tidyr_new_interface()) {
-    data[["expression"]] <- as.character(data[["expression"]])
     data <- suppressWarnings(NextMethod(.Generic, data, ...))
   } else {
     data <- suppressWarnings(NextMethod(.Generic, data, time, gc, .drop = FALSE))
