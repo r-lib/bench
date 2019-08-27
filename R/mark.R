@@ -170,7 +170,10 @@ time_cols <- c("min", "median", "total_time")
 #'   - `itr/sec` - `integer` The estimated number of executions performed per second.
 #'   - `n_itr` - `integer` Total number of iterations after filtering
 #'      garbage collections (if `filter_gc == TRUE`).
-#'   - `n_gc` - `integer` Total number of garbage collections performed over all runs.
+#'   - `n_gc` - `integer` Total number of garbage collections performed over all
+#'   iterations. This is a psudo-measure of the pressure on the garbage collector, if
+#'   it varies greatly between to alternatives generally the one with fewer
+#'   collections will cause fewer allocation in real usage.
 #' @examples
 #' dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 #'

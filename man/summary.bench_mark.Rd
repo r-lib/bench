@@ -36,7 +36,10 @@ The following summary columns are computed
 \item \code{itr/sec} - \code{integer} The estimated number of executions performed per second.
 \item \code{n_itr} - \code{integer} Total number of iterations after filtering
 garbage collections (if \code{filter_gc == TRUE}).
-\item \code{n_gc} - \code{integer} Total number of garbage collections performed over all runs.
+\item \code{n_gc} - \code{integer} Total number of garbage collections performed over all
+iterations. This is a psudo-measure of the pressure on the garbage collector, if
+it varies greatly between to alternatives generally the one with fewer
+collections will cause fewer allocation in real usage.
 }
 }
 \description{
