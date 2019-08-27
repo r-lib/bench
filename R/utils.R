@@ -91,3 +91,8 @@ collapse <- function(x, sep) {
 lengths <- function(x, use.names = TRUE) {
   viapply(x, length, USE.NAMES = use.names)
 }
+
+# check if the new interface is being used
+tidyr_new_interface <- function() {
+  utils::packageVersion("tidyr") > "0.8.99"
+}

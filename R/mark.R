@@ -142,7 +142,7 @@ data_cols <- c("n_itr", "n_gc", "total_time", "result", "memory", "time", "gc")
 #'
 #' @param object [bench_mark] object to summarize.
 #' @param filter_gc If `TRUE` remove iterations that contained at least one
-#'   garbage collection before summarizing. If `TRUE` but an expression had 
+#'   garbage collection before summarizing. If `TRUE` but an expression had
 #'   a garbage collection in every iteration, filtering is disabled, with a warning.
 #' @param relative If `TRUE` all summaries are computed relative to the minimum
 #'   execution time rather than absolute time.
@@ -293,7 +293,12 @@ utils::globalVariables(c("time", "gc"))
 unnest.bench_mark <- function(data, ...) {
   # suppressWarnings to avoid 'elements may not preserve their attributes'
   # warnings from dplyr::collapse
-  data <- suppressWarnings(NextMethod(.Generic, data, time, gc, .drop = FALSE))
+  if (tidyr_new_interface()) {
+    data[["expression"]] <- as.character(data[["expression"]])
+    data <- suppressWarnings(NextMethod(.Generic, data, ...))
+  } else {
+    data <- suppressWarnings(NextMethod(.Generic, data, time, gc, .drop = FALSE))
+  }
 
   # Add bench_time class back to the time column
   data$time <- bench_time(data$time)

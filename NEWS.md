@@ -1,5 +1,7 @@
 # bench (development version)
 
+* `unnest.bench_mark()` is not compatible with the upcoming tidyr 1.0.0 (#48, #51)
+
 * New `hires_time()` allows you to explicitly capture high resolution time
   points.
 
