@@ -13,4 +13,3 @@
 ^.*\.tar\.gz$
 ^revdep$
 ^vignettes$
-^azure-pipelines\.yml$
