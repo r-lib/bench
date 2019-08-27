@@ -18,15 +18,15 @@ time_units <- function() c(
 #' @param x A numeric or character vector. Character representations can use
 #'   shorthand sizes (see examples).
 #' @examples
-#' bench_time("1")
-#' bench_time("1ns")
-#' bench_time("1us")
-#' bench_time("1ms")
-#' bench_time("1s")
+#' as_bench_time("1ns")
+#' as_bench_time("1")
+#' as_bench_time("1us")
+#' as_bench_time("1ms")
+#' as_bench_time("1s")
 #'
-#' bench_time("100ns") < "1ms"
+#' as_bench_time("100ns") < "1ms"
 #'
-#' sum(bench_time(c("1MB", "5MB", "500KB")))
+#' sum(as_bench_time(c("1MB", "5MB", "500KB")))
 #' @name bench_time
 #' @export
 as_bench_time <- function(x) {
@@ -212,8 +212,8 @@ scale_type.bench_time <- function(x) "bench_time"
 
 #' Position scales for bench_time data
 #'
-#' Default scales for the [bench_time] class, these are added to plots using
-#' [bench_time] objects automatically.
+#' Default scales for the `bench_time` class, these are added to plots using
+#' `bench_time` objects automatically.
 #' @name scale_bench_time
 #' @param base The base of the logarithm, if `NULL` instead use a
 #'   non-logarithmic scale.

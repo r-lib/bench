@@ -182,8 +182,8 @@ scale_type.bench_bytes <- function(x) "bench_bytes"
 
 #' Position scales for bench_time data
 #'
-#' Default scales for the [bench_time] class, these are added to plots using
-#' [bench_time] objects automatically.
+#' Default scales for the `bench_time` class, these are added to plots using
+#' `bench_time` objects automatically.
 #' @name scale_bench_time
 #' @keywords internal
 #' @export

@@ -21,10 +21,10 @@ scale_y_bench_time(base = 10, ...)
 non-logarithmic scale.}
 }
 \description{
-Default scales for the \link{bench_time} class, these are added to plots using
-\link{bench_time} objects automatically.
+Default scales for the \code{bench_time} class, these are added to plots using
+\code{bench_time} objects automatically.
 
-Default scales for the \link{bench_time} class, these are added to plots using
-\link{bench_time} objects automatically.
+Default scales for the \code{bench_time} class, these are added to plots using
+\code{bench_time} objects automatically.
 }
 \keyword{internal}

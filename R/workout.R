@@ -33,7 +33,7 @@ workout <- function(expr, description = NULL) {
   )
 
   for (i in seq_along(exprs)) {
-    res <- bench_time(.Call(system_time_, exprs[[i]], env))
+    res <- as_bench_time(.Call(system_time_, exprs[[i]], env))
     out[[2]][[i]] <- res[[1]]
     out[[3]][[i]] <- res[[2]]
   }

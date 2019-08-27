@@ -36,15 +36,15 @@ process time is larger than the real time for fast expressions.
 \examples{
 # This will use ~.5 seconds of real time, but very little process time.
 bench_time(Sys.sleep(.5))
-bench_time("1")
-bench_time("1ns")
-bench_time("1us")
-bench_time("1ms")
-bench_time("1s")
+as_bench_time("1ns")
+as_bench_time("1")
+as_bench_time("1us")
+as_bench_time("1ms")
+as_bench_time("1s")
 
-bench_time("100ns") < "1ms"
+as_bench_time("100ns") < "1ms"
 
-sum(bench_time(c("1MB", "5MB", "500KB")))
+sum(as_bench_time(c("1MB", "5MB", "500KB")))
 }
 \seealso{
 \code{\link[=bench_memory]{bench_memory()}} To measure memory allocations for a given expression.
