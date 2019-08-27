@@ -27,7 +27,6 @@ time_units <- function() c(
 #' as_bench_time("100ns") < "1ms"
 #'
 #' sum(as_bench_time(c("1MB", "5MB", "500KB")))
-#' @name bench_time
 #' @export
 as_bench_time <- function(x) {
   UseMethod("as_bench_time")

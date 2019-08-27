@@ -18,7 +18,7 @@ navbar:
     menu:
     - text: "Release notes"
     - text: "Version 1.0.1"
-      href: articles/releases/bench-1.0.1.html
+      href: https://www.tidyverse.org/articles/2018/06/bench-1.0.1/
     - text: "------------------"
     - text: "Change log"
       href: news/index.html

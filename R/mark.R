@@ -313,10 +313,10 @@ unnest.bench_mark <- function(data, ...) {
     data <- suppressWarnings(NextMethod(.Generic, data, ...))
   } else {
     data <- suppressWarnings(NextMethod(.Generic, data, time, gc, .drop = FALSE))
-
-    # Add bench_time class back to the time column
-    data$time <- as_bench_time(data$time)
   }
+
+  # Add bench_time class back to the time column
+  data$time <- as_bench_time(data$time)
 
   # Add a gc column, a factor with the highest gc performed for each expression.
   data$gc <-

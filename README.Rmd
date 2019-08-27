@@ -152,10 +152,22 @@ ggplot2::autoplot(results)
 You can also produce fully custom plots by un-nesting the results and
 working with the data directly.
 
-```{r custom-plot, message = FALSE, cache = TRUE, dependson = "example2", dpi = 300}
+```{r custom-plot, message = FALSE, cache = TRUE, dependson = "example2", dpi = 300, eval = !bench:::tidyr_new_interface(), include = !bench:::tidyr_new_interface()}
 library(tidyverse)
 results %>%
   unnest() %>%
+  filter(gc == "none") %>%
+  mutate(expression = as.character(expression)) %>%
+  ggplot(aes(x = mem_alloc, y = time, color = expression)) +
+    geom_point() +
+    scale_color_bench_expr(scales::brewer_pal(type = "qual", palette = 3))
+```
+
+
+```{r custom-plot-new, message = FALSE, cache = TRUE, dependson = "example2", dpi = 300, eval = bench:::tidyr_new_interface(), include = bench:::tidyr_new_interface()}
+library(tidyverse)
+results %>%
+  unnest(cols = c(time, gc)) %>%
   filter(gc == "none") %>%
   mutate(expression = as.character(expression)) %>%
   ggplot(aes(x = mem_alloc, y = time, color = expression)) +
