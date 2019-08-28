@@ -1,13 +1,25 @@
-time_units <- function() c(
-  'ns' = 1e-9,
-  'us' = 1e-6,
-  if (is_utf8_output()) c('\U00B5s' = 1e-6),
-  'ms' = 1e-3,
-  's' = 1,
-  'm' = 60,
-  'h' = 60 * 60,
-  'd' = 60 * 60 * 24,
-  'w' = 60 * 60 * 24 * 7)
+time_units <- function() {
+  stats::setNames(
+    c(1e-9,
+      1e-6,
+      if (is_utf8_output()) 1e-6,
+      1e-3,
+      1,
+      60,
+      60 * 60,
+      60 * 60 * 24,
+      60 * 60 * 24 * 7),
+    c("ns",
+      "us",
+      if (is_utf8_output()) "\U00B5s",
+      "ms",
+      "s",
+      "m",
+      "h",
+      "d",
+      "w")
+  )
+}
 
 #' Human readable times
 #'
