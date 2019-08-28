@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bench</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
-      <a href="../articles/releases/bench-1.0.1.html">Version 1.0.1</a>
+      <a href="https://www.tidyverse.org/articles/2018/06/bench-1.0.1/">Version 1.0.1</a>
     </li>
     <li class="divider"></li>
     <li>
@@ -114,9 +114,22 @@
       <small>Source: <a href='https://github.com/r-lib/bench/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="bench-1-0-3" class="section level1">
+<h1 class="page-header">
+<a href="#bench-1-0-3" class="anchor"></a>bench 1.0.3<small> Unreleased </small>
+</h1>
+<ul>
+<li><p><code><a href="../reference/summary.bench_mark.html">summary.bench_mark()</a></code> gains a <code>time_unit</code> argument, so you can report all times in a consistent scale if desired (<a href='https://github.com/r-lib/bench/issues/18'>#18</a>, <a href='https://github.com/r-lib/bench/issues/26'>#26</a>).</p></li>
+<li><p><code><a href="../reference/mark.html">bench_mark()</a></code> now checks for user interrupts, to allow you to stop benchmarking if it takes longer than you were expecting (<a href='https://github.com/r-lib/bench/issues/49'>#49</a>).</p></li>
+<li><p>New <code><a href="../reference/bench_memory.html">bench_memory()</a></code> to capture just the memory allocated by an expression.</p></li>
+<li><p><code><a href="../reference/bench_time.html">bench_time()</a></code> is now an alias for <code><a href="../reference/bench_time.html">system_time()</a></code>.</p></li>
+<li><p><code>unnest.bench_mark()</code> is now compatible with the upcoming tidyr 1.0.0 (<a href='https://github.com/r-lib/bench/issues/48'>#48</a>, <a href='https://github.com/r-lib/bench/issues/51'>#51</a>)</p></li>
+<li><p>New <code><a href="../reference/hires_time.html">hires_time()</a></code> allows you to explicitly capture high resolution time points.</p></li>
+</ul>
+</div>
     <div id="bench-1-0-2" class="section level1">
 <h1 class="page-header">
-<a href="#bench-1-0-2" class="anchor"></a>bench 1.0.2<small> Unreleased </small>
+<a href="#bench-1-0-2" class="anchor"></a>bench 1.0.2<small> 2019-04-29 </small>
 </h1>
 <ul>
 <li><p><code><a href="../reference/workout.html">workout()</a></code> a new function which makes timing multiple expressions in turn simpler.</p></li>
@@ -149,6 +162,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#bench-1-0-3">1.0.3</a></li>
         <li><a href="#bench-1-0-2">1.0.2</a></li>
         <li><a href="#bench-1-0-1">1.0.1</a></li>
         <li><a href="#bench-1-0-0">1.0.0</a></li>

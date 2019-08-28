@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Workout a group of expressions individually — workout • bench</title>
+<title>Human readable times — as_bench_time • bench</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,11 @@
 
 
 
-<meta property="og:title" content="Workout a group of expressions individually — workout" />
+<meta property="og:title" content="Human readable times — as_bench_time" />
 
-<meta property="og:description" content="Given an block of expressions in {} workout() individually times each
-expression in the group." />
+<meta property="og:description" content="Construct, manipulate and display vectors of elapsed times in seconds. These
+are numeric vectors, so you can compare them numerically, but they can also
+be compared to human readable values such as '10ms'." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,53 +115,36 @@ expression in the group." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Workout a group of expressions individually</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/workout.R'><code>R/workout.R</code></a></small>
-    <div class="hidden name"><code>workout.Rd</code></div>
+    <h1>Human readable times</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/time.R'><code>R/time.R</code></a></small>
+    <div class="hidden name"><code>as_bench_time.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Given an block of expressions in <code>{}</code> <code>workout()</code> individually times each
-expression in the group.</p>
+    <p>Construct, manipulate and display vectors of elapsed times in seconds. These
+are numeric vectors, so you can compare them numerically, but they can also
+be compared to human readable values such as '10ms'.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>workout</span>(<span class='no'>expr</span>, <span class='kw'>description</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>as_bench_time</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>expr</th>
-      <td><p>one or more expressions to workout, use <code>{}</code> to pass multiple
-expressions.</p></td>
-    </tr>
-    <tr>
-      <th>description</th>
-      <td><p>A name to label each expression, if not supplied the
-deparsed expression will be used.</p></td>
+      <th>x</th>
+      <td><p>A numeric or character vector. Character representations can use
+shorthand sizes (see examples).</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>workout</span>({
-  <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>1000</span>
-  <span class='no'>evens</span> <span class='kw'>&lt;-</span> <span class='no'>x</span> <span class='kw'>%%</span> <span class='fl'>2</span> <span class='kw'>==</span> <span class='fl'>0</span>
-  <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>x</span>[<span class='no'>evens</span>]
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>y</span>)
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/which'>which</a></span>(<span class='no'>evens</span>))
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum</a></span>(<span class='no'>evens</span>)
-})</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 3</span><span>
-#&gt;   exprs                 process     real
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;bch:expr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;bch:tm&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;bch:tm&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> x &lt;- 1:1000            6.86µs  12.16µs
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> evens &lt;- x%%2 == 0    26.23µs  26.94µs
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> y &lt;- x[evens]          7.22µs   7.87µs
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> length(y)               945ns   1.91µs
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> length(which(evens))   5.85µs   6.68µs
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> sum(evens)             2.82µs   3.58µs</div></span></pre>
+    <pre class="examples"><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1ns"</span>)</div><div class='output co'>#&gt; [1] 1ns</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1"</span>)</div><div class='output co'>#&gt; [1] 1s</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1us"</span>)</div><div class='output co'>#&gt; [1] 1µs</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1ms"</span>)</div><div class='output co'>#&gt; [1] 1ms</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1s"</span>)</div><div class='output co'>#&gt; [1] 1s</div><div class='input'>
+<span class='fu'>as_bench_time</span>(<span class='st'>"100ns"</span>) <span class='kw'>&lt;</span> <span class='st'>"1ms"</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum</a></span>(<span class='fu'>as_bench_time</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1MB"</span>, <span class='st'>"5MB"</span>, <span class='st'>"500KB"</span>)))</div><div class='output co'>#&gt; [1] NA</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

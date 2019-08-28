@@ -65,7 +65,7 @@ or more times to measure timing." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bench</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@ or more times to measure timing." />
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
-      <a href="../articles/releases/bench-1.0.1.html">Version 1.0.1</a>
+      <a href="https://www.tidyverse.org/articles/2018/06/bench-1.0.1/">Version 1.0.1</a>
     </li>
     <li class="divider"></li>
     <li>
@@ -130,7 +130,8 @@ or more times to measure timing.</p>
 
     <pre class="usage"><span class='fu'>mark</span>(<span class='no'>...</span>, <span class='kw'>min_time</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>min_iterations</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>max_iterations</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>filter_gc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>exprs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>())</pre>
+  <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exprs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,6 +179,13 @@ a garbage collection in every iteration, filtering is disabled, with a warning.<
 execution time rather than absolute time.</p></td>
     </tr>
     <tr>
+      <th>time_unit</th>
+      <td><p>If <code>NULL</code> the times are reported in a human readable
+fashion depending on each value. If one of 'ns', 'us', 'ms', 's', 'm', 'h',
+'d', 'w' the time units are instead expressed as nanoseconds, microseconds,
+milliseconds, seconds, hours, minutes, days or weeks respectively.</p></td>
+    </tr>
+    <tr>
       <th>exprs</th>
       <td><p>A list of quoted expressions. If supplied overrides expressions
 defined in <code>...</code>.</p></td>
@@ -200,7 +208,10 @@ The following summary columns are computed</p><ul>
 <li><p><code>itr/sec</code> - <code>integer</code> The estimated number of executions performed per second.</p></li>
 <li><p><code>n_itr</code> - <code>integer</code> Total number of iterations after filtering
 garbage collections (if <code>filter_gc == TRUE</code>).</p></li>
-<li><p><code>n_gc</code> - <code>integer</code> Total number of garbage collections performed over all runs.</p></li>
+<li><p><code>n_gc</code> - <code>integer</code> Total number of garbage collections performed over all
+iterations. This is a psudo-measure of the pressure on the garbage collector, if
+it varies greatly between to alternatives generally the one with fewer
+collections will cause fewer allocation in real usage.</p></li>
 </ul>
 
     
@@ -219,9 +230,9 @@ garbage collections (if <code>filter_gc == TRUE</code>).</p></li>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>dat</span>, <span class='no'>x</span> <span class='kw'>&gt;</span> <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 13</span><span>
 #&gt;   expression                   min median `itr/sec` mem_alloc `gc/sec` n_itr
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #949494;font-style: italic;'>&lt;bch:&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;bch:&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;bch:byt&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> dat[dat$x &gt; 500, ]        43.3µs 47.5µs    </span><span style='text-decoration: underline;'>20</span><span>411.    4.15KB     10.6  </span><span style='text-decoration: underline;'>1</span><span>926
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> dat[which(dat$x &gt; 500), ]   44µs 47.8µs    </span><span style='text-decoration: underline;'>20</span><span>110.    2.77KB      0    </span><span style='text-decoration: underline;'>2</span><span>009
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> subset(dat, x &gt; 500)      71.7µs 76.4µs    </span><span style='text-decoration: underline;'>12</span><span>687.    5.46KB     10.6  </span><span style='text-decoration: underline;'>1</span><span>192
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> dat[dat$x &gt; 500, ]        28.8µs   32µs    </span><span style='text-decoration: underline;'>30</span><span>166.    4.15KB     10.7  </span><span style='text-decoration: underline;'>2</span><span>813
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> dat[which(dat$x &gt; 500), ]   29µs 32.4µs    </span><span style='text-decoration: underline;'>29</span><span>364.    2.77KB     11.1  </span><span style='text-decoration: underline;'>2</span><span>656
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> subset(dat, x &gt; 500)        48µs 52.9µs    </span><span style='text-decoration: underline;'>18</span><span>184.    5.46KB     10.9  </span><span style='text-decoration: underline;'>1</span><span>675
 #&gt; </span><span style='color: #949494;'># … with 6 more variables: n_gc </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, total_time </span><span style='color: #949494;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #949494;'>, result </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>,
 #&gt; #   memory </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, time </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, gc </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
   </div>

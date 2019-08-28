@@ -70,7 +70,7 @@ replicates." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bench</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@ replicates." />
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
-      <a href="../articles/releases/bench-1.0.1.html">Version 1.0.1</a>
+      <a href="https://www.tidyverse.org/articles/2018/06/bench-1.0.1/">Version 1.0.1</a>
     </li>
     <li class="divider"></li>
     <li>
@@ -182,16 +182,16 @@ tibble. This is useful if you only want to use a subset of all possible combinat
 #&gt; <span class='message'>   rows  cols   rep</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BCBCBC;'>1</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    10     1</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BCBCBC;'>2</span><span> </span><span style='text-decoration: underline;'>10</span><span>000    10     1</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BCBCBC;'>3</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000   100     1</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BCBCBC;'>4</span><span> </span><span style='text-decoration: underline;'>10</span><span>000   100     1</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BCBCBC;'>5</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    10     2</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BCBCBC;'>6</span><span> </span><span style='text-decoration: underline;'>10</span><span>000    10     2</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BCBCBC;'>7</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000   100     2</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BCBCBC;'>8</span><span> </span><span style='text-decoration: underline;'>10</span><span>000   100     2</span></div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 24 x 16</span><span>
 #&gt;    expression  rows  cols   rep      min   median `itr/sec` mem_alloc `gc/sec`
 #&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;bch:expr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;bch:tm&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;bch:tm&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;bch:byt&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> bracket     </span><span style='text-decoration: underline;'>1</span><span>000    10     1 177.86µs 197.36µs     </span><span style='text-decoration: underline;'>4</span><span>893.  112.77KB      0  
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> which       </span><span style='text-decoration: underline;'>1</span><span>000    10     1 157.41µs  167.8µs     </span><span style='text-decoration: underline;'>5</span><span>826.   53.87KB     21.7
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> subset      </span><span style='text-decoration: underline;'>1</span><span>000    10     1 208.21µs 222.45µs     </span><span style='text-decoration: underline;'>4</span><span>367.  124.63KB      0  
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> bracket    </span><span style='text-decoration: underline;'>10</span><span>000    10     1   1.01ms   1.03ms      944.    1.14MB     22.5
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> which      </span><span style='text-decoration: underline;'>10</span><span>000    10     1 564.27µs 586.61µs     </span><span style='text-decoration: underline;'>1</span><span>616.  575.37KB     22.1
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> subset     </span><span style='text-decoration: underline;'>10</span><span>000    10     1   1.12ms   1.15ms      863.    1.25MB     22.1
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> bracket     </span><span style='text-decoration: underline;'>1</span><span>000   100     1   1.36ms    1.4ms      703.  987.79KB      0  
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> which       </span><span style='text-decoration: underline;'>1</span><span>000   100     1 873.27µs 943.01µs     </span><span style='text-decoration: underline;'>1</span><span>037.  398.73KB     23.1
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> subset      </span><span style='text-decoration: underline;'>1</span><span>000   100     1   1.41ms   1.46ms      677. 1008.51KB     22.6
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> bracket    </span><span style='text-decoration: underline;'>10</span><span>000   100     1   7.89ms   7.89ms      127.    9.72MB    507. 
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> bracket     </span><span style='text-decoration: underline;'>1</span><span>000    10     1 146.82µs 161.75µs     </span><span style='text-decoration: underline;'>5</span><span>750.  112.77KB      0  
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> which       </span><span style='text-decoration: underline;'>1</span><span>000    10     1  98.27µs 115.94µs     </span><span style='text-decoration: underline;'>7</span><span>794.   53.87KB     24.3
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> subset      </span><span style='text-decoration: underline;'>1</span><span>000    10     1 172.84µs 187.98µs     </span><span style='text-decoration: underline;'>5</span><span>081.  124.63KB      0  
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> bracket    </span><span style='text-decoration: underline;'>10</span><span>000    10     1 981.33µs   1.03ms      918.    1.14MB     22.9
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> which      </span><span style='text-decoration: underline;'>10</span><span>000    10     1 488.96µs 514.54µs     </span><span style='text-decoration: underline;'>1</span><span>874.  575.37KB     22.9
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> subset     </span><span style='text-decoration: underline;'>10</span><span>000    10     1    1.1ms   1.14ms      857.    1.25MB     23.2
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> bracket     </span><span style='text-decoration: underline;'>1</span><span>000   100     1   1.21ms   1.27ms      779.  987.79KB     24.3
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> which       </span><span style='text-decoration: underline;'>1</span><span>000   100     1 740.08µs 797.51µs     </span><span style='text-decoration: underline;'>1</span><span>248.  398.73KB      0  
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> subset      </span><span style='text-decoration: underline;'>1</span><span>000   100     1   1.25ms   1.31ms      759. 1008.51KB     24.5
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> bracket    </span><span style='text-decoration: underline;'>10</span><span>000   100     1   8.23ms   8.23ms      121.    9.72MB    364. 
 #&gt; </span><span style='color: #949494;'># … with 14 more rows, and 7 more variables: n_itr </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, n_gc </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
 #&gt; #   total_time </span><span style='color: #949494;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #949494;'>, result </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, memory </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, time </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, gc </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
   </div>

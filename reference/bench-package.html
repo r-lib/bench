@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bench</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
-      <a href="../articles/releases/bench-1.0.1.html">Version 1.0.1</a>
+      <a href="https://www.tidyverse.org/articles/2018/06/bench-1.0.1/">Version 1.0.1</a>
     </li>
     <li class="divider"></li>
     <li>
@@ -146,18 +146,18 @@
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>results</span>, <span class='kw'>filter_gc</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 13</span><span>
 #&gt;   expression                  min median `itr/sec` mem_alloc `gc/sec` n_itr
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #949494;font-style: italic;'>&lt;bch&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;bch:&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;bch:byt&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> dat[dat$x &gt; 500, ]        442µs  464µs     </span><span style='text-decoration: underline;'>1</span><span>509.     374KB     12.0   755
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> dat[which(dat$x &gt; 500), ] 363µs  383µs     </span><span style='text-decoration: underline;'>2</span><span>475.     258KB     12.0  </span><span style='text-decoration: underline;'>1</span><span>238
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> subset(dat, x &gt; 500)      548µs  574µs     </span><span style='text-decoration: underline;'>1</span><span>606.     492KB     18.0   804
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> dat[dat$x &gt; 500, ]        399µs  429µs     </span><span style='text-decoration: underline;'>1</span><span>487.     374KB     11.9   747
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> dat[which(dat$x &gt; 500), ] 307µs  323µs     </span><span style='text-decoration: underline;'>2</span><span>770.     258KB     14.0  </span><span style='text-decoration: underline;'>1</span><span>385
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> subset(dat, x &gt; 500)      524µs  550µs     </span><span style='text-decoration: underline;'>1</span><span>599.     492KB     18.0   800
 #&gt; </span><span style='color: #949494;'># … with 6 more variables: n_gc </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, total_time </span><span style='color: #949494;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #949494;'>, result </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>,
 #&gt; #   memory </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, time </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, gc </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span></div><div class='input'>
 <span class='co'># Or output relative times</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>results</span>, <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3 x 13</span><span>
 #&gt;   expression                  min median `itr/sec` mem_alloc `gc/sec` n_itr
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> dat[dat$x &gt; 500, ]         1.22   1.21      1.19      1.45     1.31   749
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> dat[which(dat$x &gt; 500), ]  1      1         1.50      1        1     </span><span style='text-decoration: underline;'>1</span><span>232
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> subset(dat, x &gt; 500)       1.51   1.50      1         1.91     1.55   795
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> dat[dat$x &gt; 500, ]         1.30   1.33      1.24      1.45     1.17   741
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> dat[which(dat$x &gt; 500), ]  1      1         1.69      1        1     </span><span style='text-decoration: underline;'>1</span><span>378
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> subset(dat, x &gt; 500)       1.70   1.70      1         1.91     1.33   791
 #&gt; </span><span style='color: #949494;'># … with 6 more variables: n_gc </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, total_time </span><span style='color: #949494;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #949494;'>, result </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>,
 #&gt; #   memory </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, time </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, gc </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
   </div>

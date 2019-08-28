@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bench</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
-      <a href="../articles/releases/bench-1.0.1.html">Version 1.0.1</a>
+      <a href="https://www.tidyverse.org/articles/2018/06/bench-1.0.1/">Version 1.0.1</a>
     </li>
     <li class="divider"></li>
     <li>
@@ -137,6 +137,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="as_bench_time.html">as_bench_time()</a></code> </p>
+        </td>
+        <td><p>Human readable times</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="autoplot.bench_mark.html">autoplot.bench_mark()</a></code> <code><a href="autoplot.bench_mark.html">plot(<i>&lt;bench_mark&gt;</i>)</a></code> </p>
         </td>
         <td><p>Autoplot method for bench_mark objects</p></td>
@@ -149,9 +155,21 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="bench_time.html">as_bench_time()</a></code> <code><a href="bench_time.html">bench_time()</a></code> </p>
+          <p><code><a href="bench_memory.html">bench_memory()</a></code> </p>
         </td>
-        <td><p>Human readable times</p></td>
+        <td><p>Measure memory that an expression used.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="bench_time.html">bench_time()</a></code> </p>
+        </td>
+        <td><p>Measure Process CPU and real time that an expression used.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="hires_time.html">hires_time()</a></code> </p>
+        </td>
+        <td><p>Return the current high-resolution real time.</p></td>
       </tr><tr>
         
         <td>
@@ -176,12 +194,6 @@
           <p><code><a href="summary.bench_mark.html">summary(<i>&lt;bench_mark&gt;</i>)</a></code> </p>
         </td>
         <td><p>Summarize bench::mark results.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="system_time.html">system_time()</a></code> </p>
-        </td>
-        <td><p>Return Process CPU and real time that an expression used.</p></td>
       </tr><tr>
         
         <td>
