@@ -4,7 +4,7 @@ new_bench_expr <- function(x, description = names(x)) {
   }
   names(x) <- description
 
-  structure(x, class = c("bench_expr", "expression"))
+  structure(x, class = c("bench_expr", "list"))
 }
 
 #' @export
@@ -42,7 +42,7 @@ scale_type.bench_expr <- function(x) {
   "bench_expr"
 }
 
-setOldClass(c("bench_expr", "expression"), expression())
+setOldClass(c("bench_expr", "list"), list())
 
 #' Position and color scales for bench_expr data
 #'
