@@ -29,7 +29,9 @@ system_time <- bench_time
 #' - The total amount of memory allocated
 #' - The raw memory allocations as parsed by [profmem::readRprofmem()]
 #' @examples
-#' bench_memory(1 + 1:10000)
+#' if (capabilities("profmem")) {
+#'   bench_memory(1 + 1:10000)
+#' }
 #' @export
 bench_memory <- function(expr) {
   can_profile_memory <- capabilities("profmem")

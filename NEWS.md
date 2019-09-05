@@ -1,5 +1,8 @@
 # bench (development version)
 
+* `bench_memory()` examples no longer fail if they are run with R that does not
+  have memory profiling capability (#56).
+
 * `bench_expr` now has a class of `c("bench_expr", "list")` rather than
   `c("bench_expr", "expression")`, as it is really a list of calls rather than
   a true expression object. (https://github.com/r-lib/vctrs/issues/559)

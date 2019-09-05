@@ -20,5 +20,7 @@ A tibble with two columns
 Measure memory that an expression used.
 }
 \examples{
-bench_memory(1 + 1:10000)
+if (capabilities("profmem")) {
+  bench_memory(1 + 1:10000)
+}
 }
