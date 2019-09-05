@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Benchmark time transformation — bench_bytes_trans • bench</title>
+<title>Human readable times — as_bench_time • bench</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,10 +32,11 @@
 
 
 
-<meta property="og:title" content="Benchmark time transformation — bench_bytes_trans" />
+<meta property="og:title" content="Human readable times — as_bench_time" />
 
-<meta property="og:description" content="This both log transforms the times and formats the labels as a bench_time
-object." />
+<meta property="og:description" content="Construct, manipulate and display vectors of elapsed times in seconds. These
+are numeric vectors, so you can compare them numerically, but they can also
+be compared to human readable values such as '10ms'." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -118,36 +119,44 @@ object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Benchmark time transformation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/bytes.R'><code>R/bytes.R</code></a></small>
-    <div class="hidden name"><code>bench_bytes_trans.Rd</code></div>
+    <h1>Human readable times</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/time.R'><code>R/time.R</code></a></small>
+    <div class="hidden name"><code>as_bench_time.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This both log transforms the times and formats the labels as a <code>bench_time</code>
-object.</p>
+    <p>Construct, manipulate and display vectors of elapsed times in seconds. These
+are numeric vectors, so you can compare them numerically, but they can also
+be compared to human readable values such as '10ms'.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>bench_bytes_trans</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
+    <pre class="usage"><span class='fu'>as_bench_time</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>base</th>
-      <td><p>base of logarithm</p></td>
+      <th>x</th>
+      <td><p>A numeric or character vector. Character representations can use
+shorthand sizes (see examples).</p></td>
     </tr>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1ns"</span>)</div><div class='output co'>#&gt; [1] 1ns</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1"</span>)</div><div class='output co'>#&gt; [1] 1s</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1us"</span>)</div><div class='output co'>#&gt; [1] 1µs</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1ms"</span>)</div><div class='output co'>#&gt; [1] 1ms</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1s"</span>)</div><div class='output co'>#&gt; [1] 1s</div><div class='input'>
+<span class='fu'>as_bench_time</span>(<span class='st'>"100ns"</span>) <span class='kw'>&lt;</span> <span class='st'>"1ms"</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='fu'>as_bench_time</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1MB"</span>, <span class='st'>"5MB"</span>, <span class='st'>"500KB"</span>)))</div><div class='output co'>#&gt; [1] NA</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
