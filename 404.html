@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Human readable memory sizes — bench_bytes • bench</title>
+<title>Page not found (404) • bench</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -27,17 +27,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="http://bench.r-lib.org/pkgdown.css" rel="stylesheet">
+<script src="http://bench.r-lib.org/pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="Human readable memory sizes — bench_bytes" />
-
-<meta property="og:description" content="Construct, manipulate and display vectors of byte sizes. These are numeric
-vectors, so you can compare them numerically, but they can also be compared
-to human readable values such as '10MB'." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Page not found (404)" />
 
 
 
@@ -55,7 +50,7 @@ to human readable values such as '10MB'." />
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -67,7 +62,7 @@ to human readable values such as '10MB'." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">bench</a>
+        <a class="navbar-link" href="http://bench.r-lib.org/index.html">bench</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
@@ -75,10 +70,10 @@ to human readable values such as '10MB'." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">Home</a>
+  <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -93,7 +88,7 @@ to human readable values such as '10MB'." />
     </li>
     <li class="divider"></li>
     <li>
-      <a href="../news/index.html">Change log</a>
+      <a href="news/index.html">Change log</a>
     </li>
   </ul>
 </li>
@@ -117,57 +112,17 @@ to human readable values such as '10MB'." />
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Human readable memory sizes</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/bytes.R'><code>R/bytes.R</code></a></small>
-    <div class="hidden name"><code>bench_bytes.Rd</code></div>
+      <h1>Page not found (404)</h1>
     </div>
 
-    <div class="ref-description">
-    
-    <p>Construct, manipulate and display vectors of byte sizes. These are numeric
-vectors, so you can compare them numerically, but they can also be compared
-to human readable values such as '10MB'.</p>
-    
-    </div>
-
-    <pre class="usage"><span class='fu'>as_bench_bytes</span>(<span class='no'>x</span>)
-
-<span class='fu'>bench_bytes</span>(<span class='no'>x</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>A numeric or character vector. Character representations can use
-shorthand sizes (see examples).</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>These memory sizes are always assumed to be base 1024, rather than 1000.</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>bench_bytes</span>(<span class='st'>"1"</span>)</div><div class='output co'>#&gt; 1B</div><div class='input'><span class='fu'>bench_bytes</span>(<span class='st'>"1K"</span>)</div><div class='output co'>#&gt; 1KB</div><div class='input'><span class='fu'>bench_bytes</span>(<span class='st'>"1Kb"</span>)</div><div class='output co'>#&gt; 1KB</div><div class='input'><span class='fu'>bench_bytes</span>(<span class='st'>"1KiB"</span>)</div><div class='output co'>#&gt; 1KB</div><div class='input'><span class='fu'>bench_bytes</span>(<span class='st'>"1MB"</span>)</div><div class='output co'>#&gt; 1MB</div><div class='input'>
-<span class='fu'>bench_bytes</span>(<span class='st'>"1KB"</span>) <span class='kw'>&lt;</span> <span class='st'>"1MB"</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='fu'>bench_bytes</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1MB"</span>, <span class='st'>"5MB"</span>, <span class='st'>"500KB"</span>)))</div><div class='output co'>#&gt; 6.49MB</div></pre>
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+Content not found. Please use links in the navbar.
 
   </div>
+
 </div>
+
 
 
       <footer>

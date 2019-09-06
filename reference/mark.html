@@ -16,13 +16,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -49,6 +51,7 @@ or more times to measure timing." />
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -65,7 +68,7 @@ or more times to measure timing." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bench</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -99,7 +102,7 @@ or more times to measure timing." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/bench">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -110,6 +113,7 @@ or more times to measure timing." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -131,7 +135,7 @@ or more times to measure timing.</p>
     <pre class="usage"><span class='fu'>mark</span>(<span class='no'>...</span>, <span class='kw'>min_time</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>min_iterations</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>max_iterations</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>filter_gc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exprs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>())</pre>
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,7 +167,7 @@ and <code>max_iterations</code>.</p></td>
     <tr>
       <th>check</th>
       <td><p>Check if results are consistent. If <code>TRUE</code>, checking is done
-with <code><a href='https://www.rdocumentation.org/packages/base/topics/all.equal'>all.equal()</a></code>, if <code>FALSE</code> checking is disabled. If <code>check</code> is a
+with <code><a href='https://rdrr.io/r/base/all.equal.html'>all.equal()</a></code>, if <code>FALSE</code> checking is disabled. If <code>check</code> is a
 function that function will be called with each pair of results to
 determine consistency.</p></td>
     </tr>
@@ -221,20 +225,20 @@ collections will cause fewer allocation in real usage.</p></li>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>100</span>, <span class='fl'>1</span>, <span class='fl'>1000</span>), <span class='kw'>y</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>10</span>, <span class='fl'>1</span>, <span class='fl'>1000</span>))
+    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>100</span>, <span class='fl'>1</span>, <span class='fl'>1000</span>), <span class='kw'>y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>, <span class='fl'>1</span>, <span class='fl'>1000</span>))
 <span class='fu'>mark</span>(
   <span class='kw'>min_time</span> <span class='kw'>=</span> <span class='fl'>.1</span>,
 
   <span class='no'>dat</span>[<span class='no'>dat</span>$<span class='no'>x</span> <span class='kw'>&gt;</span> <span class='fl'>500</span>, ],
-  <span class='no'>dat</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/which'>which</a></span>(<span class='no'>dat</span>$<span class='no'>x</span> <span class='kw'>&gt;</span> <span class='fl'>500</span>), ],
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>dat</span>, <span class='no'>x</span> <span class='kw'>&gt;</span> <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 13</span><span>
+  <span class='no'>dat</span>[<span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span>(<span class='no'>dat</span>$<span class='no'>x</span> <span class='kw'>&gt;</span> <span class='fl'>500</span>), ],
+  <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>dat</span>, <span class='no'>x</span> <span class='kw'>&gt;</span> <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3 x 13</span><span>
 #&gt;   expression                   min median `itr/sec` mem_alloc `gc/sec` n_itr
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #949494;font-style: italic;'>&lt;bch:&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;bch:&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;bch:byt&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> dat[dat$x &gt; 500, ]        28.7µs 31.7µs    </span><span style='text-decoration: underline;'>30</span><span>233.    4.15KB     10.8  </span><span style='text-decoration: underline;'>2</span><span>797
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> dat[which(dat$x &gt; 500), ] 29.1µs   32µs    </span><span style='text-decoration: underline;'>29</span><span>737.    2.77KB     10.9  </span><span style='text-decoration: underline;'>2</span><span>735
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> subset(dat, x &gt; 500)      48.3µs 52.8µs    </span><span style='text-decoration: underline;'>18</span><span>339.    5.46KB     10.9  </span><span style='text-decoration: underline;'>1</span><span>682
-#&gt; </span><span style='color: #949494;'># … with 6 more variables: n_gc </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, total_time </span><span style='color: #949494;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #949494;'>, result </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>,
-#&gt; #   memory </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, time </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, gc </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;bch:&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:byt&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]        28.6µs 33.4µs    </span><span style='text-decoration: underline;'>28</span><span>681.    4.15KB     10.6  </span><span style='text-decoration: underline;'>2</span><span>697
+#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ] 27.6µs 31.6µs    </span><span style='text-decoration: underline;'>30</span><span>507.    2.77KB     10.7  </span><span style='text-decoration: underline;'>2</span><span>838
+#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)      46.8µs 52.8µs    </span><span style='text-decoration: underline;'>18</span><span>395.    5.46KB     10.7  </span><span style='text-decoration: underline;'>1</span><span>715
+#&gt; </span><span style='color: #555555;'># … with 6 more variables: n_gc </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, total_time </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #555555;'>, result </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
+#&gt; #   memory </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, time </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, gc </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -251,19 +255,23 @@ collections will cause fewer allocation in real usage.</p></li>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by <a href='http://jimhester.com'>Jim Hester</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
