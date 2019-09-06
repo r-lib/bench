@@ -1,3 +1,5 @@
+# bench (development version)
+
 # bench 1.0.4
 
 * `bench_memory()` examples no longer fail if they are run with R that does not
