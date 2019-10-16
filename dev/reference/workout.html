@@ -8,11 +8,13 @@
 
 <title>Workout a group of expressions individually — workout • bench</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,11 +34,12 @@
 
 
 
-<meta property="og:title" content="Workout a group of expressions individually — workout" />
 
+<meta property="og:title" content="Workout a group of expressions individually — workout" />
 <meta property="og:description" content="Given an block of expressions in {} workout() individually times each
 expression in the group." />
 <meta name="twitter:card" content="summary" />
+
 
 <meta name="robots" content="noindex">
 
@@ -97,7 +100,6 @@ expression in the group." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/bench">
@@ -124,14 +126,12 @@ expression in the group." />
     </div>
 
     <div class="ref-description">
-    
     <p>Given an block of expressions in <code>{}</code> <code>workout()</code> individually times each
 expression in the group.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>workout</span>(<span class='no'>expr</span>, <span class='kw'>description</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -146,7 +146,7 @@ expressions.</p></td>
 deparsed expression will be used.</p></td>
     </tr>
     </table>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>workout</span>({
@@ -159,18 +159,17 @@ deparsed expression will be used.</p></td>
 })</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 3</span><span>
 #&gt;   exprs                 process     real
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> x &lt;- 1:1000            4.59µs   8.82µs
-#&gt; </span><span style='color: #555555;'>2</span><span> evens &lt;- x%%2 == 0    34.73µs  35.76µs
-#&gt; </span><span style='color: #555555;'>3</span><span> y &lt;- x[evens]           8.8µs    9.3µs
-#&gt; </span><span style='color: #555555;'>4</span><span> length(y)               891ns   1.67µs
-#&gt; </span><span style='color: #555555;'>5</span><span> length(which(evens))   5.55µs    6.2µs
-#&gt; </span><span style='color: #555555;'>6</span><span> sum(evens)             2.58µs    3.1µs</div></span></pre>
+#&gt; </span><span style='color: #555555;'>1</span><span> x &lt;- 1:1000            4.96µs   8.35µs
+#&gt; </span><span style='color: #555555;'>2</span><span> evens &lt;- x%%2 == 0    25.91µs   26.7µs
+#&gt; </span><span style='color: #555555;'>3</span><span> y &lt;- x[evens]          8.21µs   9.06µs
+#&gt; </span><span style='color: #555555;'>4</span><span> length(y)               866ns   1.67µs
+#&gt; </span><span style='color: #555555;'>5</span><span> length(which(evens))   5.21µs   5.72µs
+#&gt; </span><span style='color: #555555;'>6</span><span> sum(evens)              2.6µs   3.34µs</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -184,7 +183,7 @@ deparsed expression will be used.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

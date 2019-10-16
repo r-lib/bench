@@ -8,11 +8,13 @@
 
 <title>Summarize <a href='mark.html'>bench::mark</a> results. — summary.bench_mark • bench</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,10 +34,11 @@
 
 
 
-<meta property="og:title" content="Summarize <a href='mark.html'>bench::mark</a> results. — summary.bench_mark" />
 
+<meta property="og:title" content="Summarize <a href='mark.html'>bench::mark</a> results. — summary.bench_mark" />
 <meta property="og:description" content="Summarize bench::mark results." />
 <meta name="twitter:card" content="summary" />
+
 
 <meta name="robots" content="noindex">
 
@@ -96,7 +99,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/bench">
@@ -123,15 +125,13 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Summarize <a href='mark.html'>bench::mark</a> results.</p>
-    
     </div>
 
     <pre class="usage"><span class='co'># S3 method for bench_mark</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>object</span>, <span class='kw'>filter_gc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -162,7 +162,7 @@ milliseconds, seconds, hours, minutes, days or weeks respectively.</p></td>
       <td><p>Additional arguments ignored.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a> with the additional summary columns.
@@ -171,7 +171,10 @@ The following summary columns are computed</p><ul>
 <li><p><code>mean</code> - <code>bench_time</code> The arithmetic mean of execution time</p></li>
 <li><p><code>median</code> - <code>bench_time</code> The sample median of execution time.</p></li>
 <li><p><code>max</code> - <code>bench_time</code> The maximum execution time.</p></li>
-<li><p><code>mem_alloc</code> - <code>bench_bytes</code> Total amount of memory allocated by running the expression.</p></li>
+<li><p><code>mem_alloc</code> - <code>bench_bytes</code> Total amount of memory allocated by R while
+running the expression. Memory allocated <em>outside</em> the R heap, e.g. by
+<code>malloc()</code> or <code>new</code> directly is <em>not</em> tracked, take care to avoid
+misinterpreting the results if running code that may do this.</p></li>
 <li><p><code>itr/sec</code> - <code>integer</code> The estimated number of executions performed per second.</p></li>
 <li><p><code>n_itr</code> - <code>integer</code> Total number of iterations after filtering
 garbage collections (if <code>filter_gc == TRUE</code>).</p></li>
@@ -181,7 +184,6 @@ it varies greatly between to alternatives generally the one with fewer
 collections will cause fewer allocation in real usage.</p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>If <code>filter_gc == TRUE</code> (the default) runs that contain a garbage
@@ -190,7 +192,6 @@ expressions when the majority of runs do not contain a gc. Call
 <code><a href='https://rdrr.io/r/base/summary.html'>summary(filter_gc = FALSE)</a></code> if you would like to compute summaries <em>with</em>
 these times, such as expressions with lots of allocations when all or most
 runs contain a gc.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10000</span>, <span class='fl'>1</span>, <span class='fl'>1000</span>), <span class='kw'>y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10000</span>, <span class='fl'>1</span>, <span class='fl'>1000</span>))
@@ -205,18 +206,18 @@ runs contain a gc.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>results</span>, <span class='kw'>filter_gc</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3 x 13</span><span>
 #&gt;   expression                  min median `itr/sec` mem_alloc `gc/sec` n_itr
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;bch&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:byt&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]        395µs  410µs     </span><span style='text-decoration: underline;'>2</span><span>085.     375KB     20.0  </span><span style='text-decoration: underline;'>1</span><span>043
-#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ] 305µs  321µs     </span><span style='text-decoration: underline;'>2</span><span>716.     258KB     18.0  </span><span style='text-decoration: underline;'>1</span><span>358
-#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)      540µs  567µs     </span><span style='text-decoration: underline;'>1</span><span>539.     493KB     18.0   770
+#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]        395µs  420µs     </span><span style='text-decoration: underline;'>2</span><span>015.     375KB     22.0  </span><span style='text-decoration: underline;'>1</span><span>008
+#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ] 306µs  321µs     </span><span style='text-decoration: underline;'>2</span><span>718.     258KB     18.0  </span><span style='text-decoration: underline;'>1</span><span>359
+#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)      524µs  553µs     </span><span style='text-decoration: underline;'>1</span><span>603.     493KB     18.0   802
 #&gt; </span><span style='color: #555555;'># … with 6 more variables: n_gc </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, total_time </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #555555;'>, result </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
 #&gt; #   memory </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, time </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, gc </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span></div><div class='input'>
 <span class='co'># Or output relative times</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>results</span>, <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 13</span><span>
 #&gt;   expression                  min median `itr/sec` mem_alloc `gc/sec` n_itr
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]         1.30   1.27      1.32      1.45     1.09  </span><span style='text-decoration: underline;'>1</span><span>033
-#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ]  1      1         1.76      1        1     </span><span style='text-decoration: underline;'>1</span><span>349
-#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)       1.77   1.76      1         1.91     1.01   761
+#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]         1.29   1.31      1.29      1.45     1.25   997
+#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ]  1      1         1.72      1        1.01  </span><span style='text-decoration: underline;'>1</span><span>350
+#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)       1.71   1.72      1         1.91     1      793
 #&gt; </span><span style='color: #555555;'># … with 6 more variables: n_gc </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, total_time </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #555555;'>, result </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
 #&gt; #   memory </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, time </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, gc </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
   </div>
@@ -224,11 +225,8 @@ runs contain a gc.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -242,7 +240,7 @@ runs contain a gc.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>
