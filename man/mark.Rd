@@ -55,7 +55,10 @@ The following summary columns are computed
 \item \code{mean} - \code{bench_time} The arithmetic mean of execution time
 \item \code{median} - \code{bench_time} The sample median of execution time.
 \item \code{max} - \code{bench_time} The maximum execution time.
-\item \code{mem_alloc} - \code{bench_bytes} Total amount of memory allocated by running the expression.
+\item \code{mem_alloc} - \code{bench_bytes} Total amount of memory allocated by R while
+running the expression. Memory allocated \emph{outside} the R heap, e.g. by
+\code{malloc()} or \code{new} directly is \emph{not} tracked, take care to avoid
+misinterpreting the results if running code that may do this.
 \item \code{itr/sec} - \code{integer} The estimated number of executions performed per second.
 \item \code{n_itr} - \code{integer} Total number of iterations after filtering
 garbage collections (if \code{filter_gc == TRUE}).

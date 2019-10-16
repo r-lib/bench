@@ -166,7 +166,10 @@ time_cols <- c("min", "median", "total_time")
 #'   - `mean` - `bench_time` The arithmetic mean of execution time
 #'   - `median` - `bench_time` The sample median of execution time.
 #'   - `max` - `bench_time` The maximum execution time.
-#'   - `mem_alloc` - `bench_bytes` Total amount of memory allocated by running the expression.
+#'   - `mem_alloc` - `bench_bytes` Total amount of memory allocated by R while
+#'     running the expression. Memory allocated *outside* the R heap, e.g. by
+#'     `malloc()` or `new` directly is *not* tracked, take care to avoid
+#'     misinterpreting the results if running code that may do this.
 #'   - `itr/sec` - `integer` The estimated number of executions performed per second.
 #'   - `n_itr` - `integer` Total number of iterations after filtering
 #'      garbage collections (if `filter_gc == TRUE`).
