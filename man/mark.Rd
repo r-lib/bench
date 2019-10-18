@@ -6,9 +6,9 @@
 \title{Benchmark a series of functions}
 \usage{
 mark(..., min_time = 0.5, iterations = NULL, min_iterations = 1,
-  max_iterations = 10000, check = TRUE, filter_gc = TRUE,
-  relative = FALSE, time_unit = NULL, exprs = NULL,
-  env = parent.frame())
+  max_iterations = 10000, check = TRUE, memory = TRUE,
+  filter_gc = TRUE, relative = FALSE, time_unit = NULL,
+  exprs = NULL, env = parent.frame())
 }
 \arguments{
 \item{...}{Expressions to benchmark, if named the \code{expression} column will
@@ -29,6 +29,9 @@ and \code{max_iterations}.}
 with \code{\link[=all.equal]{all.equal()}}, if \code{FALSE} checking is disabled. If \code{check} is a
 function that function will be called with each pair of results to
 determine consistency.}
+
+\item{memory}{Profile memory allocation? Defaults to \code{TRUE}. Can also be a
+vector to switch memory profiling  on or off for each element in \code{exprs}.}
 
 \item{filter_gc}{If \code{TRUE} remove iterations that contained at least one
 garbage collection before summarizing. If \code{TRUE} but an expression had
@@ -69,9 +72,9 @@ collections will cause fewer allocation in real usage.
 }
 }
 \description{
-Benchmark a list of quoted expressions. Each expression will always run at
-least twice, once to measure the memory allocation and store results and one
-or more times to measure timing.
+Benchmark a list of quoted expressions. Each expression will always run one
+or more times to measure timing and once to store results and/or measure the
+memory allocation, see \code{check} and \code{memory} arguments.
 }
 \examples{
 dat <- data.frame(x = runif(100, 1, 1000), y=runif(10, 1, 1000))

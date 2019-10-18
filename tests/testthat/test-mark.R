@@ -70,7 +70,7 @@ describe("mark", {
 
     expect_equal(length(res$memory), 2)
 
-    expect_is(res$memory[[1]], "Rprofmem")
+    expect_is(res$memory[[1]], "data.frame")
     expect_equal(ncol(res$memory[[1]]), 3)
     expect_gte(nrow(res$memory[[1]]), 0)
   })
@@ -82,15 +82,37 @@ describe("mark", {
 
     expect_equal(length(res$memory), 2)
 
-    expect_is(res$memory[[1]], "Rprofmem")
-    expect_equal(ncol(res$memory[[1]]), 3)
-    expect_equal(nrow(res$memory[[1]]), 0)
+    expect_null(res$memory[[1]])
+    expect_null(res$memory[[2]])
   })
+  it("works with memory profiling switched off", {
+    res <- mark(1, 2, check = NULL, memory = c(FALSE, TRUE), iterations = 1)
+
+    expect_equal(length(res$memory), 2)
+    expect_null(res$memory[[1]])
+    expect_equal(ncol(res$memory[[2]]), 3)
+    expect_equal(nrow(res$memory[[2]]), 0)
+  })
+
+  keep_busy <- function(n = 1e3) {
+    r <- rnorm(n)
+    p <- pnorm(r)
+    q <- qnorm(p)
+    o <- order(q)
+  }
+  it("catches and warns about memory profiling failures", {
+    skip_on_os("windows")
+    expect_warning(
+      res <- mark(parallel::mclapply(seq_len(1e3), keep_busy, mc.cores = 2)),
+      "memory profiling failed.")
+    expect_equivalent(res$memory[[1]]$bytes, NA_integer_)
+  })
+
   it("Can handle `NULL` results", {
     res <- mark(if (FALSE) 1, max_iterations = 10)
     expect_equal(res$result[[1]], NULL)
   })
-  it("Can errors with the deparsed expressions", {
+  it("Can handle errors with the deparsed expressions", {
     expect_error(msg = "`1` does not equal `3`",
       mark(1, 1, 3, max_iterations = 10))
   })
