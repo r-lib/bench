@@ -1,8 +1,9 @@
 Package: bench
 Title: High Precision Timing of R Expressions
-Version: 1.0.4.9000
+Version: 1.0.4.9001
 Authors@R: c(
-    person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre"))
+    person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre")),
+    person("Fabian", "Scheipl", email = "fabian.scheipl@googlemail.com", role = c("ctb"))
   )
 Description: Tools to accurately benchmark and analyze execution times for R expressions.
 License: GPL-3
