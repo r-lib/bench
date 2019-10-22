@@ -35,7 +35,7 @@ type_sum.bench_expr <- function(x) {
 
 # @export
 vec_proxy.bench_expr <- function(x, ...) {
-  vec_data(unclass(x))
+  vctrs::vec_data(unclass(x))
 }
 
 pillar_shaft.bench_expr <- function(x, ...) {
