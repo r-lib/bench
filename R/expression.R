@@ -3,13 +3,12 @@ new_bench_expr <- function(x, description = names(x)) {
     description <- rep("", length(x))
   }
   names(x) <- description
-
-  structure(x, class = c("bench_expr", "list"))
+  structure(x, class = c("bench_expr", "list"), description = description)
 }
 
 #' @export
 format.bench_expr <- function(x, ...) {
-  desc <- names(x)
+  desc <- attr(x, "description")
   is_missing <- desc == ""
   desc[is_missing] <- vapply(x[is_missing], deparse_trunc, character(1))
   desc
@@ -32,6 +31,11 @@ type_sum.bench_expr <- function(x) {
 `[.bench_expr` <- function(x, i, ...) {
   new_x <- NextMethod("[")
   new_bench_expr(new_x)
+}
+
+# @export
+vec_proxy.bench_expr <- function(x, ...) {
+  vctrs::vec_data(unclass(x))
 }
 
 pillar_shaft.bench_expr <- function(x, ...) {

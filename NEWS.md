@@ -1,5 +1,8 @@
 # bench (development version)
 
+* `bench_expr` objects now work better with the upcoming versions of tibble and
+  vctrs (@romainfrancois, #64)
+
 # bench 1.0.4
 
 * `bench_memory()` examples no longer fail if they are run with R that does not
