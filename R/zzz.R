@@ -18,6 +18,8 @@
   register_s3_method("ggplot2", "scale_type", "bench_bytes")
 
   register_s3_method("knitr", "knit_print", "bench_mark")
+
+  register_s3_method("vctrs", "vec_proxy", "bench_expr")
 }
 
 register_s3_method <- function(pkg, generic, class, fun = NULL) {

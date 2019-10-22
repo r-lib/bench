@@ -18,8 +18,7 @@ Imports:
     rlang (>= 0.2.0),
     stats,
     tibble,
-    utils,
-    vctrs
+    utils
 Suggests:
     covr,
     dplyr,
@@ -31,6 +30,7 @@ Suggests:
     scales,
     testthat,
     tidyr (>= 0.8.1),
+    vctrs,
     withr
 Encoding: UTF-8
 LazyData: true

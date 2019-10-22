@@ -33,8 +33,7 @@ type_sum.bench_expr <- function(x) {
   new_bench_expr(new_x)
 }
 
-#' @importFrom vctrs vec_proxy vec_data
-#' @export
+# @export
 vec_proxy.bench_expr <- function(x, ...) {
   vec_data(unclass(x))
 }
