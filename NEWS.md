@@ -2,6 +2,8 @@
 
 * `bench_expr` objects now work better with the upcoming versions of tibble and
   vctrs (@romainfrancois, #64)
+* `mark()` now errors correctly when the expressions deparsed length is
+  different.
 
 # bench 1.0.4
 

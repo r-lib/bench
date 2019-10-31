@@ -94,6 +94,13 @@ describe("mark", {
     expect_error(msg = "`1` does not equal `3`",
       mark(1, 1, 3, max_iterations = 10))
   })
+
+  it("Works when calls are different lengths", {
+    expect_error(msg = "does not equal",
+      # Here the first call deparses to length 2, the second to length 4
+      mark(if (TRUE) 2, if (TRUE) 1 else 3)
+    )
+  })
 })
 
 describe("summary.bench_mark", {

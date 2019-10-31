@@ -89,12 +89,14 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     if (isTRUE(check) && i > 1) {
       comp <- check_fun(results$result[[1]], results$result[[i]])
       if (!isTRUE(comp)) {
+        expressions <- as.character(results$expression)
+
         stop(glue::glue("
             Each result must equal the first result:
               `{first}` does not equal `{current}`
             ",
-            first = results$expression[[1]],
-            current = results$expression[[i]]
+            first = expressions[[1]],
+            current = expressions[[i]]
             ),
           call. = FALSE
         )
