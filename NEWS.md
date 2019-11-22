@@ -4,6 +4,7 @@
   vctrs (@romainfrancois, #64)
 * `mark()` now errors correctly when the expressions deparsed length is
   different.
+* Update documentation of `bench_mark` columns (@jdblischak, #67).
 
 # bench 1.0.4
 
