@@ -5,10 +5,19 @@
 \alias{bench_mark}
 \title{Benchmark a series of functions}
 \usage{
-mark(..., min_time = 0.5, iterations = NULL, min_iterations = 1,
-  max_iterations = 10000, check = TRUE, filter_gc = TRUE,
-  relative = FALSE, time_unit = NULL, exprs = NULL,
-  env = parent.frame())
+mark(
+  ...,
+  min_time = 0.5,
+  iterations = NULL,
+  min_iterations = 1,
+  max_iterations = 10000,
+  check = TRUE,
+  filter_gc = TRUE,
+  relative = FALSE,
+  time_unit = NULL,
+  exprs = NULL,
+  env = parent.frame()
+)
 }
 \arguments{
 \item{...}{Expressions to benchmark, if named the \code{expression} column will
@@ -51,21 +60,31 @@ defined in \code{...}.}
 A \link[tibble:tibble]{tibble} with the additional summary columns.
 The following summary columns are computed
 \itemize{
+\item \code{expression} - \code{bench_expr} The deparsed expression that was evaluated
+(or its name if one was provided).
 \item \code{min} - \code{bench_time} The minimum execution time.
-\item \code{mean} - \code{bench_time} The arithmetic mean of execution time
 \item \code{median} - \code{bench_time} The sample median of execution time.
-\item \code{max} - \code{bench_time} The maximum execution time.
+\item \code{itr/sec} - \code{double} The estimated number of executions performed per
+second.
 \item \code{mem_alloc} - \code{bench_bytes} Total amount of memory allocated by R while
 running the expression. Memory allocated \emph{outside} the R heap, e.g. by
 \code{malloc()} or \code{new} directly is \emph{not} tracked, take care to avoid
 misinterpreting the results if running code that may do this.
-\item \code{itr/sec} - \code{integer} The estimated number of executions performed per second.
+\item \code{gc/sec} - \code{double} The number of garbage collections per second.
 \item \code{n_itr} - \code{integer} Total number of iterations after filtering
 garbage collections (if \code{filter_gc == TRUE}).
-\item \code{n_gc} - \code{integer} Total number of garbage collections performed over all
+\item \code{n_gc} - \code{double} Total number of garbage collections performed over all
 iterations. This is a psudo-measure of the pressure on the garbage collector, if
 it varies greatly between to alternatives generally the one with fewer
 collections will cause fewer allocation in real usage.
+\item \code{total_time} - \code{bench_time} The total time to perform the benchmarks.
+\item \code{result} - \code{list} A list column of the object(s) returned by the
+evaluated expression(s).
+\item \code{memory} - \code{list} A list column with results from \code{\link[=Rprofmem]{Rprofmem()}}.
+\item \code{time} - \code{list} A list column of \code{bench_time} vectors for each evaluated
+expression.
+\item \code{gc} - \code{list} A list column with tibbles containing the level of
+garbage collection (0-2, columns) for each iteration (rows).
 }
 }
 \description{

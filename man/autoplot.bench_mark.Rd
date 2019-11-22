@@ -5,11 +5,13 @@
 \alias{plot.bench_mark}
 \title{Autoplot method for bench_mark objects}
 \usage{
-autoplot.bench_mark(object, type = c("beeswarm", "jitter", "ridge",
-  "boxplot", "violin"), ...)
+autoplot.bench_mark(
+  object,
+  type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),
+  ...
+)
 
-\method{plot}{bench_mark}(x, ..., type = c("beeswarm", "jitter", "ridge",
-  "boxplot", "violin"), y)
+\method{plot}{bench_mark}(x, ..., type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"), y)
 }
 \arguments{
 \item{object}{A \code{bench_mark} object.}

@@ -21,7 +21,7 @@ The parameters you want to set are given as named arguments and a grid of
 all possible combinations is automatically created.
 
 The code to setup and benchmark is given by one unnamed expression (often
-delimited by \code{\{}).
+delimited by \verb{\\\{}).
 
 If replicates are desired a dummy variable can be used, e.g. \code{rep = 1:5} for
 replicates.
