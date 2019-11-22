@@ -12,11 +12,17 @@ scale_x_bench_expr(...)
 
 scale_y_bench_expr(...)
 
-scale_colour_bench_expr(palette = scales::hue_pal(...), ...,
-  aesthetics = "colour")
+scale_colour_bench_expr(
+  palette = scales::hue_pal(...),
+  ...,
+  aesthetics = "colour"
+)
 
-scale_color_bench_expr(palette = scales::hue_pal(...), ...,
-  aesthetics = "colour")
+scale_color_bench_expr(
+  palette = scales::hue_pal(...),
+  ...,
+  aesthetics = "colour"
+)
 }
 \description{
 Default scales for the \code{bench_expr} class, these are added to plots using
