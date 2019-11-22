@@ -164,21 +164,31 @@ time_cols <- c("min", "median", "total_time")
 #'   runs contain a gc.
 #' @return A [tibble][tibble::tibble] with the additional summary columns.
 #'   The following summary columns are computed
+#'   - `expression` - `bench_expr` The deparsed expression that was evaluated
+#'     (or its name if one was provided).
 #'   - `min` - `bench_time` The minimum execution time.
-#'   - `mean` - `bench_time` The arithmetic mean of execution time
 #'   - `median` - `bench_time` The sample median of execution time.
-#'   - `max` - `bench_time` The maximum execution time.
+#'   - `itr/sec` - `double` The estimated number of executions performed per
+#'   second.
 #'   - `mem_alloc` - `bench_bytes` Total amount of memory allocated by R while
 #'     running the expression. Memory allocated *outside* the R heap, e.g. by
 #'     `malloc()` or `new` directly is *not* tracked, take care to avoid
 #'     misinterpreting the results if running code that may do this.
-#'   - `itr/sec` - `integer` The estimated number of executions performed per second.
+#'   - `gc/sec` - `double` The number of garbage collections per second.
 #'   - `n_itr` - `integer` Total number of iterations after filtering
 #'      garbage collections (if `filter_gc == TRUE`).
-#'   - `n_gc` - `integer` Total number of garbage collections performed over all
+#'   - `n_gc` - `double` Total number of garbage collections performed over all
 #'   iterations. This is a psudo-measure of the pressure on the garbage collector, if
 #'   it varies greatly between to alternatives generally the one with fewer
 #'   collections will cause fewer allocation in real usage.
+#'   - `total_time` - `bench_time` The total time to perform the benchmarks.
+#'   - `result` - `list` A list column of the object(s) returned by the
+#'     evaluated expression(s).
+#'   - `memory` - `list` A list column with results from [Rprofmem()].
+#'   - `time` - `list` A list column of `bench_time` vectors for each evaluated
+#'     expression.
+#'   - `gc` - `list` A list column with tibbles containing the level of
+#'     garbage collection (0-2, columns) for each iteration (rows).
 #' @examples
 #' dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 #'
