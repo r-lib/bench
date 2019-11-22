@@ -129,8 +129,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for bench_mark</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>object</span>, <span class='kw'>filter_gc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>object</span>, <span class='kw'>filter_gc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,21 +166,31 @@ milliseconds, seconds, hours, minutes, days or weeks respectively.</p></td>
 
     <p>A <a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a> with the additional summary columns.
 The following summary columns are computed</p><ul>
+<li><p><code>expression</code> - <code>bench_expr</code> The deparsed expression that was evaluated
+(or its name if one was provided).</p></li>
 <li><p><code>min</code> - <code>bench_time</code> The minimum execution time.</p></li>
-<li><p><code>mean</code> - <code>bench_time</code> The arithmetic mean of execution time</p></li>
 <li><p><code>median</code> - <code>bench_time</code> The sample median of execution time.</p></li>
-<li><p><code>max</code> - <code>bench_time</code> The maximum execution time.</p></li>
+<li><p><code>itr/sec</code> - <code>double</code> The estimated number of executions performed per
+second.</p></li>
 <li><p><code>mem_alloc</code> - <code>bench_bytes</code> Total amount of memory allocated by R while
 running the expression. Memory allocated <em>outside</em> the R heap, e.g. by
 <code>malloc()</code> or <code>new</code> directly is <em>not</em> tracked, take care to avoid
 misinterpreting the results if running code that may do this.</p></li>
-<li><p><code>itr/sec</code> - <code>integer</code> The estimated number of executions performed per second.</p></li>
+<li><p><code>gc/sec</code> - <code>double</code> The number of garbage collections per second.</p></li>
 <li><p><code>n_itr</code> - <code>integer</code> Total number of iterations after filtering
 garbage collections (if <code>filter_gc == TRUE</code>).</p></li>
-<li><p><code>n_gc</code> - <code>integer</code> Total number of garbage collections performed over all
+<li><p><code>n_gc</code> - <code>double</code> Total number of garbage collections performed over all
 iterations. This is a psudo-measure of the pressure on the garbage collector, if
 it varies greatly between to alternatives generally the one with fewer
 collections will cause fewer allocation in real usage.</p></li>
+<li><p><code>total_time</code> - <code>bench_time</code> The total time to perform the benchmarks.</p></li>
+<li><p><code>result</code> - <code>list</code> A list column of the object(s) returned by the
+evaluated expression(s).</p></li>
+<li><p><code>memory</code> - <code>list</code> A list column with results from <code><a href='https://rdrr.io/r/utils/Rprofmem.html'>Rprofmem()</a></code>.</p></li>
+<li><p><code>time</code> - <code>list</code> A list column of <code>bench_time</code> vectors for each evaluated
+expression.</p></li>
+<li><p><code>gc</code> - <code>list</code> A list column with tibbles containing the level of
+garbage collection (0-2, columns) for each iteration (rows).</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -206,18 +215,18 @@ runs contain a gc.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>results</span>, <span class='kw'>filter_gc</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3 x 13</span><span>
 #&gt;   expression                  min median `itr/sec` mem_alloc `gc/sec` n_itr
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;bch&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:byt&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]        405µs  437µs     </span><span style='text-decoration: underline;'>1</span><span>765.     375KB     27.8   890
-#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ] 313µs  331µs     </span><span style='text-decoration: underline;'>1</span><span>655.     258KB     18.0   828
-#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)      527µs  580µs     </span><span style='text-decoration: underline;'>1</span><span>550.     493KB     12.0   776
+#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]        382µs  411µs     </span><span style='text-decoration: underline;'>2</span><span>112.     375KB     22.0  </span><span style='text-decoration: underline;'>1</span><span>056
+#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ] 301µs  323µs     </span><span style='text-decoration: underline;'>2</span><span>725.     258KB     18.0  </span><span style='text-decoration: underline;'>1</span><span>363
+#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)      509µs  544µs     </span><span style='text-decoration: underline;'>1</span><span>644.     493KB     20.0   822
 #&gt; </span><span style='color: #555555;'># … with 6 more variables: n_gc </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, total_time </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #555555;'>, result </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
 #&gt; #   memory </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, time </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, gc </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span></div><div class='input'>
 <span class='co'># Or output relative times</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>results</span>, <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 13</span><span>
 #&gt;   expression                  min median `itr/sec` mem_alloc `gc/sec` n_itr
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]         1.29   1.32      1.31      1.45     2.69   876
-#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ]  1      1         1.75      1        2.46   819
-#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)       1.68   1.75      1         1.91     1      770
+#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]         1.27   1.27      1.31      1.45     1.26  </span><span style='text-decoration: underline;'>1</span><span>045
+#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ]  1      1         1.64      1        1     </span><span style='text-decoration: underline;'>1</span><span>354
+#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)       1.69   1.68      1         1.91     1.13   812
 #&gt; </span><span style='color: #555555;'># … with 6 more variables: n_gc </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, total_time </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #555555;'>, result </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
 #&gt; #   memory </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, time </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, gc </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
   </div>
