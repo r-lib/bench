@@ -55,7 +55,7 @@ autoplot.bench_mark <- function(object,
   type <- match.arg(type)
 
   if (type == "beeswarm" && !requireNamespace("ggbeeswarm", quietly = TRUE)) {
-    stop("`ggbeeswarm` must be installed to use `type=\"beeswarm\"` option.", call. = FALSE)
+    stop("`ggbeeswarm` must be installed to use `type = \"beeswarm\"` option.", call. = FALSE)
   }
 
   # Just convert everything to a character first
