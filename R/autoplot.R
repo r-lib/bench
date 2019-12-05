@@ -51,6 +51,10 @@ autoplot.bench_mark <- function(object,
   if (!(requireNamespace("ggplot2") && requireNamespace("tidyr"))) {
     stop("`ggplot2` and `tidyr` must be installed to use `autoplot`.", call. = FALSE)
   }
+  
+  if (!requireNamespace("ggbeeswarm")) {
+    stop("`ggbeeswarm` must be installed to use `type=\"beeswarm\"` option.", call. = FALSE)
+  }
 
   # Just convert everything to a character first
   object$expression <- as.character(object$expression)
