@@ -5,6 +5,7 @@
 * `mark()` now errors correctly when the expressions deparsed length is
   different.
 * Update documentation of `bench_mark` columns (@jdblischak, #67).
+* `autoplot.bench_mark()` provides a more informative error if the `ggbeeswarm` package is not installed (@coatless, #69).
 
 # bench 1.0.4
 

@@ -51,6 +51,12 @@ autoplot.bench_mark <- function(object,
   if (!(requireNamespace("ggplot2") && requireNamespace("tidyr"))) {
     stop("`ggplot2` and `tidyr` must be installed to use `autoplot`.", call. = FALSE)
   }
+  
+  type <- match.arg(type)
+
+  if (type == "beeswarm" && !requireNamespace("ggbeeswarm", quietly = TRUE)) {
+    stop("`ggbeeswarm` must be installed to use `type = \"beeswarm\"` option.", call. = FALSE)
+  }
 
   # Just convert everything to a character first
   object$expression <- as.character(object$expression)
@@ -62,7 +68,6 @@ autoplot.bench_mark <- function(object,
   }
   p <- ggplot2::ggplot(res)
 
-  type <- match.arg(type)
 
   switch(type,
     beeswarm = p <- p +
