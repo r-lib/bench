@@ -18,9 +18,14 @@
 #'   sum(evens)
 #' })
 workout <- function(expr, description = NULL) {
-  expr <- rlang::enquo(expr)
-  env <- rlang::quo_get_env(expr)
-  exprs <- as.list(rlang::quo_get_expr(expr)[-1])
+  if (is.expression(expr)) {
+    env <- parent.frame()
+    exprs <- as.list(expr)
+  } else {
+    expr <- rlang::enquo(expr)
+    env <- rlang::quo_get_env(expr)
+    exprs <- as.list(rlang::quo_get_expr(expr)[-1])
+  }
 
   if (is.null(description)) {
     description <- names(exprs)

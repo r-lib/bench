@@ -1,5 +1,8 @@
 # bench (development version)
 
+* `workout()` if passed an expression (such as is returned by `parse()`) will
+  execute all the calls in the expression().
+
 * `bench_expr` objects now work better with the upcoming versions of tibble and
   vctrs (@romainfrancois, #64)
 * `mark()` now errors correctly when the expressions deparsed length is
