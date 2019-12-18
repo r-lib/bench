@@ -48,3 +48,14 @@ bench_memory <- function(expr) {
 
   tibble::tibble(mem_alloc = bench_bytes(sum(memory$bytes, na.rm = TRUE)), memory = list(memory))
 }
+
+#' Returns the maximum amount of memory used by the current process
+#'
+#' On POSIX systems this corresponds to
+#' [rusage.ru_maxrss](http://man7.org/linux/man-pages/man2/getrusage.2.html)
+#' and on Windows
+#' [PROCESS_MEMORY_COUNTERS.PeakWorkingSetSize](https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters)
+#' @export
+bench_max_memory <- function() {
+  as_bench_bytes(.Call(bench_max_memory_))
+}

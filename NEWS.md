@@ -1,5 +1,9 @@
 # bench (development version)
 
+* New `bench_max_memory()` function, to return the maximum memory used by the
+  current process. This uses system functions to track memory, so can measure
+  memory outside of R's GC heap.
+
 * `workout()` if passed an expression (such as is returned by `parse()`) will
   execute all the calls in the expression().
 
