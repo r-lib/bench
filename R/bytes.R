@@ -61,6 +61,8 @@ as_bench_bytes.numeric <- function(x) {
 # Adapted from https://github.com/gaborcsardi/prettyunits
 #' @export
 format.bench_bytes <- function(x, scientific = FALSE, digits = 3, drop0trailing = TRUE, ...) {
+  nms <- names(x)
+
   bytes <- unclass(x)
 
   unit <- vcapply(x, find_unit, byte_units)
@@ -81,7 +83,7 @@ format.bench_bytes <- function(x, scientific = FALSE, digits = 3, drop0trailing 
 
   res <- format(res, scientific = scientific, digits = digits, drop0trailing = drop0trailing, ...)
 
-  paste0(res, unit)
+  stats::setNames(paste0(res, unit), nms)
 }
 
 #' @export
@@ -89,7 +91,7 @@ as.character.bench_bytes <- format.bench_bytes
 
 #' @export
 print.bench_bytes <- function(x, ...) {
-  cat(format.bench_bytes(x, ...))
+  print(format.bench_bytes(x, ...), quote = FALSE)
 }
 
 #' @export
