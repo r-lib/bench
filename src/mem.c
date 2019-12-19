@@ -2,6 +2,8 @@
 
 #ifdef __WIN32
 #include <windows.h>
+#define PSAPI_VERSION 1
+#include <psapi.h>
 #else
 #include <sys/time.h>
 #include <sys/resource.h>
