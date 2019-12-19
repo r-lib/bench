@@ -141,10 +141,10 @@ accurate interval timing is required.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>hires_time</span>()</div><div class='output co'>#&gt; [1] 1576693806</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>hires_time</span>()</div><div class='output co'>#&gt; [1] 1576767276</div><div class='input'>
 <span class='co'># R rounds doubles to 7 digits by default, see greater precision by setting</span>
 <span class='co'># the digits argument when printing</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'>hires_time</span>(), <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; [1] 1576693805.7910349369</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'>hires_time</span>(), <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; [1] 1576767276.483101368</div><div class='input'>
 <span class='co'># Generally used by recording two times and then subtracting them</span>
 <span class='no'>start</span> <span class='kw'>&lt;-</span> <span class='fu'>hires_time</span>()
 <span class='no'>end</span> <span class='kw'>&lt;-</span> <span class='fu'>hires_time</span>()
