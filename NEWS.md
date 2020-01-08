@@ -1,5 +1,10 @@
 # bench (development version)
 
+* `mark()` gains a `memory` argument to control if it records memory
+  allocations, set `memory = FALSE` to disable recording memory allocations,
+  which can be helpful when trying to benchmark long pieces of code with many
+  allocations (#62).
+
 * New `bench_process_memory()` function, to return the current and maximum
   memory used by the current process. This uses system functions to track
   memory, so can measure memory outside of R's GC heap.

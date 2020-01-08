@@ -33,7 +33,7 @@ describe("mark_", {
 
 describe("mark", {
   it("Uses all.equal to check results by default", {
-    res <- mark(1 + 1, 1L + 1L, check = NULL, iterations = 1)
+    res <- mark(1 + 1, 1L + 1L, check = TRUE, iterations = 1)
 
     expect_is(res$result, "list")
     expect_true(all.equal(res$result[[1]], res$result[[2]]))
@@ -54,13 +54,6 @@ describe("mark", {
     expect_is(res$result, "list")
     expect_equal(res$result[[1]], 2)
     expect_equal(res$result[[2]], 3)
-
-    # Using check = FALSE is equivalent
-    res2 <- mark(1 + 1, 1 + 2, check = FALSE, iterations = 1)
-
-    expect_is(res2$result, "list")
-    expect_equal(res2$result[[1]], 2)
-    expect_equal(res2$result[[2]], 3)
   })
 
   it("works with capabilities('profmem')", {
@@ -80,11 +73,8 @@ describe("mark", {
 
     res <- mark(1, 2, check = NULL, iterations = 1)
 
-    expect_equal(length(res$memory), 2)
-
-    expect_is(res$memory[[1]], "Rprofmem")
-    expect_equal(ncol(res$memory[[1]]), 3)
-    expect_equal(nrow(res$memory[[1]]), 0)
+    expect_false("memory" %in% names(res))
+    expect_false("mem_alloc" %in% names(res))
   })
   it("Can handle `NULL` results", {
     res <- mark(if (FALSE) 1, max_iterations = 10)
@@ -99,6 +89,39 @@ describe("mark", {
     expect_error(msg = "does not equal",
       # Here the first call deparses to length 2, the second to length 4
       mark(if (TRUE) 2, if (TRUE) 1 else 3)
+    )
+  })
+  it("works with memory = FALSE", {
+    res <- mark(1, memory = FALSE)
+    expect_is(res, "bench_mark")
+    expect_false("memory" %in% names(res))
+    expect_false("mem_alloc" %in% names(res))
+  })
+  it("works with check = FALSE", {
+    res <- mark(1, check = FALSE)
+    expect_is(res, "bench_mark")
+    expect_false("result" %in% names(res))
+  })
+  it("works with memory = FALSE and check = FALSE", {
+    res <- mark(1, memory = FALSE, check = FALSE)
+    expect_is(res, "bench_mark")
+    expect_false("memory" %in% names(res))
+    expect_false("mem_alloc" %in% names(res))
+    expect_false("result" %in% names(res))
+  })
+  it("fails for memory profiling failures", {
+    skip_on_os("windows")
+    skip_on_cran()
+
+    keep_busy <- function(n = 1e3) {
+      r <- rnorm(n)
+      p <- pnorm(r)
+      q <- qnorm(p)
+      o <- order(q)
+    }
+    expect_error(
+      res <- mark(parallel::mclapply(seq_len(1e3), keep_busy, mc.cores = 2)),
+      "Memory profiling failed"
     )
   })
 })

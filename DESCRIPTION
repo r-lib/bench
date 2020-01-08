@@ -27,6 +27,7 @@ Suggests:
     ggplot2,
     ggridges,
     mockery,
+    parallel,
     scales,
     testthat,
     tidyr (>= 0.8.1),

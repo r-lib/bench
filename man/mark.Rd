@@ -12,6 +12,7 @@ mark(
   min_iterations = 1,
   max_iterations = 10000,
   check = TRUE,
+  memory = capabilities("profmem"),
   filter_gc = TRUE,
   relative = FALSE,
   time_unit = NULL,
@@ -35,9 +36,13 @@ and \code{max_iterations}.}
 \item{max_iterations}{Each expression will be evaluated a maximum of \code{max_iterations} times.}
 
 \item{check}{Check if results are consistent. If \code{TRUE}, checking is done
-with \code{\link[=all.equal]{all.equal()}}, if \code{FALSE} checking is disabled. If \code{check} is a
-function that function will be called with each pair of results to
-determine consistency.}
+with \code{\link[=all.equal]{all.equal()}}, if \code{FALSE} checking is disabled and results are not
+stored. If \code{check} is a function that function will be called with each
+pair of results to determine consistency.}
+
+\item{memory}{If \code{TRUE} (the default when R is compiled with memory
+profiling), track memory allocations using. If \code{FALSE} disable memory
+tracking.}
 
 \item{filter_gc}{If \code{TRUE} remove iterations that contained at least one
 garbage collection before summarizing. If \code{TRUE} but an expression had

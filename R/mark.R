@@ -19,9 +19,12 @@ NULL
 #' @param min_iterations Each expression will be evaluated a minimum of `min_iterations` times.
 #' @param max_iterations Each expression will be evaluated a maximum of `max_iterations` times.
 #' @param check Check if results are consistent. If `TRUE`, checking is done
-#'   with [all.equal()], if `FALSE` checking is disabled. If `check` is a
-#'   function that function will be called with each pair of results to
-#'   determine consistency.
+#'   with [all.equal()], if `FALSE` checking is disabled and results are not
+#'   stored. If `check` is a function that function will be called with each
+#'   pair of results to determine consistency.
+#' @param memory If `TRUE` (the default when R is compiled with memory
+#'   profiling), track memory allocations using. If `FALSE` disable memory
+#'   tracking.
 #' @param env The environment which to evaluate the expressions
 #' @inheritParams summary.bench_mark
 #' @inherit summary.bench_mark return
@@ -37,7 +40,7 @@ NULL
 #'   subset(dat, x > 500))
 #' @export
 mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
-                 max_iterations = 10000, check = TRUE, filter_gc = TRUE,
+                 max_iterations = 10000, check = TRUE, memory = capabilities("profmem"), filter_gc = TRUE,
                  relative = FALSE, time_unit = NULL, exprs = NULL, env = parent.frame()) {
 
   if (!is.null(iterations)) {
@@ -58,48 +61,60 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     exprs <- dots(...)
   }
 
-  results <- list(expression = new_bench_expr(exprs), result = list(), memory = list(), time = list(), gc = list())
+  results <- list(expression = new_bench_expr(exprs), time = list(), gc = list())
+  if (memory) {
+    results$memory <- list()
+  }
+  if (check) {
+    results$result <- list()
+  }
 
   # Helper for evaluating with memory profiling
-  eval_one <- function(e) {
+  eval_one <- function(e, profile_memory) {
     f <- tempfile()
     on.exit(unlink(f))
-    can_profile_memory <- capabilities("profmem")
-    if (can_profile_memory) {
+    if (profile_memory) {
       utils::Rprofmem(f, threshold = 1)
     }
 
     res <- eval(e, env)
-    if (can_profile_memory) {
+    if (profile_memory) {
       utils::Rprofmem(NULL)
     }
     list(result = res, memory = parse_allocations(f))
   }
 
-  # Run allocation benchmark and check results
-  for (i in seq_len(length(exprs))) {
-    res <- eval_one(exprs[[i]])
-    if (is.null(res$result)) {
-      results$result[i] <- list(res$result)
-    } else {
-      results$result[[i]] <- res$result
-    }
-    results$memory[[i]] <- res$memory
+  # We only want to evaluate these first runs if we need to check memory or results.
+  if (isTRUE(memory) || isTRUE(check)) {
+    # Run allocation benchmark and check results
+    for (i in seq_len(length(exprs))) {
+      res <- eval_one(exprs[[i]], memory)
+      if (isTRUE(check)) {
+        if (is.null(res$result)) {
+          results$result[i] <- list(res$result)
+        } else {
+          results$result[[i]] <- res$result
+        }
+      }
+      if (memory) {
+        results$memory[[i]] <- res$memory
+      }
 
-    if (isTRUE(check) && i > 1) {
-      comp <- check_fun(results$result[[1]], results$result[[i]])
-      if (!isTRUE(comp)) {
-        expressions <- as.character(results$expression)
+      if (isTRUE(check) && i > 1) {
+        comp <- check_fun(results$result[[1]], results$result[[i]])
+        if (!isTRUE(comp)) {
+          expressions <- as.character(results$expression)
 
-        stop(glue::glue("
-            Each result must equal the first result:
+          stop(glue::glue("
+              Each result must equal the first result:
               `{first}` does not equal `{current}`
-            ",
-            first = expressions[[1]],
-            current = expressions[[i]]
-            ),
-          call. = FALSE
-        )
+              ",
+              first = expressions[[1]],
+              current = expressions[[i]]
+              ),
+            call. = FALSE
+          )
+        }
       }
     }
   }
@@ -241,9 +256,11 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, time_
   object$n_gc <- vdapply(num_gc, sum)
   object$`gc/sec` <-  as.numeric(object$n_gc / object$total_time)
 
-  object$mem_alloc <-
-    bench_bytes(
-      vdapply(object$memory, function(x) if (is.null(x)) NA else sum(x$bytes, na.rm = TRUE)))
+  if (!is.null(object[["memory"]])) {
+    object$mem_alloc <-
+      bench_bytes(
+        vdapply(object$memory, function(x) if (is.null(x)) NA else sum(x$bytes, na.rm = TRUE)))
+  }
 
   if (isTRUE(relative)) {
     object[summary_cols] <- lapply(object[summary_cols], function(x) as.numeric(x / min(x)))
@@ -254,7 +271,8 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, time_
     object[time_cols] <- lapply(object[time_cols], function(x) as.numeric(x / time_units()[time_unit]))
   }
 
-  bench_mark(object[c("expression", parameters, summary_cols, data_cols)])
+  to_keep <- intersect(c("expression", parameters, summary_cols, data_cols), names(object))
+  bench_mark(object[to_keep])
 }
 
 #' @export
@@ -276,7 +294,12 @@ parse_allocations <- function(filename) {
   }
 
   # TODO: remove this dependency / simplify parsing
-  profmem::readRprofmem(filename)
+  tryCatch(
+    profmem::readRprofmem(filename),
+    error = function(e) {
+      stop("Memory profiling failed.\n  If you are benchmarking parallel code you must set `memory = FALSE`.", call. = FALSE)
+    }
+  )
 }
 
 dots <- function(...) {
