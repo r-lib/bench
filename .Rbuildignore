@@ -13,3 +13,4 @@
 ^.*\.tar\.gz$
 ^revdep$
 ^vignettes$
+^\.github/workflows/R-CMD-check\.yaml$

@@ -15,10 +15,11 @@ options(width = 120)
 ```
 # bench
 
-[![CRAN status](https://www.r-pkg.org/badges/version/bench)](https://cran.r-project.org/package=bench)
-[![Travis build status](https://travis-ci.org/r-lib/bench.svg?branch=master)](https://travis-ci.org/r-lib/bench)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/r-lib/bench?branch=master&svg=true)](https://ci.appveyor.com/project/r-lib/bench)
+[<!-- badges: start -->
+[![R build status](https://github.com/r-lib/bench/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/bench)
 [![Coverage status](https://codecov.io/gh/r-lib/bench/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/bench?branch=master)
+[![CRAN status](https://www.r-pkg.org/badges/version/bench)](https://cran.r-project.org/package=bench)
+<!-- badges: end -->!
 
 The goal of bench is to benchmark code, tracking execution time,
 memory allocations and garbage collections.
@@ -156,18 +157,6 @@ working with the data directly.
 library(tidyverse)
 results %>%
   unnest() %>%
-  filter(gc == "none") %>%
-  mutate(expression = as.character(expression)) %>%
-  ggplot(aes(x = mem_alloc, y = time, color = expression)) +
-    geom_point() +
-    scale_color_bench_expr(scales::brewer_pal(type = "qual", palette = 3))
-```
-
-
-```{r custom-plot-new, message = FALSE, cache = TRUE, dependson = "example2", dpi = 300, eval = bench:::tidyr_new_interface(), include = bench:::tidyr_new_interface()}
-library(tidyverse)
-results %>%
-  unnest(cols = c(time, gc)) %>%
   filter(gc == "none") %>%
   mutate(expression = as.character(expression)) %>%
   ggplot(aes(x = mem_alloc, y = time, color = expression)) +
