@@ -84,7 +84,8 @@
 <div id="bench" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#bench" class="anchor"></a>bench</h1></div>
-<p>[<!-- badges: start --> <a href="https://github.com/r-lib/bench"><img src="https://github.com/r-lib/bench/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://codecov.io/github/r-lib/bench?branch=master"><img src="https://codecov.io/gh/r-lib/bench/branch/master/graph/badge.svg" alt="Coverage status"></a> <a href="https://cran.r-project.org/package=bench"><img src="https://www.r-pkg.org/badges/version/bench" alt="CRAN status"></a> <!-- badges: end -->!</p>
+<!-- badges: start -->
+
 <p>The goal of bench is to benchmark code, tracking execution time, memory allocations and garbage collections.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -128,7 +129,7 @@
 <a class="sourceLine" id="cb4-3" data-line-number="3">  dat[<span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(dat<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">499</span>), ],</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="kw"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(dat, x <span class="op">&gt;</span><span class="st"> </span><span class="dv">500</span>))</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; Error: Each result must equal the first result:</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;   `dat[dat$x &gt; 500, ]` does not equal `dat[which(dat$x &gt; 499), ]`</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; `dat[dat$x &gt; 500, ]` does not equal `dat[which(dat$x &gt; 499), ]`</span></a></code></pre></div>
 <p>Results are easy to interpret, with human readable units.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">bnch &lt;-<span class="st"> </span>bench<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span>(</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">  dat[dat<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">500</span>, ],</a>
@@ -138,17 +139,17 @@
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; # A tibble: 3 x 6</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;   expression                     min   median `itr/sec` mem_alloc `gc/sec`</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;   &lt;bch:expr&gt;                &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]           347µs    450µs     2156.     377KB     21.5</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]    266µs    342µs     2861.     260KB     16.6</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; 3 subset(dat, x &gt; 500)         503µs    586µs     1636.     494KB     19.0</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]           408µs    467µs     2079.     377KB     6.64</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]    284µs    354µs     2750.     260KB     7.00</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; 3 subset(dat, x &gt; 500)         519µs    589µs     1654.     494KB     6.74</span></a></code></pre></div>
 <p>By default the summary uses absolute measures, however relative results can be obtained by using <code>relative = TRUE</code> in your call to <code><a href="reference/mark.html">bench::mark()</a></code> or calling <code><a href="https://rdrr.io/r/base/summary.html">summary(relative = TRUE)</a></code> on the results.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(bnch, <span class="dt">relative =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 6</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;   expression                  min median `itr/sec` mem_alloc `gc/sec`</span></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   &lt;bch:expr&gt;                &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]         1.30   1.32      1.32      1.45     1.30</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]  1      1         1.75      1        1   </span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 3 subset(dat, x &gt; 500)       1.89   1.71      1         1.90     1.15</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]         1.44   1.32      1.26      1.45     1   </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]  1      1         1.66      1        1.05</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 3 subset(dat, x &gt; 500)       1.83   1.66      1         1.90     1.02</span></a></code></pre></div>
 </div>
 <div id="benchpress" class="section level3">
 <h3 class="hasAnchor">
@@ -215,10 +216,10 @@
 <p><strong>bench</strong> also includes <code><a href="reference/bench_time.html">system_time()</a></code>, a higher precision alternative to <a href="https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time">system.time()</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">bench<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/bench/man/bench_time.html">system_time</a></span>({ i &lt;-<span class="st"> </span><span class="dv">1</span>; <span class="cf">while</span>(i <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e7</span>) i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span> })</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; process    real </span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;   299ms   300ms</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;   296ms   296ms</span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">bench<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/bench/man/bench_time.html">system_time</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span>(.<span class="dv">5</span>))</a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; process    real </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;   111µs   505ms</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;    97µs   503ms</span></a></code></pre></div>
 </div>
 <div id="alternatives" class="section level2">
 <h2 class="hasAnchor">
@@ -259,7 +260,15 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/r-lib/bench"><img src="https://github.com/r-lib/bench/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://codecov.io/github/r-lib/bench?branch=master"><img src="https://codecov.io/gh/r-lib/bench/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://cran.r-project.org/package=bench"><img src="https://www.r-pkg.org/badges/version/bench" alt="CRAN status"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
