@@ -85,11 +85,11 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
   }
 
   # We only want to evaluate these first runs if we need to check memory or results.
-  if (isTRUE(memory) || isTRUE(check)) {
+  if (memory || check) {
     # Run allocation benchmark and check results
     for (i in seq_len(length(exprs))) {
       res <- eval_one(exprs[[i]], memory)
-      if (isTRUE(check)) {
+      if (check) {
         if (is.null(res$result)) {
           results$result[i] <- list(res$result)
         } else {
@@ -100,7 +100,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
         results$memory[[i]] <- res$memory
       }
 
-      if (isTRUE(check) && i > 1) {
+      if (check && i > 1) {
         comp <- check_fun(results$result[[1]], results$result[[i]])
         if (!isTRUE(comp)) {
           expressions <- as.character(results$expression)
