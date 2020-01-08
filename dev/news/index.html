@@ -126,7 +126,8 @@
 <a href="#bench-development-version" class="anchor"></a>bench (development version)<small> Unreleased </small>
 </h1>
 <ul>
-<li><p>New <code><a href="../reference/bench_max_memory.html">bench_max_memory()</a></code> function, to return the maximum memory used by the current process. This uses system functions to track memory, so can measure memory outside of R’s GC heap.</p></li>
+<li><p><code><a href="../reference/mark.html">mark()</a></code> gains a <code>memory</code> argument to control if it records memory allocations, set <code>memory = FALSE</code> to disable recording memory allocations, which can be helpful when trying to benchmark long pieces of code with many allocations (<a href='https://github.com/r-lib/bench/issues/62'>#62</a>).</p></li>
+<li><p>New <code><a href="../reference/bench_process_memory.html">bench_process_memory()</a></code> function, to return the current and maximum memory used by the current process. This uses system functions to track memory, so can measure memory outside of R’s GC heap.</p></li>
 <li><p><code><a href="../reference/workout.html">workout()</a></code> if passed an expression (such as is returned by <code><a href="https://rdrr.io/r/base/parse.html">parse()</a></code>) will execute all the calls in the expression().</p></li>
 <li>
 <code>bench_expr</code> objects now work better with the upcoming versions of tibble and vctrs (<a href='https://github.com/romainfrancois'>@romainfrancois</a>, <a href='https://github.com/r-lib/bench/issues/64'>#64</a>)</li>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Measure Process CPU and real time that an expression used. — bench_time • bench</title>
+<title>Retrieve the current and maximum memory from the R process — bench_process_memory • bench</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,10 @@
 
 
 
-<meta property="og:title" content="Measure Process CPU and real time that an expression used. — bench_time" />
-<meta property="og:description" content="Measure Process CPU and real time that an expression used." />
+<meta property="og:title" content="Retrieve the current and maximum memory from the R process — bench_process_memory" />
+<meta property="og:description" content="The memory reported here will likely differ from that reported by gc(), as
+this includes all memory from the R process, including any child processes
+and memory allocated outside R's garbage collector heap." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -119,55 +121,54 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Measure Process CPU and real time that an expression used.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/bench_time.R'><code>R/bench_time.R</code></a></small>
-    <div class="hidden name"><code>bench_time.Rd</code></div>
+    <h1>Retrieve the current and maximum memory from the R process</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/bench_process_memory.R'><code>R/bench_process_memory.R</code></a></small>
+    <div class="hidden name"><code>bench_process_memory.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Measure Process CPU and real time that an expression used.</p>
+    <p>The memory reported here will likely differ from that reported by <code><a href='https://rdrr.io/r/base/gc.html'>gc()</a></code>, as
+this includes all memory from the R process, including any child processes
+and memory allocated outside R's garbage collector heap.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>bench_time</span>(<span class='no'>expr</span>)</pre>
+    <pre class="usage"><span class='fu'>bench_process_memory</span>()</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>expr</th>
-      <td><p>A expression to be timed.</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A <code>bench_time</code> object with two values.</p><ul>
-<li><p><code>process</code> - The process CPU usage of the expression evaluation.</p></li>
-<li><p><code>real</code> - The wallclock time of the expression evaluation.</p></li>
-</ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>On some systems (such as macOS) the process clock has lower
-precision than the realtime clock, as a result there may be cases where the
-process time is larger than the real time for fast expressions.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>The OS APIs used are as follows</p><h3>Windows</h3>
 
-    <div class='dont-index'><p><code><a href='bench_memory.html'>bench_memory()</a></code> To measure memory allocations for a given expression.</p></div>
+<ul>
+<li><p><a href='https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters'>PROCESS_MEMORY_COUNTERS.WorkingSetSize</a></p></li>
+<li><p><a href='https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters'>PROCESS_MEMORY_COUNTERS.PeakWorkingSetSize</a></p></li>
+</ul>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># This will use ~.5 seconds of real time, but very little process time.</span>
-<span class='fu'>bench_time</span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span>(<span class='fl'>.5</span>))</div><div class='output co'>#&gt; process    real 
-#&gt;  63.6µs 500.6ms </div></pre>
+
+<h3>macOS</h3>
+
+<ul>
+<li><p><a href='https://developer.apple.com/documentation/kernel/1537934-task_info?language=occ'>task_info(TASK_BASIC_INFO)</a></p></li>
+<li><p><a href='https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/getrusage.2.html'>rusage.ru_maxrss</a></p></li>
+</ul>
+
+
+<h3>linux</h3>
+
+<ul>
+<li><p><a href='http://man7.org/linux/man-pages/man5/proc.5.html'>/proc/pid/status VmSize</a></p></li>
+<li><p><a href='http://man7.org/linux/man-pages/man5/proc.5.html'>/proc/pid/status VmPeak</a>
+and on Windows
+<a href='https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters'>PROCESS_MEMORY_COUNTERS.PeakWorkingSetSize</a></p></li>
+</ul>
+
+
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
