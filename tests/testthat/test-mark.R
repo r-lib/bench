@@ -124,6 +124,12 @@ describe("mark", {
       "Memory profiling failed"
     )
   })
+  it("ignores trailing arguments", {
+    bench::mark(
+      1 + 3,
+      2 + 2,
+    )
+  })
 })
 
 describe("summary.bench_mark", {

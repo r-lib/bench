@@ -58,7 +58,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
   }
 
   if (is.null(exprs)) {
-    exprs <- dots(...)
+    exprs <- rlang::exprs(...)
   }
 
   results <- list(expression = new_bench_expr(exprs), time = list(), gc = list())
@@ -300,10 +300,6 @@ parse_allocations <- function(filename) {
       stop("Memory profiling failed.\n  If you are benchmarking parallel code you must set `memory = FALSE`.", call. = FALSE)
     }
   )
-}
-
-dots <- function(...) {
-  as.list(substitute(...()))
 }
 
 #nocov start

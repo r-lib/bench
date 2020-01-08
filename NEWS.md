@@ -1,5 +1,7 @@
 # bench (development version)
 
+* `mark()` now permits empty arguments, e.g. accidental trailing commas (#61).
+
 * `mark()` gains a `memory` argument to control if it records memory
   allocations, set `memory = FALSE` to disable recording memory allocations,
   which can be helpful when trying to benchmark long pieces of code with many
