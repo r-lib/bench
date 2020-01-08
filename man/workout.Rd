@@ -12,10 +12,13 @@ expressions.}
 
 \item{description}{A name to label each expression, if not supplied the
 deparsed expression will be used.}
+
+\item{exprs}{A list of calls to measure.}
 }
 \description{
 Given an block of expressions in \code{{}} \code{\link[=workout]{workout()}} individually times each
-expression in the group.
+expression in the group. \code{\link[=workout_exprs]{workout_exprs()}} is a lower level function most
+useful when reading lists of calls from a file.
 }
 \examples{
 workout({
@@ -26,4 +29,7 @@ workout({
   length(which(evens))
   sum(evens)
 })
+
+# The equivalent to the above, reading the code from a file
+workout_expressions(as.list(parse(system.file("examples/exprs.R", package = "bench"))))
 }

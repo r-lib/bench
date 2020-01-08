@@ -34,5 +34,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Jim Hester \email{james.f.hester@gmail.com}
 
+Other contributors:
+\itemize{
+  \item Drew Schmidt (read_proc_file implementation) [contributor]
+}
+
 }
 \keyword{internal}

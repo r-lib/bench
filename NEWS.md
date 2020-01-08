@@ -11,8 +11,8 @@
   memory used by the current process. This uses system functions to track
   memory, so can measure memory outside of R's GC heap.
 
-* `workout()` if passed an expression (such as is returned by `parse()`) will
-  execute all the calls in the expression().
+* New `workout_expressions()` function, a low-level function to workout a list
+  of expressions, like those obtained via `parse()` from a file.
 
 * `bench_expr` objects now work better with the upcoming versions of tibble and
   vctrs (@romainfrancois, #64)
