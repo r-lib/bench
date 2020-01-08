@@ -57,9 +57,9 @@ describe("mark", {
   })
 
   it("works with capabilities('profmem')", {
-    skip_if_not(capabilities("profmem")[[1]])
+    skip_if_not(isTRUE(capabilities("profmem")[[1]]))
 
-    res <- mark(1, 2, check = NULL, iterations = 1)
+    res <- mark(1, 2, check = FALSE, iterations = 1)
 
     expect_equal(length(res$memory), 2)
 
@@ -71,7 +71,7 @@ describe("mark", {
   it("works without capabilities('profmem')", {
     mockery::stub(mark, "capabilities", FALSE)
 
-    res <- mark(1, 2, check = NULL, iterations = 1)
+    res <- mark(1, 2, check = FALSE, iterations = 1)
 
     expect_false("memory" %in% names(res))
     expect_false("mem_alloc" %in% names(res))
