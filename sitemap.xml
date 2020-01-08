@@ -25,6 +25,9 @@
     <loc>http://bench.r-lib.org/reference/bench_memory.html</loc>
   </url>
   <url>
+    <loc>http://bench.r-lib.org/reference/bench_process_memory.html</loc>
+  </url>
+  <url>
     <loc>http://bench.r-lib.org/reference/bench_time.html</loc>
   </url>
   <url>

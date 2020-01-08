@@ -8,11 +8,13 @@
 
 <title>Benchmark a series of functions — mark • bench</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,12 +34,13 @@
 
 
 
-<meta property="og:title" content="Benchmark a series of functions — mark" />
 
+<meta property="og:title" content="Benchmark a series of functions — mark" />
 <meta property="og:description" content="Benchmark a list of quoted expressions. Each expression will always run at
 least twice, once to measure the memory allocation and store results and one
 or more times to measure timing." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -68,7 +71,7 @@ or more times to measure timing." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bench</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -98,7 +101,6 @@ or more times to measure timing." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/bench">
@@ -125,18 +127,26 @@ or more times to measure timing." />
     </div>
 
     <div class="ref-description">
-    
     <p>Benchmark a list of quoted expressions. Each expression will always run at
 least twice, once to measure the memory allocation and store results and one
 or more times to measure timing.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>mark</span>(<span class='no'>...</span>, <span class='kw'>min_time</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>min_iterations</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>max_iterations</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>filter_gc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exprs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre>
-    
+    <pre class="usage"><span class='fu'>mark</span>(
+  <span class='no'>...</span>,
+  <span class='kw'>min_time</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>min_iterations</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>max_iterations</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
+  <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>memory</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/capabilities.html'>capabilities</a></span>(<span class='st'>"profmem"</span>),
+  <span class='kw'>filter_gc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>exprs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>()
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -167,9 +177,15 @@ and <code>max_iterations</code>.</p></td>
     <tr>
       <th>check</th>
       <td><p>Check if results are consistent. If <code>TRUE</code>, checking is done
-with <code><a href='https://rdrr.io/r/base/all.equal.html'>all.equal()</a></code>, if <code>FALSE</code> checking is disabled. If <code>check</code> is a
-function that function will be called with each pair of results to
-determine consistency.</p></td>
+with <code><a href='https://rdrr.io/r/base/all.equal.html'>all.equal()</a></code>, if <code>FALSE</code> checking is disabled and results are not
+stored. If <code>check</code> is a function that function will be called with each
+pair of results to determine consistency.</p></td>
+    </tr>
+    <tr>
+      <th>memory</th>
+      <td><p>If <code>TRUE</code> (the default when R is compiled with memory
+profiling), track memory allocations using. If <code>FALSE</code> disable memory
+tracking.</p></td>
     </tr>
     <tr>
       <th>filter_gc</th>
@@ -199,30 +215,41 @@ defined in <code>...</code>.</p></td>
       <td><p>The environment which to evaluate the expressions</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a> with the additional summary columns.
 The following summary columns are computed</p><ul>
+<li><p><code>expression</code> - <code>bench_expr</code> The deparsed expression that was evaluated
+(or its name if one was provided).</p></li>
 <li><p><code>min</code> - <code>bench_time</code> The minimum execution time.</p></li>
-<li><p><code>mean</code> - <code>bench_time</code> The arithmetic mean of execution time</p></li>
 <li><p><code>median</code> - <code>bench_time</code> The sample median of execution time.</p></li>
-<li><p><code>max</code> - <code>bench_time</code> The maximum execution time.</p></li>
-<li><p><code>mem_alloc</code> - <code>bench_bytes</code> Total amount of memory allocated by running the expression.</p></li>
-<li><p><code>itr/sec</code> - <code>integer</code> The estimated number of executions performed per second.</p></li>
+<li><p><code>itr/sec</code> - <code>double</code> The estimated number of executions performed per
+second.</p></li>
+<li><p><code>mem_alloc</code> - <code>bench_bytes</code> Total amount of memory allocated by R while
+running the expression. Memory allocated <em>outside</em> the R heap, e.g. by
+<code>malloc()</code> or <code>new</code> directly is <em>not</em> tracked, take care to avoid
+misinterpreting the results if running code that may do this.</p></li>
+<li><p><code>gc/sec</code> - <code>double</code> The number of garbage collections per second.</p></li>
 <li><p><code>n_itr</code> - <code>integer</code> Total number of iterations after filtering
 garbage collections (if <code>filter_gc == TRUE</code>).</p></li>
-<li><p><code>n_gc</code> - <code>integer</code> Total number of garbage collections performed over all
+<li><p><code>n_gc</code> - <code>double</code> Total number of garbage collections performed over all
 iterations. This is a psudo-measure of the pressure on the garbage collector, if
 it varies greatly between to alternatives generally the one with fewer
 collections will cause fewer allocation in real usage.</p></li>
+<li><p><code>total_time</code> - <code>bench_time</code> The total time to perform the benchmarks.</p></li>
+<li><p><code>result</code> - <code>list</code> A list column of the object(s) returned by the
+evaluated expression(s).</p></li>
+<li><p><code>memory</code> - <code>list</code> A list column with results from <code><a href='https://rdrr.io/r/utils/Rprofmem.html'>Rprofmem()</a></code>.</p></li>
+<li><p><code>time</code> - <code>list</code> A list column of <code>bench_time</code> vectors for each evaluated
+expression.</p></li>
+<li><p><code>gc</code> - <code>list</code> A list column with tibbles containing the level of
+garbage collection (0-2, columns) for each iteration (rows).</p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='press.html'>press()</a></code> to run benchmarks across a grid of parameters.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>100</span>, <span class='fl'>1</span>, <span class='fl'>1000</span>), <span class='kw'>y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>, <span class='fl'>1</span>, <span class='fl'>1000</span>))
@@ -234,9 +261,9 @@ collections will cause fewer allocation in real usage.</p></li>
   <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>dat</span>, <span class='no'>x</span> <span class='kw'>&gt;</span> <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3 x 13</span><span>
 #&gt;   expression                   min median `itr/sec` mem_alloc `gc/sec` n_itr
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;bch:&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:byt&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]        28.6µs 33.4µs    </span><span style='text-decoration: underline;'>28</span><span>681.    4.15KB     10.6  </span><span style='text-decoration: underline;'>2</span><span>697
-#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ] 27.6µs 31.6µs    </span><span style='text-decoration: underline;'>30</span><span>507.    2.77KB     10.7  </span><span style='text-decoration: underline;'>2</span><span>838
-#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)      46.8µs 52.8µs    </span><span style='text-decoration: underline;'>18</span><span>395.    5.46KB     10.7  </span><span style='text-decoration: underline;'>1</span><span>715
+#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]        23.1µs 25.5µs    </span><span style='text-decoration: underline;'>38</span><span>246.    4.15KB     10.5  </span><span style='text-decoration: underline;'>3</span><span>636
+#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ] 23.5µs 25.7µs    </span><span style='text-decoration: underline;'>37</span><span>867.    2.77KB     10.5  </span><span style='text-decoration: underline;'>3</span><span>607
+#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)      39.3µs 42.3µs    </span><span style='text-decoration: underline;'>22</span><span>780.    5.46KB     21.9  </span><span style='text-decoration: underline;'>2</span><span>084
 #&gt; </span><span style='color: #555555;'># … with 6 more variables: n_gc </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, total_time </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #555555;'>, result </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
 #&gt; #   memory </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, time </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, gc </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
   </div>
@@ -244,11 +271,8 @@ collections will cause fewer allocation in real usage.</p></li>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -262,7 +286,7 @@ collections will cause fewer allocation in real usage.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>
