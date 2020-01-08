@@ -25,7 +25,7 @@
 workout <- function(expr, description = NULL) {
   expr <- rlang::enquo(expr)
   env <- rlang::quo_get_env(expr)
-  if (quo_get_expr(expr)[[1]] == "{") {
+  if (rlang::quo_get_expr(expr)[[1]] == "{") {
     exprs <- as.list(rlang::quo_get_expr(expr)[-1])
   } else {
     exprs <- list(rlang::quo_get_expr(expr))
