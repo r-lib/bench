@@ -1,7 +1,7 @@
 #' Workout a group of expressions individually
 #'
 #' Given an block of expressions in `{}` [workout()] individually times each
-#' expression in the group. [workout_exprs()] is a lower level function most
+#' expression in the group. [workout_expressions()] is a lower level function most
 #' useful when reading lists of calls from a file.
 #'
 #' @param expr one or more expressions to workout, use `{}` to pass multiple
@@ -9,6 +9,7 @@
 #' @param exprs A list of calls to measure.
 #' @param description A name to label each expression, if not supplied the
 #'   deparsed expression will be used.
+#' @param env The environment in which the expressions should be evaluated.
 #' @export
 #' @examples
 #' workout({
@@ -33,6 +34,7 @@ workout <- function(expr, description = NULL) {
   workout_expressions(exprs, env, description)
 }
 
+#' @rdname workout
 #' @export
 workout_expressions <- function(exprs, env = parent.frame(), description = NULL) {
   if (is.null(description)) {

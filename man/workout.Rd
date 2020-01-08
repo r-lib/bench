@@ -2,9 +2,12 @@
 % Please edit documentation in R/workout.R
 \name{workout}
 \alias{workout}
+\alias{workout_expressions}
 \title{Workout a group of expressions individually}
 \usage{
 workout(expr, description = NULL)
+
+workout_expressions(exprs, env = parent.frame(), description = NULL)
 }
 \arguments{
 \item{expr}{one or more expressions to workout, use \code{{}} to pass multiple
@@ -14,10 +17,12 @@ expressions.}
 deparsed expression will be used.}
 
 \item{exprs}{A list of calls to measure.}
+
+\item{env}{The environment in which the expressions should be evaluated.}
 }
 \description{
 Given an block of expressions in \code{{}} \code{\link[=workout]{workout()}} individually times each
-expression in the group. \code{\link[=workout_exprs]{workout_exprs()}} is a lower level function most
+expression in the group. \code{\link[=workout_expressions]{workout_expressions()}} is a lower level function most
 useful when reading lists of calls from a file.
 }
 \examples{
