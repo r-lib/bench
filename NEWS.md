@@ -1,11 +1,6 @@
 # bench (development version)
 
-* `mark()` now permits empty arguments, e.g. accidental trailing commas (#61).
-
-* `mark()` gains a `memory` argument to control if it records memory
-  allocations, set `memory = FALSE` to disable recording memory allocations,
-  which can be helpful when trying to benchmark long pieces of code with many
-  allocations (#62).
+## New features
 
 * New `bench_process_memory()` function, to return the current and maximum
   memory used by the current process. This uses system functions to track
@@ -14,12 +9,24 @@
 * New `workout_expressions()` function, a low-level function to workout a list
   of expressions, like those obtained via `parse()` from a file.
 
-* `bench_expr` objects now work better with the upcoming versions of tibble and
-  vctrs (@romainfrancois, #64)
+* `mark()` gains a `memory` argument to control if it records memory
+  allocations, set `memory = FALSE` to disable recording memory allocations,
+  which can be helpful when trying to benchmark long pieces of code with many
+  allocations (#62).
+
+## Minor improvements and fixes
+
+* `mark()` now permits empty arguments, e.g. accidental trailing commas (#61).
+
 * `mark()` now errors correctly when the expressions deparsed length is
   different.
-* Update documentation of `bench_mark` columns (@jdblischak, #67).
+
+* `bench_expr` objects now work better with the upcoming versions of tibble and
+  vctrs (@romainfrancois, #64)
+
 * `autoplot.bench_mark()` provides a more informative error if the `ggbeeswarm` package is not installed (@coatless, #69).
+
+* Update documentation of `bench_mark` columns (@jdblischak, #67).
 
 # bench 1.0.4
 
