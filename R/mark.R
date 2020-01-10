@@ -61,13 +61,9 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     exprs <- rlang::exprs(...)
   }
 
-  results <- list(expression = new_bench_expr(exprs), time = list(), gc = list())
-  if (memory) {
-    results$memory <- list()
-  }
-  if (check) {
-    results$result <- list()
-  }
+  n_exprs <- length(exprs)
+
+  results <- list(expression = new_bench_expr(exprs), time = vector("list", n_exprs), gc = vector("list", n_exprs), memory = vector("list", n_exprs), result = vector("list", n_exprs))
 
   # Helper for evaluating with memory profiling
   eval_one <- function(e, profile_memory) {
@@ -256,11 +252,9 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, time_
   object$n_gc <- vdapply(num_gc, sum)
   object$`gc/sec` <-  as.numeric(object$n_gc / object$total_time)
 
-  if (!is.null(object[["memory"]])) {
-    object$mem_alloc <-
-      bench_bytes(
-        vdapply(object$memory, function(x) if (is.null(x)) NA else sum(x$bytes, na.rm = TRUE)))
-  }
+  object$mem_alloc <-
+    bench_bytes(
+      vdapply(object$memory, function(x) if (is.null(x)) NA else sum(x$bytes, na.rm = TRUE)))
 
   if (isTRUE(relative)) {
     object[summary_cols] <- lapply(object[summary_cols], function(x) as.numeric(x / min(x)))

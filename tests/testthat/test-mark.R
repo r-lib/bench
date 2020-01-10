@@ -73,12 +73,12 @@ describe("mark", {
 
     res <- mark(1, 2, check = FALSE, iterations = 1)
 
-    expect_false("memory" %in% names(res))
-    expect_false("mem_alloc" %in% names(res))
+    expect_equal(res$memory, vector("list", 2))
+    expect_equal(res$mem_alloc, as_bench_bytes(c(NA, NA)))
   })
   it("Can handle `NULL` results", {
     res <- mark(if (FALSE) 1, max_iterations = 10)
-    expect_equal(res$result[[1]], NULL)
+    expect_equal(res$result, list(NULL))
   })
   it("Can errors with the deparsed expressions", {
     expect_error(msg = "`1` does not equal `3`",
@@ -94,20 +94,19 @@ describe("mark", {
   it("works with memory = FALSE", {
     res <- mark(1, memory = FALSE)
     expect_is(res, "bench_mark")
-    expect_false("memory" %in% names(res))
-    expect_false("mem_alloc" %in% names(res))
+    expect_equal(res$memory, vector("list", 1))
+    expect_equal(res$mem_alloc, as_bench_bytes(NA))
   })
   it("works with check = FALSE", {
     res <- mark(1, check = FALSE)
     expect_is(res, "bench_mark")
-    expect_false("result" %in% names(res))
+    expect_equal(res$result, list(NULL))
   })
   it("works with memory = FALSE and check = FALSE", {
     res <- mark(1, memory = FALSE, check = FALSE)
     expect_is(res, "bench_mark")
-    expect_false("memory" %in% names(res))
-    expect_false("mem_alloc" %in% names(res))
-    expect_false("result" %in% names(res))
+    expect_equal(res$memory, list(NULL))
+    expect_equal(res$mem_alloc, as_bench_bytes(NA))
   })
   it("fails for memory profiling failures", {
     skip_on_os("windows")

@@ -1,5 +1,8 @@
 # bench (development version)
 
+* `mark()` columns memory, result and mem_alloc columns are now always
+  included, even if they are unused.
+
 # bench 1.1.0
 
 ## New features
