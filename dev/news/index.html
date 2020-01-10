@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bench</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.4.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.1.0.9000</span>
       </span>
     </div>
 
@@ -126,17 +126,34 @@
 <a href="#bench-development-version" class="anchor"></a>bench (development version)<small> Unreleased </small>
 </h1>
 <ul>
-<li><p><code><a href="../reference/mark.html">mark()</a></code> now permits empty arguments, e.g. accidental trailing commas (<a href='https://github.com/r-lib/bench/issues/61'>#61</a>).</p></li>
-<li><p><code><a href="../reference/mark.html">mark()</a></code> gains a <code>memory</code> argument to control if it records memory allocations, set <code>memory = FALSE</code> to disable recording memory allocations, which can be helpful when trying to benchmark long pieces of code with many allocations (<a href='https://github.com/r-lib/bench/issues/62'>#62</a>).</p></li>
-<li><p>New <code><a href="../reference/bench_process_memory.html">bench_process_memory()</a></code> function, to return the current and maximum memory used by the current process. This uses system functions to track memory, so can measure memory outside of R’s GC heap.</p></li>
-<li><p><code><a href="../reference/workout.html">workout()</a></code> if passed an expression (such as is returned by <code><a href="https://rdrr.io/r/base/parse.html">parse()</a></code>) will execute all the calls in the expression().</p></li>
 <li>
-<code>bench_expr</code> objects now work better with the upcoming versions of tibble and vctrs (<a href='https://github.com/romainfrancois'>@romainfrancois</a>, <a href='https://github.com/r-lib/bench/issues/64'>#64</a>)</li>
-<li>
-<code><a href="../reference/mark.html">mark()</a></code> now errors correctly when the expressions deparsed length is different.</li>
-<li>Update documentation of <code>bench_mark</code> columns (<a href='https://github.com/jdblischak'>@jdblischak</a>, <a href='https://github.com/r-lib/bench/issues/67'>#67</a>).</li>
-<li><p><code><a href="../reference/autoplot.bench_mark.html">autoplot.bench_mark()</a></code> provides a more informative error if the <code>ggbeeswarm</code> package is not installed (<a href='https://github.com/coatless'>@coatless</a>, <a href='https://github.com/r-lib/bench/issues/69'>#69</a>).</p></li>
+<code><a href="../reference/mark.html">mark()</a></code> columns memory, result and mem_alloc columns are now always included, even if they are unused.</li>
 </ul>
+</div>
+    <div id="bench-1-1-0" class="section level1">
+<h1 class="page-header">
+<a href="#bench-1-1-0" class="anchor"></a>bench 1.1.0<small> 2020-01-10 </small>
+</h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li><p>New <code><a href="../reference/bench_process_memory.html">bench_process_memory()</a></code> function, to return the current and maximum memory used by the current process. This uses system functions to track memory, so can measure memory outside of R’s GC heap.</p></li>
+<li><p>New <code><a href="../reference/workout.html">workout_expressions()</a></code> function, a low-level function to workout a list of expressions, like those obtained via <code><a href="https://rdrr.io/r/base/parse.html">parse()</a></code> from a file.</p></li>
+<li><p><code><a href="../reference/mark.html">mark()</a></code> gains a <code>memory</code> argument to control if it records memory allocations, set <code>memory = FALSE</code> to disable recording memory allocations, which can be helpful when trying to benchmark long pieces of code with many allocations (<a href='https://github.com/r-lib/bench/issues/62'>#62</a>).</p></li>
+</ul>
+</div>
+<div id="minor-improvements-and-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-improvements-and-fixes" class="anchor"></a>Minor improvements and fixes</h2>
+<ul>
+<li><p><code><a href="../reference/mark.html">mark()</a></code> now permits empty arguments, e.g. accidental trailing commas (<a href='https://github.com/r-lib/bench/issues/61'>#61</a>).</p></li>
+<li><p><code><a href="../reference/mark.html">mark()</a></code> now errors correctly when the expressions deparsed length is different.</p></li>
+<li><p><code>bench_expr</code> objects now work better with the upcoming versions of tibble and vctrs (<a href='https://github.com/romainfrancois'>@romainfrancois</a>, <a href='https://github.com/r-lib/bench/issues/64'>#64</a>)</p></li>
+<li><p><code><a href="../reference/autoplot.bench_mark.html">autoplot.bench_mark()</a></code> provides a more informative error if the <code>ggbeeswarm</code> package is not installed (<a href='https://github.com/coatless'>@coatless</a>, <a href='https://github.com/r-lib/bench/issues/69'>#69</a>).</p></li>
+<li><p>Update documentation of <code>bench_mark</code> columns (<a href='https://github.com/jdblischak'>@jdblischak</a>, <a href='https://github.com/r-lib/bench/issues/67'>#67</a>).</p></li>
+</ul>
+</div>
 </div>
     <div id="bench-1-0-4" class="section level1">
 <h1 class="page-header">
@@ -196,6 +213,7 @@
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#bench-development-version">development version</a></li>
+        <li><a href="#bench-1-1-0">1.1.0</a></li>
         <li><a href="#bench-1-0-4">1.0.4</a></li>
         <li><a href="#bench-1-0-3">1.0.3</a></li>
         <li><a href="#bench-1-0-2">1.0.2</a></li>

@@ -71,7 +71,7 @@ or more times to measure timing." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bench</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.4.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.1.0.9000</span>
       </span>
     </div>
 
@@ -261,9 +261,9 @@ garbage collection (0-2, columns) for each iteration (rows).</p></li>
   <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>dat</span>, <span class='no'>x</span> <span class='kw'>&gt;</span> <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3 x 13</span><span>
 #&gt;   expression                   min median `itr/sec` mem_alloc `gc/sec` n_itr
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;bch:&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:byt&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]        23.3µs 26.2µs    </span><span style='text-decoration: underline;'>36</span><span>837.    4.15KB     11.0  </span><span style='text-decoration: underline;'>3</span><span>348
-#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ] 23.9µs 26.6µs    </span><span style='text-decoration: underline;'>35</span><span>964.    2.77KB     10.6  </span><span style='text-decoration: underline;'>3</span><span>391
-#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)      39.6µs 43.4µs    </span><span style='text-decoration: underline;'>22</span><span>208.    5.46KB     10.6  </span><span style='text-decoration: underline;'>2</span><span>087
+#&gt; </span><span style='color: #555555;'>1</span><span> dat[dat$x &gt; 500, ]        25.8µs 28.3µs    </span><span style='text-decoration: underline;'>34</span><span>233.    4.15KB     10.8  </span><span style='text-decoration: underline;'>3</span><span>161
+#&gt; </span><span style='color: #555555;'>2</span><span> dat[which(dat$x &gt; 500), ]   24µs 27.4µs    </span><span style='text-decoration: underline;'>35</span><span>040.    2.77KB     10.6  </span><span style='text-decoration: underline;'>3</span><span>295
+#&gt; </span><span style='color: #555555;'>3</span><span> subset(dat, x &gt; 500)      39.7µs 43.2µs    </span><span style='text-decoration: underline;'>22</span><span>391.    5.46KB     10.6  </span><span style='text-decoration: underline;'>2</span><span>120
 #&gt; </span><span style='color: #555555;'># … with 6 more variables: n_gc </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, total_time </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span style='color: #555555;'>, result </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
 #&gt; #   memory </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, time </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, gc </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
   </div>
