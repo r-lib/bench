@@ -1,4 +1,4 @@
-# bench (development version)
+# bench 1.1.1
 
 * `mark()` columns memory, result and mem_alloc columns are now always
   included, even if they are unused.
