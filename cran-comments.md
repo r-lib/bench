@@ -1,3 +1,5 @@
+This release fixes test failures when R is not compiled with memory profiling
+
 ## Test environments
 * local Windows install, R 3.6.1
 * ubuntu 14.04 (on travis-ci), R 3.6.1
