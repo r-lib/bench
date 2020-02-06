@@ -168,6 +168,7 @@ Ops.bench_time <- function(e1, e2, ...) {
     `!=` = TRUE,
     `<=` = TRUE,
     `>=` = TRUE,
+    `%%` = TRUE,
   FALSE)
   if (!boolean) {
     stop(sprintf("'%s' not defined for \"bench_time\" objects", .Generic),
