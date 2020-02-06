@@ -130,8 +130,15 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     results$gc[[i]] <- parse_gc(gc_msg)
   }
 
-  summary(bench_mark(tibble::as_tibble(results, validate = FALSE)),
+  out <- summary(bench_mark(tibble::as_tibble(results, validate = FALSE)),
           filter_gc = filter_gc, relative = relative, time_unit = time_unit)
+
+  suite <- getOption("bench.suite", NULL)
+  if (!is.null(suite)) {
+    write_suite(out, suite)
+  } else {
+    out
+  }
 }
 
 bench_mark <- function(x) {
@@ -244,6 +251,7 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, time_
 
   object$min <- new_bench_time(vdapply(times, min))
   object$median <- new_bench_time(vdapply(times, stats::median))
+  object$max <- new_bench_time(vdapply(times, max))
   object$total_time <- new_bench_time(vdapply(times, sum))
 
   object$n_itr <- viapply(times, length)
