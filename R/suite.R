@@ -1,4 +1,4 @@
-suite_cols <- c("ref", "branch", "suite", "datetime", "expression", "min", "1Q", "median", "3Q", "max", "n_itr", "n_gc", "total_time", "mem_alloc")
+suite_cols <- c("ref", "branch", "suite", "commit_time", "benchmark_time", "expression", "min", "1Q", "median", "3Q", "max", "n_itr", "n_gc", "total_time", "mem_alloc")
 
 #' @export
 suite <- function(name) {
@@ -28,7 +28,17 @@ get_current_git_ref <- function() {
 get_current_git_branch <- function() {
   # If we aren't on a branch return NA
   suppressWarnings(
-    out <- system2("git", c("symbolic-ref", "-q", "--short", "HEAD"), stdout = TRUE)
+    out <- system2("git", c("describe", "--all", "--exact-match", "HEAD"), stdout = TRUE)
+  )
+  if (length(out) == 0) {
+    out <- NA_character_
+  }
+  out
+}
+
+get_current_git_creation_time <- function() {
+  suppressWarnings(
+    out <- system2("git", c("log", "--format='%cI'", "-n", "1", "HEAD"), stdout = TRUE)
   )
   if (length(out) == 0) {
     out <- NA_character_
@@ -50,35 +60,47 @@ write_suite <- function(x, name) {
   x$suite <- name
   x$ref <- get_current_git_ref()
   x$branch <- get_current_git_branch()
-  x$datetime <- as.character(Sys.time(), format = ISO8601_format, tz = "UTC")
+  x$commit_time <- get_current_git_creation_time()
+  x$benchmark_time <- as.character(Sys.time(), format = ISO8601_format, tz = "UTC")
   x <- x[suite_cols]
   write.table(x, sep = "\t", file = suite_file(name), row.names = FALSE, append = TRUE, col.names = FALSE)
 }
 
 plot_benchmark <- function(x) {
-  p1 <- ggplot(x, aes(x = ref)) +
+  #p1 <- ggplot(x, aes(x = name)) +
+    #geom_point(aes(y = median)) +
+    #geom_segment(aes(xend = name, y = `1Q`, yend = `3Q`)) +
+    #scale_y_bench_time(name = NULL) +
+    #scale_x_discrete(name = NULL) +
+    #coord_flip() +
+    #labs(title = paste0("Execution time - seconds"))
+
+  p1 <- ggplot(x, aes(x = name)) +
     geom_point(aes(y = median)) +
-    geom_segment(aes(xend = ref, y = `1Q`, yend = `3Q`)) +
+    #geom_step(aes(y = median), group = 1) +
+    geom_segment(aes(xend = name, y = `1Q`, yend = `3Q`)) +
     scale_y_bench_time(name = NULL) +
     scale_x_discrete(name = NULL) +
     coord_flip() +
-    labs(title = paste0("Execution time - seconds"))
+    labs(title = paste0("Execution time"))
 
-  p2 <- ggplot(x, aes(x = ref, y = mem_alloc)) +
-    geom_bar(stat = "identity") +
-    scale_y_bench_bytes() +
-    coord_flip() +
-    labs(title = "Memory allocations", x = NULL, y = NULL) +
-    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+  #p2 <- ggplot(x, aes(x = name, y = mem_alloc)) +
+    ##geom_bar(stat = "identity") +
+    #geom_point() +
+    #scale_y_bench_bytes() +
+    #coord_flip() +
+    #labs(title = "Memory allocations", x = NULL, y = NULL) +
+    #theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
-  p3 <- ggplot(x, aes(x = ref, y = n_gc)) +
-    geom_bar(stat = "identity") +
-    coord_flip() +
-    labs(title = "Garbage collections", x = NULL, y = NULL) +
-    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+  #p3 <- ggplot(x, aes(x = name, y = n_gc / total_time)) +
+    ##geom_bar(stat = "identity") +
+    #geom_point() +
+    #coord_flip() +
+    #labs(title = "GC / second", x = NULL, y = NULL) +
+    #theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
-  library(patchwork)
-  p1 + p2 + p3 + plot_layout(guides = "collect", widths = c(3, 1, 1)) + plot_annotation(title = x$expression[[1]])
+  #library(patchwork)
+  #p1 + p2 + p3 + plot_layout(guides = "collect", widths = c(1, 1/6, 1/6)) + plot_annotation(title = x$expression[[1]])
 }
 
 plot_suite <- function(name) {
@@ -86,7 +108,8 @@ plot_suite <- function(name) {
 
   x <- read.delim(suite_file(name), sep = "\t", stringsAsFactors = FALSE, check.names = FALSE)
   x$ref <- substr(x$ref, 1, 6)
-  x$ref <- factor(x$ref, levels = unique(x$ref))
+  x$name <- ifelse(is.na(x$branch), x$ref, x$branch)
+  x$name <- factor(x$name, levels = unique(x$name))
 
   plots <- lapply(split(x, x$expression), plot_benchmark)
 
