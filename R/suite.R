@@ -59,11 +59,9 @@ plot_suite <- function(name) {
   library(ggplot2)
 
   x <- read.delim(suite_file(name), sep = "\t", stringsAsFactors = FALSE, check.names = FALSE)
-  #x$ref <- substr(x$ref, 1, 6)
-  #x$ref <- factor(x$ref, levels = unique(x$ref))
+  x$ref <- substr(x$ref, 1, 6)
+  x$ref <- factor(x$ref, levels = unique(x$ref))
 
-  #labels <- stats::setNames(sprintf('<a href = "%s">%s</a>', x$ref, x$ref), x$ref)
-  links <- sprintf("https://github.com/r-lib/bench/commit/%s", unique(x$ref))
   #x$datetime <- as.POSIXct(x$datetime, format = ISO8601_format, tz = "UTC")
 
   p1 <- ggplot(x, aes(x = ref, color = expression)) +
@@ -74,19 +72,6 @@ plot_suite <- function(name) {
     coord_flip() +
     labs(title = paste0("Execution time - seconds"), color = "benchmarks", y = NULL, x = NULL) +
     facet_wrap(vars(expression))
-
-  library(grid)
-  p1
-  grid.force()
-  grid.ls()
-
-  tick_labels <- grid.grep("axis::text", grep=TRUE, global=TRUE)
-  library(gridSVG)
-  grid.hyperlink(tick_labels[[3]],
-    href=links,
-    group=FALSE)
-  ## Export to SVG (and view in a browser)
-  grid.export("p1.svg")
 
   p2 <- ggplot(x, aes(x = ref, y = mem_alloc, color = expression)) +
     geom_step(aes(group = expression)) +
