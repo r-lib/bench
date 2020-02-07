@@ -33,10 +33,9 @@ run_benchmark <- function(path, env = new.env(parent = globalenv())) {
   eval(exprs, envir = env)
 }
 
-#' @export
-fetch_benchmark_notes <- function(remote = "origin") {
+git <- function(...) {
   withCallingHandlers(
-    system2("git", c("fetch", remote, "refs/notes/benchmarks")),
+    system2("git", list(...)),
     warning = function(e) {
       stop(e)
     }
@@ -44,13 +43,13 @@ fetch_benchmark_notes <- function(remote = "origin") {
 }
 
 #' @export
+fetch_benchmark_notes <- function(remote = "origin") {
+  git("fetch", remote, "refs/notes/benchmarks")
+}
+
+#' @export
 push_benchmark_notes <- function(remote = "origin") {
-  withCallingHandlers(
-    system2("git", c("push", remote, "refs/notes/benchmarks")),
-    warning = function(e) {
-      stop(e)
-    }
-  )
+  git("push", remote, "refs/notes/benchmarks")
 }
 
 read_lines <- function (path, n = -1L, encoding = "UTF-8") {
@@ -79,12 +78,7 @@ ISO8601_format <- "%Y-%m-%dT%H:%M:%SZ"
 data_list_cols <- c("memory", "time", "gc", "result")
 
 append_file_to_git_notes <- function(file) {
-  withCallingHandlers(
-    system2("git", c("notes", "--ref", "benchmarks", "append", "-F", file, "HEAD")),
-    warning = function(e) {
-      stop(e)
-    }
-  )
+  git("notes", "--ref", "benchmarks", "append", "-F", file, "HEAD")
 }
 
 write_benchmark_file <- function(x, file) {
