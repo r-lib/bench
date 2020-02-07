@@ -133,9 +133,9 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
   out <- summary(bench_mark(tibble::as_tibble(results, validate = FALSE)),
           filter_gc = filter_gc, relative = relative, time_unit = time_unit)
 
-  suite <- getOption("bench.suite", NULL)
-  if (!is.null(suite)) {
-    write_suite(out, suite)
+  file <- getOption("bench.file", NULL)
+  if (!is.null(file)) {
+    write_benchmark_file(out, file)
   } else {
     out
   }
