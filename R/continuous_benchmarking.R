@@ -1,3 +1,33 @@
+#' Run benchmarks for a package
+#'
+#' @param path Path to a package, or within a package.
+#' @param env Environment in which to execute the benchmarks.
+#' @export
+run_benchmarks <- function(path = ".", env = new.env(parent = globalenv())) {
+  path <- rprojroot::find_root("DESCRIPTION", path)
+  sub("[/\\]$", "", path)
+  old <- getwd()
+  on.exit(setwd(old))
+  bench_dir <- file.path(path, "bench")
+  setwd(bench_dir)
+  for (file in list.files(".", pattern = "[.][Rr]$", full.names = TRUE)) {
+    run_benchmark(file, env)
+  }
+}
+
+run_benchmark <- function(path, env = new.env(parent = globalenv())) {
+  filename <- basename(path)
+  options(bench.file = filename)
+
+  lines <- read_lines(path)
+  exprs <- parse(text = lines, keep.source = FALSE, encoding = "UTF-8")
+  eval(exprs, envir = env)
+}
+
+read_lines <- function (path, n = -1L, encoding = "UTF-8") {
+  base::readLines(path, n = n, encoding = encoding, warn = FALSE)
+}
+
 benchmark_cols <- c(
   "file" = "character",
   "name" = "character",
@@ -16,19 +46,6 @@ benchmark_cols <- c(
 ISO8601_format <- "%Y-%m-%dT%H:%M:%SZ"
 
 # Writing benchmark results
-
-run_benchmark <- function(path, env = new.env(parent = globalenv())) {
-  filename <- basename(path)
-  options(bench.file = filename)
-
-  lines <- read_lines(path)
-  exprs <- parse(text = lines, keep.source = FALSE, encoding = "UTF-8")
-  eval(exprs, envir = env)
-}
-
-read_lines <- function (path, n = -1L, encoding = "UTF-8") {
-  base::readLines(path, n = n, encoding = encoding, warn = FALSE)
-}
 
 data_list_cols <- c("memory", "time", "gc", "result")
 
