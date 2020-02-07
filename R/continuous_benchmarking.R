@@ -1,7 +1,11 @@
 #' Run benchmarks for a package
 #'
-#' [run_benchmarks()] runs all the benchmarks in a package. [run_benchmark()]
+#' [run_benchmarks()] runs all the benchmark in a package. [run_benchmark()]
 #' runs a single benchmark.
+#'
+#' Benchmark files are any '.R' files in the `bench/` directory. The results of
+#' any `bench::mark()` are automatically recorded in [git
+#' notes](https://git-scm.com/docs/git-notes) entries for the current commit.
 #'
 #' @param path [run_benchmarks()] a path to a package, or within a package. For [run_benchmark()] the path to the benchmark file to be run.
 #' @param env Environment in which to execute the benchmarks.

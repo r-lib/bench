@@ -15,6 +15,10 @@ run_benchmark(path, env = new.env(parent = globalenv()))
 \item{env}{Environment in which to execute the benchmarks.}
 }
 \description{
-\code{\link[=run_benchmarks]{run_benchmarks()}} runs all the benchmarks in a package. \code{\link[=run_benchmark]{run_benchmark()}}
+\code{\link[=run_benchmarks]{run_benchmarks()}} runs all the benchmark in a package. \code{\link[=run_benchmark]{run_benchmark()}}
 runs a single benchmark.
+}
+\details{
+Benchmark files are any '.R' files in the \verb{bench/} directory. The results of
+any \code{bench::mark()} are automatically recorded in \href{https://git-scm.com/docs/git-notes}{git notes} entries for the current commit.
 }
