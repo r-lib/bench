@@ -33,6 +33,26 @@ run_benchmark <- function(path, env = new.env(parent = globalenv())) {
   eval(exprs, envir = env)
 }
 
+#' @export
+fetch_benchmark_notes <- function(remote = "origin") {
+  withCallingHandlers(
+    system2("git", c("fetch", remote, "refs/notes/benchmarks")),
+    warning = function(e) {
+      stop(e)
+    }
+  )
+}
+
+#' @export
+push_benchmark_notes <- function(remote = "origin") {
+  withCallingHandlers(
+    system2("git", c("push", remote, "refs/notes/benchmarks")),
+    warning = function(e) {
+      stop(e)
+    }
+  )
+}
+
 read_lines <- function (path, n = -1L, encoding = "UTF-8") {
   base::readLines(path, n = n, encoding = encoding, warn = FALSE)
 }
