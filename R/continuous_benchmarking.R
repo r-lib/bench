@@ -1,6 +1,9 @@
 #' Run benchmarks for a package
 #'
-#' @param path Path to a package, or within a package.
+#' [run_benchmarks()] runs all the benchmarks in a package. [run_benchmark()]
+#' runs a single benchmark.
+#'
+#' @param path [run_benchmarks()] a path to a package, or within a package. For [run_benchmark()] the path to the benchmark file to be run.
 #' @param env Environment in which to execute the benchmarks.
 #' @export
 run_benchmarks <- function(path = ".", env = new.env(parent = globalenv())) {
@@ -15,6 +18,8 @@ run_benchmarks <- function(path = ".", env = new.env(parent = globalenv())) {
   }
 }
 
+#' @rdname run_benchmarks
+#' @export
 run_benchmark <- function(path, env = new.env(parent = globalenv())) {
   filename <- basename(path)
   options(bench.file = filename)
