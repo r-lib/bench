@@ -125,21 +125,27 @@ read_git_log <- function() {
 }
 
 log_to_commit_graph <- function(log) {
-  nodes <- tibble::tibble(name = log$commit_hash)
+  nodes <- log[c("commit_hash", "subject", "ref_names")]
   edges <- tidyr::unnest(log[c("commit_hash", "parent_hashes")], cols = c(parent_hashes))
-  edges <- edges[-NROW(edges), ]
-  #browser()
-  #edges[] <- lapply(edges, function(x) unclass(factor(x, levels = unique(nodes$name))))
-  # remove the last edge
+
+  # If we have truncated the log the last edge may reference a node we don't
+  # have, so remove it
+  if (tail(edges$parent_hashes, n = 1) != tail(nodes$commit_hash, n = 1)) {
+    edges <- head(edges, n = -1)
+  }
+
   tidygraph::tbl_graph(nodes = nodes, edges = edges)
 }
 
+# TODO: get @thomasp85 to make this nice, something like
+# https://gitgraphjs.com/#6, also need to somehow align it with the benchmark
+# results.
 plot_commit_graph <- function(graph) {
   library(ggraph)
-  ggraph(graph, layout = 'graphopt') +
+  ggraph(graph, layout = 'dendrogram') +
     geom_edge_link(arrow = arrow(length = unit(4, 'mm'))) +
     geom_node_point(size = 5) +
-    geom_node_label(aes(label = name))
+    geom_node_label(aes(label = commit_hash))
 }
 
 read_benchmark_note <- function(data) {
@@ -181,21 +187,3 @@ plot_suite <- function(name) {
 
   # + theme(legend.position = "bottom")
 }
-
-library(ggplot2)
-library(ggtext)
-labels <- c(
-  setosa = "<a href='https://en.wikipedia.org/wiki/Iris_setosa'>*I. setosa*</a>",
-  virginica = "<a href='https://en.wikipedia.org/wiki/Iris_virginica'>*I. virginica*</a>",
-  setosa = "<a href='https://en.wikipedia.org/wiki/Iris_versicolor'>*I. versicolor*</a>"
-)
-
-ggplot(iris, aes(Species, Sepal.Width)) +
-  geom_boxplot() +
-  scale_x_discrete(
-    name = NULL,
-    labels = labels
-  ) +
-  theme(
-    axis.text.x = element_markdown(color = "black", size = 11)
-  )
