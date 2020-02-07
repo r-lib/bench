@@ -1,7 +1,7 @@
-suite_cols <- c(
-  "suite" = "character",
-  "benchmark_time" = "POSIXct",
-  "expression" = "character",
+benchmark_cols <- c(
+  "file" = "character",
+  "name" = "character",
+  "time" = "character",
   "min" = "numeric",
   "1Q" = "numeric",
   "median" = "numeric",
@@ -12,41 +12,27 @@ suite_cols <- c(
   "total_time" = "numeric",
   "mem_alloc" = "numeric")
 
-#' @export
-suite <- function(name) {
-  options(bench.suite = name)
-}
-
-suite_file <- function(name) {
-  file.path(tempdir(), paste0("bench-", name, ".tsv"))
-}
 
 ISO8601_format <- "%Y-%m-%dT%H:%M:%SZ"
 
-get_current_git_ref <- function() {
-  withCallingHandlers(
-    system2("git", c("rev-parse", "HEAD"), stdout = TRUE),
-    warning = function(e) {
-      # If we can't get the reference convert the warning to an error
-      stop(e)
-    }
-  )
+# Writing benchmark results
+
+run_benchmark <- function(path, env = new.env(parent = globalenv())) {
+  filename <- basename(path)
+  options(bench.file = filename)
+
+  lines <- read_lines(path)
+  exprs <- parse(text = lines, keep.source = FALSE, encoding = "UTF-8")
+  eval(exprs, envir = env)
 }
 
-get_current_git_branch <- function() {
-  # If we aren't on a branch return NA
-  suppressWarnings(
-    out <- system2("git", c("describe", "--all", "--exact-match", "HEAD"), stdout = TRUE)
-  )
-  if (length(out) == 0) {
-    out <- NA_character_
-  }
-  out
+read_lines <- function (path, n = -1L, encoding = "UTF-8") {
+  base::readLines(path, n = n, encoding = encoding, warn = FALSE)
 }
 
 data_list_cols <- c("memory", "time", "gc", "result")
 
-append_file_to_git_notes <- function(suite, file) {
+append_file_to_git_notes <- function(file) {
   withCallingHandlers(
     system2("git", c("notes", "--ref", "benchmarks", "append", "-F", file, "HEAD")),
     warning = function(e) {
@@ -55,23 +41,66 @@ append_file_to_git_notes <- function(suite, file) {
   )
 }
 
-write_suite <- function(x, suite) {
+write_benchmark_file <- function(x, file) {
   x <- summary(x, filter_gc = FALSE)
   times <- x$time
   x$max <- vdapply(times, max)
   x[["1Q"]] <- vdapply(times, stats::quantile, .25)
   x[["3Q"]] <- vdapply(times, stats::quantile, .75)
-  x[["expression"]] <- as.character(x[["expression"]])
-  x <- x[!colnames(x) %in% data_list_cols]
-  x[colnames(x) != "expression"] <- lapply(x[colnames(x) != "expression"], as.numeric)
-  x$suite <- suite
-  x$benchmark_time <- as.character(Sys.time(), format = ISO8601_format, tz = "UTC")
-  x <- x[names(suite_cols)]
+  x[["name"]] <- as.character(x[["expression"]])
+  x[["expression"]] <- NULL
 
-  file <- suite_file(suite)
+  x <- x[!colnames(x) %in% data_list_cols]
+  x[colnames(x) != "name"] <- lapply(x[colnames(x) != "name"], as.numeric)
+  x$file <- file
+  x$time <- as.character(Sys.time(), format = ISO8601_format, tz = "UTC")
+  x <- x[names(benchmark_cols)]
+
+  file <- tempfile()
   on.exit(unlink(file))
   write.table(x, sep = "\t", file = file, append = TRUE, row.names = FALSE, col.names = FALSE, quote = FALSE)
-  append_file_to_git_notes(suite, file)
+  append_file_to_git_notes(file)
+}
+
+## Reading the git log and benchmark data
+read_git_log <- function() {
+  x <- read.delim(pipe("git log --notes=benchmarks --pretty=format:'%H|%P|\"%N\"|%s|%D'"), sep = "|", col.names = c("commit_hash", "parent_hashes", "benchmark_notes", "subject", "ref_names"), header = FALSE, stringsAsFactors = FALSE)
+
+  x$benchmark_notes <- lapply(x$benchmark_notes, read_benchmark_note)
+  x$parent_hashes <- strsplit(x$parent_hashes, " ")
+  x <- tibble::as_tibble(x)
+  tidyr::unnest(x, cols = c(benchmark_notes), keep_empty = TRUE)
+}
+
+read_benchmark_note <- function(data) {
+  if (!nzchar(data)) {
+    return (tibble::tibble(file = character(), name = character(), time = .POSIXct(numeric()) , min = numeric(), "1Q" = numeric(), median = numeric(), "3Q" = numeric(), max = numeric(), n_itr = numeric(), n_gc = numeric(), total_time = numeric(), mem_alloc = numeric()))
+  }
+  x <- tibble::as_tibble(read.delim(text = data, sep = "\t", stringsAsFactors = FALSE, col.names = names(benchmark_cols), colClasses = benchmark_cols, header = FALSE))
+  x$time <- strptime(x$time, format = ISO8601_format, tz = "UTC")
+  x
+}
+
+## Plotting the benchmarks
+
+plot_suite <- function(name) {
+  library(ggplot2)
+
+  x <- read_notes()
+  x <- x[x$benchmark_name == name, ]
+  x$ref <- substr(x$ref, 1, 6)
+  x$name <- ifelse(is.na(x$branch), x$ref, x$branch)
+  x$name <- factor(x$name, levels = unique(x$name))
+
+  plots <- lapply(split(x, x$name), plot_benchmark)
+
+  plots[[1]]
+  #x$datetime <- as.POSIXct(x$datetime, format = ISO8601_format, tz = "UTC")
+
+
+  #patchwork::align_plots(p1, p2)
+
+  # + theme(legend.position = "bottom")
 }
 
 plot_benchmark <- function(x) {
@@ -108,21 +137,10 @@ plot_benchmark <- function(x) {
     #theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
   #library(patchwork)
-  #p1 + p2 + p3 + plot_layout(guides = "collect", widths = c(1, 1/6, 1/6)) + plot_annotation(title = x$expression[[1]])
+  #p1 + p2 + p3 + plot_layout(guides = "collect", widths = c(1, 1/6, 1/6)) + plot_annotation(title = x$name[[1]])
 }
 
-read_git_benchmark_note <- function(ref) {
-  read.delim(pipe(glue::glue("git cat-file -p {ref}")), sep = "\t", stringsAsFactors = FALSE, check.names = FALSE, col.names = names(suite_cols), header = FALSE)
-}
-
-read_git_log <- function() {
-  x <- read.delim(pipe("git log --notes=benchmarks --pretty=format:'%H|%P|\"%N\"|%s|%D'"), sep = "|", col.names = c("commit_hash", "parent_hashes", "benchmark_notes", "subject", "ref_names"), header = FALSE, stringsAsFactors = FALSE)
-
-  x$benchmark_notes <- lapply(x$benchmark_notes, read_benchmark_note)
-  x$parent_hashes <- strsplit(x$parent_hashes, " ")
-  x <- tibble::as_tibble(x)
-  tidyr::unnest(x, cols = c(benchmark_notes), keep_empty = TRUE)
-}
+## Plotting the commit graph
 
 log_to_commit_graph <- function(log) {
   nodes <- log[c("commit_hash", "subject", "ref_names")]
@@ -146,44 +164,4 @@ plot_commit_graph <- function(graph) {
     geom_edge_link(arrow = arrow(length = unit(4, 'mm'))) +
     geom_node_point(size = 5) +
     geom_node_label(aes(label = commit_hash))
-}
-
-read_benchmark_note <- function(data) {
-  if (!nzchar(data)) {
-    return (tibble::tibble(suite = character(), expression_time = character(), expression = character(), min = numeric(), "1Q" = numeric(), median = numeric(), "3Q" = numeric(), max = numeric(), n_itr = numeric(), n_gc = numeric(), total_time = numeric(), mem_alloc = numeric()))
-  }
-  tibble::as_tibble(read.delim(text = data, sep = "\t", stringsAsFactors = FALSE, col.names = names(suite_cols), colClasses = unname(suite_cols), header = FALSE))
-}
-
-read_notes <- function() {
-  read.delim(pipe("git notes --ref benchmarks show HEAD"), sep = "\t", stringsAsFactors = FALSE, check.names = FALSE, col.names = suite_cols, header = FALSE)
-}
-
-read_git_notes <- function(ref = "HEAD") {
-  withCallingHandlers(
-    pipe("git", c("notes", "--ref", "benchmarks", "show", ref), stdout = TRUE),
-    warning = function(e) {
-      stop(e)
-    }
-  )
-}
-
-plot_suite <- function(name) {
-  library(ggplot2)
-
-  x <- read_notes()
-  x <- x[x$suite == name, ]
-  x$ref <- substr(x$ref, 1, 6)
-  x$name <- ifelse(is.na(x$branch), x$ref, x$branch)
-  x$name <- factor(x$name, levels = unique(x$name))
-
-  plots <- lapply(split(x, x$expression), plot_benchmark)
-
-  plots[[1]]
-  #x$datetime <- as.POSIXct(x$datetime, format = ISO8601_format, tz = "UTC")
-
-
-  #patchwork::align_plots(p1, p2)
-
-  # + theme(legend.position = "bottom")
 }
