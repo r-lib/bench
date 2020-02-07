@@ -123,7 +123,6 @@ describe("Ops.as_bench_time", {
 
   it("errors for other binary operators", {
     x <- as_bench_time(c(100, 200, 300))
-    expect_error(x %% 2, "'%%' not defined for \"bench_time\" objects")
     expect_error(x %/% 2, "'%/%' not defined for \"bench_time\" objects")
     expect_error(x & TRUE, "'&' not defined for \"bench_time\" objects")
     expect_error(x | TRUE, "'|' not defined for \"bench_time\" objects")
