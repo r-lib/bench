@@ -1,6 +1,6 @@
-#' Run benchmarks for a package
+#' Run continuous benchmarks for a package
 #'
-#' [run_benchmarks()] runs all the benchmark in a package. [run_benchmark()]
+#' [cb_run()] runs all the benchmark in a package. [cb_run_one()]
 #' runs a single benchmark.
 #'
 #' Benchmark files are any '.R' files in the `bench/` directory. The results of
@@ -9,8 +9,9 @@
 #'
 #' @param path [run_benchmarks()] a path to a package, or within a package. For [run_benchmark()] the path to the benchmark file to be run.
 #' @param env Environment in which to execute the benchmarks.
+#' @family cb
 #' @export
-run_benchmarks <- function(path = ".", env = new.env(parent = globalenv())) {
+cb_run <- function(path = ".", env = new.env(parent = globalenv())) {
   path <- find_package_root(path)
 
   old <- getwd()
@@ -18,13 +19,13 @@ run_benchmarks <- function(path = ".", env = new.env(parent = globalenv())) {
   bench_dir <- file.path(path, "bench")
   setwd(bench_dir)
   for (file in list.files(".", pattern = "[.][Rr]$", full.names = TRUE)) {
-    run_benchmark(file, env)
+    cb_run_one(file, env)
   }
 }
 
 #' @rdname run_benchmarks
 #' @export
-run_benchmark <- function(path, env = new.env(parent = globalenv())) {
+cb_run_one <- function(path, env = new.env(parent = globalenv())) {
   filename <- basename(path)
   options(bench.file = filename)
 
@@ -42,22 +43,22 @@ git <- function(...) {
   )
 }
 
-#' Push or fetch benchmark notes from a git remote
+#' Push or fetch continuous benchmark notes from a git remote
 #'
 #' By default the git client does not push or fetch notes from remotes,
-#' [fetch_benchmark_notes()] and [push_benchmark_notes()] can be used to do
-#' this explicitly.
+#' [cb_fetch()] and [cb_push()] can be used to do this.
 #'
 #' @param remote The git remote to use, defaults to 'origin'.
+#' @family cb
 #' @export
-fetch_benchmark_notes <- function(remote = "origin") {
-  git("fetch", remote, "refs/notes/benchmarks")
+cb_fetch <- function(remote = "origin") {
+  git("fetch", remote, "refs/notes/benchmarks:refs/notes/benchmarks")
 }
 
 #' @rdname fetch_benchmark_notes
 #' @export
-push_benchmark_notes <- function(remote = "origin") {
-  git("push", remote, "refs/notes/benchmarks")
+cb_push <- function(remote = "origin") {
+  git("push", remote, "refs/notes/benchmarks:refs/notes/benchmarks")
 }
 
 benchmark_cols <- c(
