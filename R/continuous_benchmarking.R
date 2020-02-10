@@ -108,20 +108,34 @@ write_benchmark_file <- function(x, file) {
   append_file_to_git_notes(file)
 }
 
-## Reading the git log and benchmark data
+#' Read continuous benchmark data from the git log
+#'
+#' Note if the benchmarks were run on a remote system you may need to fetch the
+#' data locally first with `cb_fetch()`.
+#'
 #' @importFrom utils read.delim
-read_git_log <- function() {
+#' @examples
+#' \dontrun{
+#' cb_read(additional_columns=c("tree_hash" = "%T", "author_email" = "%ae"))
+#' }
+#' @export
+cb_read <- function(additional_columns = NULL) {
+
+  additional_placeholders <- get_placeholders(additional_columns)
+  cmd <- glue::glue("git log --notes=benchmarks --pretty=format:'%H|%h|%P|\"%N\"|%s|%D{additional_placeholders}'")
+
   x <- read.delim(
-    pipe("git log --notes=benchmarks --pretty=format:'%H|%h|%P|\"%N\"|%s|%D'"),
+    pipe(cmd),
     sep = "|",
-    col.names =
-      c(
+    col.names = c(
       "commit_hash",
       "abbrev_commit_hash",
       "parent_hashes",
       "benchmark_notes",
       "subject",
-      "ref_names"),
+      "ref_names",
+      names(additional_columns)
+    ),
     header = FALSE,
     stringsAsFactors = FALSE
   )
@@ -135,6 +149,18 @@ read_git_log <- function() {
   x$ref_names <- parse_ref_names(x$ref_names)
 
   tibble::as_tibble(x)
+}
+get_placeholders <- function(additional_columns) {
+  if (length(additional_columns) == 0) {
+    return("")
+  }
+  if (!rlang::is_named(additional_columns)) {
+    rlang::abort("`additional_columns` must all be named")
+  }
+  additional_placeholders <- glue::glue_collapse(unname(additional_columns), "|")
+  additional_placeholders <- glue::glue('|{additional_placeholders}')
+
+  additional_placeholders
 }
 
 parse_ref_names <- function(x) {
