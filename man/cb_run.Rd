@@ -21,6 +21,7 @@ any \code{bench::mark()} are automatically recorded in \href{https://git-scm.com
 }
 \seealso{
 Other cb: 
-\code{\link{cb_fetch}()}
+\code{\link{cb_fetch}()},
+\code{\link{cb_read}()}
 }
 \concept{cb}

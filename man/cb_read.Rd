@@ -15,3 +15,9 @@ data locally first with \code{cb_fetch()}.
 cb_read(additional_columns=c("tree_hash" = "\%T", "author_email" = "\%ae"))
 }
 }
+\seealso{
+Other cb: 
+\code{\link{cb_fetch}()},
+\code{\link{cb_run}()}
+}
+\concept{cb}
