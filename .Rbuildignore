@@ -16,3 +16,4 @@
 ^\.github/workflows/R-CMD-check\.yaml$
 ^script.R$
 ^depends.Rds$
+^bench$
