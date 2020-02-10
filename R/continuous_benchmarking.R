@@ -7,7 +7,7 @@
 #' any `bench::mark()` are automatically recorded in [git
 #' notes](https://git-scm.com/docs/git-notes) entries for the current commit.
 #'
-#' @param path [run_benchmarks()] a path to a package, or within a package. For [run_benchmark()] the path to the benchmark file to be run.
+#' @param path For [cb_run()] a path to a package, or within a package. For [cb_run_one()] the path to the benchmark file to be run.
 #' @param env Environment in which to execute the benchmarks.
 #' @family cb
 #' @export
@@ -23,7 +23,7 @@ cb_run <- function(path = ".", env = new.env(parent = globalenv())) {
   }
 }
 
-#' @rdname run_benchmarks
+#' @rdname cb_run
 #' @export
 cb_run_one <- function(path, env = new.env(parent = globalenv())) {
   filename <- basename(path)
@@ -76,6 +76,7 @@ benchmark_cols <- c(
   "file" = "character",
   "name" = "character",
   "time" = "character",
+  "os" = "character",
   "min" = "numeric",
   "1Q" = "numeric",
   "median" = "numeric",
@@ -98,7 +99,7 @@ append_file_to_git_notes <- function(file) {
 }
 
 #' @importFrom utils write.table
-write_benchmark_file <- function(x, file) {
+cb_write <- function(x, file) {
   x <- summary(x, filter_gc = FALSE)
   times <- x$time
   x$max <- vdapply(times, max)
@@ -106,6 +107,7 @@ write_benchmark_file <- function(x, file) {
   x[["3Q"]] <- vdapply(times, stats::quantile, .75)
   x[["name"]] <- as.character(x[["expression"]])
   x[["expression"]] <- NULL
+  x[["os"]] <- current_os()
 
   x <- x[!colnames(x) %in% data_list_cols]
   x[colnames(x) != "name"] <- lapply(x[colnames(x) != "name"], as.numeric)
@@ -119,11 +121,25 @@ write_benchmark_file <- function(x, file) {
   append_file_to_git_notes(file)
 }
 
+current_os <- function() {
+  os <- Sys.info()[["sysname"]]
+  switch(tolower(os),
+    "sunos" = "Solaris",
+    "darwin" = "macOS",
+    "windows" = "Windows",
+    "linux" = "linux",
+    os
+  )
+}
+
 #' Read continuous benchmark data from the git log
 #'
 #' Note if the benchmarks were run on a remote system you may need to fetch the
 #' data locally first with `cb_fetch()`.
 #'
+#' @param additional_columns A named list of additional columns to include. The
+#'   names are the names you want the columsn to have. The values are the
+#'   placeholder values used in 'git log'.
 #' @importFrom utils read.delim
 #' @family cb
 #' @examples
@@ -143,7 +159,7 @@ cb_read <- function(additional_columns = NULL) {
       "commit_hash",
       "abbrev_commit_hash",
       "parent_hashes",
-      "benchmark_notes",
+      "benchmarks",
       "subject",
       "ref_names",
       names(additional_columns)
@@ -153,7 +169,7 @@ cb_read <- function(additional_columns = NULL) {
   )
 
   # read the benchmark notes into a df list-cols
-  x$benchmark_notes <- lapply(x$benchmark_notes, read_benchmark_note)
+  x$benchmarks <- lapply(x$benchmarks, read_benchmark_note)
 
   # Split the parents into character list-cols
   x$parent_hashes <- strsplit(x$parent_hashes, " ")
@@ -162,6 +178,7 @@ cb_read <- function(additional_columns = NULL) {
 
   tibble::as_tibble(x)
 }
+
 get_placeholders <- function(additional_columns) {
   if (length(additional_columns) == 0) {
     return("")

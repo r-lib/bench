@@ -135,7 +135,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
 
   file <- getOption("bench.file", NULL)
   if (!is.null(file)) {
-    write_benchmark_file(out, file)
+    cb_write(out, file)
   } else {
     out
   }

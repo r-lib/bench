@@ -13,7 +13,7 @@
 ^.*\.tar\.gz$
 ^revdep$
 ^vignettes$
-^\.github/workflows/R-CMD-check\.yaml$
+^\.github$
 ^script.R$
 ^depends.Rds$
 ^bench$
