@@ -1,0 +1,27 @@
+on: push
+
+name: Continuous Benchmarks
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@master
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@master
+
+      - name: Install dependencies
+        run: |
+          Rscript -e "install.packages(c('remotes'))" -e "remotes::install_deps(dependencies = TRUE)"
+          R CMD INSTALL .
+
+      - name: Fetch existing benchmarks
+        run: Rscript -e 'bench::fetch_benchmark_notes()'
+
+      - name: Run benchmarks
+        run: Rscript -e 'bench::run_benchmarks()'
+
+      - name: Push benchmarks
+        run: Rscript -e 'bench::push_benchmark_notes()'
