@@ -2,19 +2,29 @@
 % Please edit documentation in R/continuous_benchmarking.R
 \name{cb_fetch}
 \alias{cb_fetch}
-\title{Push or fetch continuous benchmark notes from a git remote}
+\alias{cb_push}
+\title{Interact with the benchmark notes}
 \usage{
 cb_fetch(remote = "origin")
+
+cb_push(remote = "origin")
 }
 \arguments{
 \item{remote}{The git remote to use, defaults to 'origin'.}
 }
 \description{
-By default the git client does not push or fetch notes from remotes,
+These functions let you interact with the benchmark notes using your git
+client.
+}
+\details{
+By default the git client does not fetch or push notes from remotes,
 \code{\link[=cb_fetch]{cb_fetch()}} and \code{\link[=cb_push]{cb_push()}} can be used to do this.
+
+\code{\link[=cb_remove]{cb_remove()}} is used to remove the notes for the current commit.
 }
 \seealso{
 Other cb: 
+\code{\link{cb_read}()},
 \code{\link{cb_run}()}
 }
 \concept{cb}

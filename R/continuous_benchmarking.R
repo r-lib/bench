@@ -43,10 +43,15 @@ git <- function(...) {
   )
 }
 
-#' Push or fetch continuous benchmark notes from a git remote
+#' Interact with the benchmark notes
 #'
-#' By default the git client does not push or fetch notes from remotes,
+#' These functions let you interact with the benchmark notes using your git
+#' client.
+#'
+#' By default the git client does not fetch or push notes from remotes,
 #' [cb_fetch()] and [cb_push()] can be used to do this.
+#'
+#' [cb_remove()] is used to remove the notes for the current commit.
 #'
 #' @param remote The git remote to use, defaults to 'origin'.
 #' @family cb
@@ -55,10 +60,16 @@ cb_fetch <- function(remote = "origin") {
   git("fetch", remote, "refs/notes/benchmarks:refs/notes/benchmarks")
 }
 
-#' @rdname fetch_benchmark_notes
+#' @rdname cb_fetch
 #' @export
 cb_push <- function(remote = "origin") {
   git("push", remote, "refs/notes/benchmarks:refs/notes/benchmarks")
+}
+
+#' rdname cb_fetch
+#' @export
+cb_remove <- function() {
+  git("notes", "--ref", "benchmarks", "remove")
 }
 
 benchmark_cols <- c(
@@ -114,6 +125,7 @@ write_benchmark_file <- function(x, file) {
 #' data locally first with `cb_fetch()`.
 #'
 #' @importFrom utils read.delim
+#' @family cb
 #' @examples
 #' \dontrun{
 #' cb_read(additional_columns=c("tree_hash" = "%T", "author_email" = "%ae"))
