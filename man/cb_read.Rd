@@ -6,6 +6,11 @@
 \usage{
 cb_read(additional_columns = NULL)
 }
+\arguments{
+\item{additional_columns}{A named list of additional columns to include. The
+names are the names you want the columsn to have. The values are the
+placeholder values used in 'git log'.}
+}
 \description{
 Note if the benchmarks were run on a remote system you may need to fetch the
 data locally first with \code{cb_fetch()}.

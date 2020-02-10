@@ -2,12 +2,15 @@
 % Please edit documentation in R/continuous_benchmarking.R
 \name{cb_run}
 \alias{cb_run}
+\alias{cb_run_one}
 \title{Run continuous benchmarks for a package}
 \usage{
 cb_run(path = ".", env = new.env(parent = globalenv()))
+
+cb_run_one(path, env = new.env(parent = globalenv()))
 }
 \arguments{
-\item{path}{\code{\link[=run_benchmarks]{run_benchmarks()}} a path to a package, or within a package. For \code{\link[=run_benchmark]{run_benchmark()}} the path to the benchmark file to be run.}
+\item{path}{For \code{\link[=cb_run]{cb_run()}} a path to a package, or within a package. For \code{\link[=cb_run_one]{cb_run_one()}} the path to the benchmark file to be run.}
 
 \item{env}{Environment in which to execute the benchmarks.}
 }
