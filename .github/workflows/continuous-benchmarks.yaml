@@ -18,13 +18,13 @@ jobs:
           R CMD INSTALL .
 
       - name: Fetch existing benchmarks
-        run: Rscript -e 'bench::fetch_benchmark_notes()'
+        run: Rscript -e 'bench::cb_fetch()'
 
       - name: Run benchmarks
-        run: Rscript -e 'bench::run_benchmarks()'
+        run: Rscript -e 'bench::cb_run()'
 
       - name: Show benchmarks
         run: git notes --ref benchmarks show
 
       - name: Push benchmarks
-        run: Rscript -e "bench::push_benchmark_notes(remote = 'https://x-access-token:${{secrets.DEPLOY_PAT}}@github.com/${{github.repository}}.git')"
+        run: Rscript -e "bench::cb_push(remote = 'https://x-access-token:${{secrets.DEPLOY_PAT}}@github.com/${{github.repository}}.git')"
