@@ -23,5 +23,8 @@ jobs:
       - name: Run benchmarks
         run: Rscript -e 'bench::run_benchmarks()'
 
+      - name: Show benchmarks
+        run: git notes --ref benchmarks show
+
       - name: Push benchmarks
-        run: Rscript -e 'bench::push_benchmark_notes()'
+        run: Rscript -e "bench::push_benchmark_notes(remote = 'https://x-access-token:${{secrets.DEPLOY_PAT}}@github.com/${{github.repository}}.git')"
