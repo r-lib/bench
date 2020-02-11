@@ -4,9 +4,11 @@
 \alias{cb_read}
 \title{Read continuous benchmark data from the git log}
 \usage{
-cb_read(additional_columns = NULL)
+cb_read(path = ".", additional_columns = NULL)
 }
 \arguments{
+\item{path}{A path to a package or within a package.}
+
 \item{additional_columns}{A named list of additional columns to include. The
 names are the names you want the columsn to have. The values are the
 placeholder values used in 'git log'.}
