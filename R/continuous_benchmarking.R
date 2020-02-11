@@ -77,16 +77,17 @@ benchmark_cols <- c(
   "name" = "character",
   "time" = "character",
   "os" = "character",
-  "min" = "numeric",
-  "1Q" = "numeric",
-  "median" = "numeric",
-  "3Q" = "numeric",
-  "max" = "numeric",
+  "mean" = "numeric",
+  "sd" = "numeric",
+  "p0" = "numeric",
+  "p25" = "numeric",
+  "p50" = "numeric",
+  "p75" = "numeric",
+  "p100" = "numeric",
   "n_itr" = "numeric",
   "n_gc" = "numeric",
   "total_time" = "numeric",
   "mem_alloc" = "numeric")
-
 
 ISO8601_format <- "%Y-%m-%dT%H:%M:%SZ"
 
@@ -102,15 +103,20 @@ append_file_to_git_notes <- function(file) {
 cb_write <- function(x, file) {
   x <- summary(x, filter_gc = FALSE)
   times <- x$time
-  x$max <- vdapply(times, max)
-  x[["1Q"]] <- vdapply(times, stats::quantile, .25)
-  x[["3Q"]] <- vdapply(times, stats::quantile, .75)
+  x <- x[!colnames(x) %in% data_list_cols]
   x[["name"]] <- as.character(x[["expression"]])
   x[["expression"]] <- NULL
+  x[colnames(x) != "name"] <- lapply(x[colnames(x) != "name"], as.numeric)
+
+  x[["mean"]] <- vdapply(times, mean)
+  x[["sd"]] <- vdapply(times, stats::sd)
+  x[["p0"]] <- vdapply(times, stats::quantile, 0)
+  x[["p25"]] <- vdapply(times, stats::quantile, .25)
+  x[["p50"]] <- vdapply(times, stats::quantile, .5)
+  x[["p75"]] <- vdapply(times, stats::quantile, .75)
+  x[["p100"]] <- vdapply(times, stats::quantile, 1)
   x[["os"]] <- current_os()
 
-  x <- x[!colnames(x) %in% data_list_cols]
-  x[colnames(x) != "name"] <- lapply(x[colnames(x) != "name"], as.numeric)
   x$file <- file
   x$time <- as.character(Sys.time(), format = ISO8601_format, tz = "UTC")
   x <- x[names(benchmark_cols)]
@@ -137,6 +143,7 @@ current_os <- function() {
 #' Note if the benchmarks were run on a remote system you may need to fetch the
 #' data locally first with `cb_fetch()`.
 #'
+#' @param path A path to a package or within a package.
 #' @param additional_columns A named list of additional columns to include. The
 #'   names are the names you want the columsn to have. The values are the
 #'   placeholder values used in 'git log'.
@@ -147,7 +154,13 @@ current_os <- function() {
 #' cb_read(additional_columns=c("tree_hash" = "%T", "author_email" = "%ae"))
 #' }
 #' @export
-cb_read <- function(additional_columns = NULL) {
+cb_read <- function(path = ".", additional_columns = NULL) {
+
+  path <- find_package_root(path)
+
+  old <- getwd()
+  on.exit(setwd(old))
+  setwd(path)
 
   additional_placeholders <- get_placeholders(additional_columns)
   cmd <- glue::glue("git log --notes=benchmarks --pretty=format:'%H|%h|%P|\"%N\"|%s|%D{additional_placeholders}'")
@@ -169,7 +182,7 @@ cb_read <- function(additional_columns = NULL) {
   )
 
   # read the benchmark notes into a df list-cols
-  x$benchmarks <- lapply(x$benchmarks, read_benchmark_note)
+  x$benchmarks <- lapply(x$benchmarks, cb_read_benchmark)
 
   # Split the parents into character list-cols
   x$parent_hashes <- strsplit(x$parent_hashes, " ")
@@ -201,73 +214,92 @@ parse_ref_names <- function(x) {
 
 #tidyr::unnest(x, cols = c(benchmark_notes), keep_empty = TRUE)
 
-read_benchmark_note <- function(data) {
+cb_read_benchmark <- function(data) {
   if (!nzchar(data)) {
-    return (tibble::tibble(file = character(), name = character(), time = .POSIXct(numeric()) , min = numeric(), "1Q" = numeric(), median = numeric(), "3Q" = numeric(), max = numeric(), n_itr = numeric(), n_gc = numeric(), total_time = numeric(), mem_alloc = numeric()))
+    return (tibble::tibble())
   }
-  x <- tibble::as_tibble(read.delim(text = data, sep = "\t", stringsAsFactors = FALSE, col.names = names(benchmark_cols), colClasses = benchmark_cols, header = FALSE))
-  x$time <- strptime(x$time, format = ISO8601_format, tz = "UTC")
+  x <- tibble::as_tibble(read.delim(text = data, sep = "\t", stringsAsFactors = FALSE, col.names = names(benchmark_cols), colClasses = benchmark_cols, header = FALSE, check.names = FALSE))
+  x$time <- as.POSIXct(strptime(x$time, format = ISO8601_format, tz = "UTC"))
   x
 }
 
 ## Plotting the benchmarks
 
-# plot_suite <- function(name) {
-#   library(ggplot2)
-# 
-#   x <- read_notes()
-#   x <- x[x$benchmark_name == name, ]
-#   x$ref <- substr(x$ref, 1, 6)
-#   x$name <- ifelse(is.na(x$branch), x$ref, x$branch)
-#   x$name <- factor(x$name, levels = unique(x$name))
-# 
-#   plots <- lapply(split(x, x$name), plot_benchmark)
-# 
-#   plots[[1]]
-#   #x$datetime <- as.POSIXct(x$datetime, format = ISO8601_format, tz = "UTC")
-# 
-# 
-#   #patchwork::align_plots(p1, p2)
-# 
-#   # + theme(legend.position = "bottom")
-# }
-# 
-# plot_benchmark <- function(x) {
-#   #p1 <- ggplot(x, aes(x = name)) +
-#     #geom_point(aes(y = median)) +
-#     #geom_segment(aes(xend = name, y = `1Q`, yend = `3Q`)) +
-#     #scale_y_bench_time(name = NULL) +
-#     #scale_x_discrete(name = NULL) +
-#     #coord_flip() +
-#     #labs(title = paste0("Execution time - seconds"))
-# 
-#   p1 <- ggplot(x, aes(x = name)) +
-#     geom_point(aes(y = median)) +
-#     #geom_step(aes(y = median), group = 1) +
-#     geom_segment(aes(xend = name, y = `1Q`, yend = `3Q`)) +
-#     scale_y_bench_time(name = NULL) +
-#     scale_x_discrete(name = NULL) +
-#     coord_flip() +
-#     labs(title = paste0("Execution time"))
-# 
-#   #p2 <- ggplot(x, aes(x = name, y = mem_alloc)) +
-#     ##geom_bar(stat = "identity") +
-#     #geom_point() +
-#     #scale_y_bench_bytes() +
-#     #coord_flip() +
-#     #labs(title = "Memory allocations", x = NULL, y = NULL) +
-#     #theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
-# 
-#   #p3 <- ggplot(x, aes(x = name, y = n_gc / total_time)) +
-#     ##geom_bar(stat = "identity") +
-#     #geom_point() +
-#     #coord_flip() +
-#     #labs(title = "GC / second", x = NULL, y = NULL) +
-#     #theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
-# 
-#   #library(patchwork)
-#   #p1 + p2 + p3 + plot_layout(guides = "collect", widths = c(1, 1/6, 1/6)) + plot_annotation(title = x$name[[1]])
-# }
+utils::globalVariables(c("benchmarks", "pretty_name", "geom_point", "p0", "p50", "p100", "p25", "p75", "sd"))
+cb_plot <- function(x) {
+  if (!(requireNamespace("ggplot2") && requireNamespace("tidyr"))) {
+    stop("`ggplot2` and `tidyr` must be installed to use `cb_plot()`.", call. = FALSE)
+  }
+
+  x <- tidyr::unnest(x, benchmarks)
+
+  x$pretty_name <- get_pretty_names(x)
+  x$pretty_name <- factor(x$pretty_name, levels = rev(unique(x$pretty_name)))
+
+  plots <- lapply(split(x, x$name), cb_plot_one)
+
+  plots
+
+
+  #patchwork::align_plots(p1, p2)
+
+  # + theme(legend.position = "bottom")
+}
+
+get_pretty_names <- function(x) {
+  out <- character(NROW(x))
+  for (i in seq_len(NROW(x))) {
+    if (length(x$ref_names[[i]]) > 0) {
+      out[[i]] <- x$ref_names[[i]][[1]]
+    } else {
+      out[[i]] <- x$abbrev_commit_hash[[i]]
+    }
+  }
+  out
+}
+
+cb_plot_one <- function(x) {
+  aes <- ggplot2::aes
+  geom_point <- ggplot2::geom_point
+
+  p1 <- ggplot2::ggplot(x, aes(x = pretty_name)) +
+    geom_point(aes(y = p0), color = "red") +
+    geom_point(aes(y = p50)) +
+    geom_point(aes(y = p100), color = "blue") +
+    ggplot2::geom_segment(aes(xend = pretty_name, y = p25, yend = p75)) +
+    scale_y_bench_time(name = NULL) +
+    ggplot2::scale_x_discrete(name = NULL) +
+    ggplot2::coord_flip() +
+    ggplot2::labs(title = paste0("Execution time"), subtitle = x$name[[1]]) +
+    ggplot2::theme_minimal()
+
+  #p1 <- ggplot(x, aes(x = name)) +
+  #geom_point(aes(y = median)) +
+  ##geom_step(aes(y = median), group = 1) +
+  #geom_segment(aes(xend = name, y = `1Q`, yend = `3Q`)) +
+  #scale_y_bench_time(name = NULL) +
+  #scale_x_discrete(name = NULL) +
+  #coord_flip() +
+  #labs(title = paste0("Execution time"))
+
+  #p2 <- ggplot(x, aes(x = name, y = mem_alloc)) +
+  ##geom_bar(stat = "identity") +
+  #geom_point() +
+  #scale_y_bench_bytes() +
+  #coord_flip() +
+  #labs(title = "Memory allocations", x = NULL, y = NULL) +
+  #theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+
+  #p3 <- ggplot(x, aes(x = name, y = n_gc / total_time)) +
+  ##geom_bar(stat = "identity") +
+  #geom_point() +
+  #coord_flip() +
+  #labs(title = "GC / second", x = NULL, y = NULL) +
+  #theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+
+  #library(patchwork)
+  #p1 + p2 + p3 + plot_layout(guides = "collect", widths = c(1, 1/6, 1/6)) + plot_annotation(title = x$name[[1]])
+}
 # 
 # ## Plotting the commit graph
 # 
