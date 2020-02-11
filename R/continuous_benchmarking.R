@@ -240,7 +240,7 @@ cb_read_benchmark <- function(data) {
 
 ## Plotting the benchmarks
 
-utils::globalVariables(c("benchmarks", "pretty_name", "geom_point", "p0", "p50", "p100", "p25", "p75", "sd"))
+utils::globalVariables(c("benchmarks", "pretty_name", "name", "p0", "p50", "p25", "p75", "sd"))
 
 #' Plot the execution time for continuous benchmarks
 #'
@@ -260,14 +260,15 @@ cb_plot_time <- function(x, n = 25) {
   x$pretty_name <- get_pretty_names(x)
   x$pretty_name <- factor(x$pretty_name, levels = rev(unique(x$pretty_name)))
 
-  plots <- lapply(split(x, x$name), cb_plot_one)
+  aes <- ggplot2::aes
 
-  plots
-
-
-  #patchwork::align_plots(p1, p2)
-
-  # + theme(legend.position = "bottom")
+  ggplot2::ggplot(x, aes(x = pretty_name, y = p50)) +
+    ggplot2::geom_ribbon(aes(group = name, ymin = p25, ymax = p75), alpha = 1/2) +
+    ggplot2::geom_line(aes(group = name)) +
+    ggplot2::coord_flip() +
+    ggplot2::scale_x_discrete(name = NULL) +
+    scale_y_bench_time(name = NULL, base = NULL) +
+    ggplot2::facet_wrap(ggplot2::vars(file, name), scales = "free_x")
 }
 
 get_pretty_names <- function(x) {
@@ -281,82 +282,3 @@ get_pretty_names <- function(x) {
   }
   out
 }
-
-cb_plot_one <- function(x) {
-  aes <- ggplot2::aes
-  geom_point <- ggplot2::geom_point
-
-  cb_theme <- ggplot2::theme_minimal() + ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
-
-  p1 <- ggplot2::ggplot(x, aes(y = pretty_name)) +
-    geom_point(aes(x = p0), color = "red") +
-    geom_point(aes(x = p50)) +
-    geom_point(aes(x = p100), color = "blue") +
-    ggplot2::geom_segment(aes(yend = pretty_name, x = p25, xend = p75)) +
-    scale_x_bench_time(name = NULL, base = NULL) +
-    ggplot2::scale_y_discrete(name = NULL) +
-    ggplot2::labs(title = x$name[[1]], subtitle = paste0("Execution time")) +
-    cb_theme
-  p1
-
-  #ranges <- ggplot_build(p1)$layout$panel_ranges[[1]][c('x.range', 'y.range')]
-  #sizes <- sapply(ranges, diff)
-  #aspect <- sizes[1] / sizes[2]
-
-  #p1 + coord_fixed(ratio = 1/10)
-  #p1 + coord_flip() + theme(aspect.ratio = 1)
-
-  #p1 <- ggplot(x, aes(x = name)) +
-  #geom_point(aes(y = median)) +
-  ##geom_step(aes(y = median), group = 1) +
-  #geom_segment(aes(xend = name, y = `1Q`, yend = `3Q`)) +
-  #scale_y_bench_time(name = NULL) +
-  #scale_x_discrete(name = NULL) +
-  #coord_flip() +
-  #labs(title = paste0("Execution time"))
-
-  #p2 <- ggplot(x, aes(x = name, y = mem_alloc)) +
-  ##geom_bar(stat = "identity") +
-  #geom_point() +
-  #scale_y_bench_bytes() +
-  #coord_flip() +
-  #labs(title = "Memory allocations", x = NULL, y = NULL) +
-  #theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
-
-  #p3 <- ggplot(x, aes(x = name, y = n_gc / total_time)) +
-  ##geom_bar(stat = "identity") +
-  #geom_point() +
-  #coord_flip() +
-  #labs(title = "GC / second", x = NULL, y = NULL) +
-  #theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
-
-  #library(patchwork)
-  #p1 + p2 + p3 + plot_layout(guides = "collect", widths = c(1, 1/6, 1/6)) + plot_annotation(title = x$name[[1]])
-}
-# 
-# ## Plotting the commit graph
-# 
-# #' @importFrom utils tail head
-# log_to_commit_graph <- function(log) {
-#   nodes <- log[c("commit_hash", "subject", "ref_names")]
-#   edges <- tidyr::unnest(log[c("commit_hash", "parent_hashes")], cols = c(parent_hashes))
-# 
-#   # If we have truncated the log the last edge may reference a node we don't
-#   # have, so remove it
-#   if (tail(edges$parent_hashes, n = 1) != tail(nodes$commit_hash, n = 1)) {
-#     edges <- head(edges, n = -1)
-#   }
-# 
-#   tidygraph::tbl_graph(nodes = nodes, edges = edges)
-# }
-# 
-# # TODO: get @thomasp85 to make this nice, something like
-# # https://gitgraphjs.com/#6, also need to somehow align it with the benchmark
-# # results.
-# plot_commit_graph <- function(graph) {
-#   library(ggraph)
-#   ggraph(graph, layout = 'dendrogram') +
-#     geom_edge_link(arrow = arrow(length = unit(4, 'mm'))) +
-#     geom_node_point(size = 5) +
-#     geom_node_label(aes(label = commit_hash))
-# }
