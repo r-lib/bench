@@ -241,11 +241,13 @@ cb_read_benchmark <- function(data) {
 ## Plotting the benchmarks
 
 utils::globalVariables(c("benchmarks", "pretty_name", "geom_point", "p0", "p50", "p100", "p25", "p75", "sd"))
-cb_plot <- function(x) {
+cb_plot <- function(x, n = 25) {
   if (!(requireNamespace("ggplot2") && requireNamespace("tidyr"))) {
     stop("`ggplot2` and `tidyr` must be installed to use `cb_plot()`.", call. = FALSE)
   }
 
+  has_benchmarks <- viapply(x$benchmarks, NROW) > 0
+  x <- head(x[has_benchmarks, ], n)
   x <- tidyr::unnest(x, benchmarks)
 
   x$pretty_name <- get_pretty_names(x)
@@ -279,16 +281,23 @@ cb_plot_one <- function(x) {
 
   cb_theme <- ggplot2::theme_minimal() + ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
 
-  p1 <- ggplot2::ggplot(x, aes(x = pretty_name)) +
-    geom_point(aes(y = p0), color = "red") +
-    geom_point(aes(y = p50)) +
-    geom_point(aes(y = p100), color = "blue") +
-    ggplot2::geom_segment(aes(xend = pretty_name, y = p25, yend = p75)) +
-    scale_y_bench_time(name = NULL, base = NULL) +
-    ggplot2::scale_x_discrete(name = NULL) +
-    ggplot2::coord_flip() +
+  p1 <- ggplot2::ggplot(x, aes(y = pretty_name)) +
+    geom_point(aes(x = p0), color = "red") +
+    geom_point(aes(x = p50)) +
+    geom_point(aes(x = p100), color = "blue") +
+    ggplot2::geom_segment(aes(yend = pretty_name, x = p25, xend = p75)) +
+    scale_x_bench_time(name = NULL, base = NULL) +
+    ggplot2::scale_y_discrete(name = NULL) +
     ggplot2::labs(title = x$name[[1]], subtitle = paste0("Execution time")) +
     cb_theme
+  p1
+
+  #ranges <- ggplot_build(p1)$layout$panel_ranges[[1]][c('x.range', 'y.range')]
+  #sizes <- sapply(ranges, diff)
+  #aspect <- sizes[1] / sizes[2]
+
+  #p1 + coord_fixed(ratio = 1/10)
+  #p1 + coord_flip() + theme(aspect.ratio = 1)
 
   #p1 <- ggplot(x, aes(x = name)) +
   #geom_point(aes(y = median)) +
