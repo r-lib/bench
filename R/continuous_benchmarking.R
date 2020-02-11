@@ -34,9 +34,9 @@ cb_run_one <- function(path, env = new.env(parent = globalenv())) {
   eval(exprs, envir = env)
 }
 
-git <- function(...) {
+git <- function(..., stdout = NULL) {
   withCallingHandlers(
-    system2("git", list(...)),
+    system2("git", list(...), stdout = stdout),
     warning = function(e) {
       stop(e)
     }
@@ -51,6 +51,8 @@ git <- function(...) {
 #' By default the git client does not fetch or push notes from remotes,
 #' [cb_fetch()] and [cb_push()] can be used to do this.
 #'
+#' [cb_merge()] is used to merge local and remote notes.
+#'
 #' [cb_remove()] is used to remove the notes for the current commit.
 #'
 #' @param remote The git remote to use, defaults to 'origin'.
@@ -58,6 +60,19 @@ git <- function(...) {
 #' @export
 cb_fetch <- function(remote = "origin") {
   git("fetch", remote, "refs/notes/benchmarks:refs/notes/benchmarks")
+}
+
+git_current_commit <- function() {
+  git("rev-parse", "HEAD", stdout = TRUE)
+}
+
+#' @rdname cb_fetch
+#' @export
+cb_merge <- function(remote = "origin") {
+  old <- git_current_commit()
+  git("checkout", "refs/notes/benchmarks")
+  git("pull", remote, "refs/notes/benchmarks")
+  git("checkout", old)
 }
 
 #' @rdname cb_fetch
@@ -262,16 +277,18 @@ cb_plot_one <- function(x) {
   aes <- ggplot2::aes
   geom_point <- ggplot2::geom_point
 
+  cb_theme <- ggplot2::theme_minimal() + theme(panel.grid.major.y = element_blank())
+
   p1 <- ggplot2::ggplot(x, aes(x = pretty_name)) +
     geom_point(aes(y = p0), color = "red") +
     geom_point(aes(y = p50)) +
     geom_point(aes(y = p100), color = "blue") +
     ggplot2::geom_segment(aes(xend = pretty_name, y = p25, yend = p75)) +
-    scale_y_bench_time(name = NULL) +
+    scale_y_bench_time(name = NULL, base = NULL) +
     ggplot2::scale_x_discrete(name = NULL) +
     ggplot2::coord_flip() +
-    ggplot2::labs(title = paste0("Execution time"), subtitle = x$name[[1]]) +
-    ggplot2::theme_minimal()
+    ggplot2::labs(title = x$name[[1]], subtitle = paste0("Execution time")) +
+    cb_theme
 
   #p1 <- ggplot(x, aes(x = name)) +
   #geom_point(aes(y = median)) +

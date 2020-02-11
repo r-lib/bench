@@ -2,10 +2,13 @@
 % Please edit documentation in R/continuous_benchmarking.R
 \name{cb_fetch}
 \alias{cb_fetch}
+\alias{cb_merge}
 \alias{cb_push}
 \title{Interact with the benchmark notes}
 \usage{
 cb_fetch(remote = "origin")
+
+cb_merge(remote = "origin")
 
 cb_push(remote = "origin")
 }
@@ -19,6 +22,8 @@ client.
 \details{
 By default the git client does not fetch or push notes from remotes,
 \code{\link[=cb_fetch]{cb_fetch()}} and \code{\link[=cb_push]{cb_push()}} can be used to do this.
+
+\code{\link[=cb_merge]{cb_merge()}} is used to merge local and remote notes.
 
 \code{\link[=cb_remove]{cb_remove()}} is used to remove the notes for the current commit.
 }
