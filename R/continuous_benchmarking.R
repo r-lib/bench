@@ -241,6 +241,8 @@ cb_read_benchmark <- function(data) {
 ## Plotting the benchmarks
 
 utils::globalVariables(c("benchmarks", "pretty_name", "geom_point", "p0", "p50", "p100", "p25", "p75", "sd"))
+
+#' @export
 cb_plot <- function(x, n = 25) {
   if (!(requireNamespace("ggplot2") && requireNamespace("tidyr"))) {
     stop("`ggplot2` and `tidyr` must be installed to use `cb_plot()`.", call. = FALSE)
