@@ -242,8 +242,13 @@ cb_read_benchmark <- function(data) {
 
 utils::globalVariables(c("benchmarks", "pretty_name", "geom_point", "p0", "p50", "p100", "p25", "p75", "sd"))
 
+#' Plot the execution time for continuous benchmarks
+#'
+#' @param x Continuous benchmark data, as obtained from [cb_read()].
+#' @param n The number of previous commits with benchmarks you want to display.
+#' @importFrom utils head
 #' @export
-cb_plot <- function(x, n = 25) {
+cb_plot_time <- function(x, n = 25) {
   if (!(requireNamespace("ggplot2") && requireNamespace("tidyr"))) {
     stop("`ggplot2` and `tidyr` must be installed to use `cb_plot()`.", call. = FALSE)
   }
