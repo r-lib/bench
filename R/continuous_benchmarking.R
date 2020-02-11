@@ -277,7 +277,7 @@ cb_plot_one <- function(x) {
   aes <- ggplot2::aes
   geom_point <- ggplot2::geom_point
 
-  cb_theme <- ggplot2::theme_minimal() + theme(panel.grid.major.y = element_blank())
+  cb_theme <- ggplot2::theme_minimal() + ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
 
   p1 <- ggplot2::ggplot(x, aes(x = pretty_name)) +
     geom_point(aes(y = p0), color = "red") +
