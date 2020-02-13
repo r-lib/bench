@@ -65,6 +65,32 @@ readable formatting for display (e.g. `104ns`) and comparisons (e.g.
 There is also full support for plotting with [ggplot2](http://ggplot2.tidyverse.org/)
 including custom scales and formatting.
 
+## Continuous benchmarking
+
+*This feature is still in early and active development, but the brave can test it out.*
+
+You can setup continuous benchmarking for an R package by adding `.R` scripts containing one or more calls to `bench::mark()` in the `bench/` directory of an R package. 
+Then from any CI service you can then fetch previous results, run the benchmarks and push the results back to the repository with the following.
+
+```r
+bench::cb_fetch()
+bench::cb_run()
+bench::cb_push()
+```
+
+To retrieve the full dataset of benchmark results locally use the following.
+
+```r
+bench::cb_fetch()
+results <- bench::cb_read()
+```
+
+And to plot the benchmark times per commit
+
+```r
+bench::cb_plot_times()
+```
+
 ## Usage
 
 ### `bench::mark()`

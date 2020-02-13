@@ -63,6 +63,37 @@ There is also full support for plotting with
 [ggplot2](http://ggplot2.tidyverse.org/) including custom scales and
 formatting.
 
+## Continuous benchmarking
+
+*This feature is still in early and active development, but the brave
+can test it out.*
+
+You can setup continuous benchmarking for an R package by adding `.R`
+scripts containing one or more calls to `bench::mark()` in the `bench/`
+directory of an R package. Then from any CI service you can then fetch
+previous results, run the benchmarks and push the results back to the
+repository with the following.
+
+``` r
+bench::cb_fetch()
+bench::cb_run()
+bench::cb_push()
+```
+
+To retrieve the full dataset of benchmark results locally use the
+following.
+
+``` r
+bench::cb_fetch()
+results <- bench::cb_read()
+```
+
+And to plot the benchmark times per commit
+
+``` r
+bench::cb_plot_times()
+```
+
 ## Usage
 
 ### `bench::mark()`
@@ -99,9 +130,9 @@ bnch
 #> # A tibble: 3 x 6
 #>   expression                     min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 dat[dat$x > 500, ]           408µs    467µs     2079.     377KB     6.64
-#> 2 dat[which(dat$x > 500), ]    284µs    354µs     2750.     260KB     7.00
-#> 3 subset(dat, x > 500)         519µs    589µs     1654.     494KB     6.74
+#> 1 dat[dat$x > 500, ]           358µs    443µs     2184.     377KB     13.5
+#> 2 dat[which(dat$x > 500), ]    261µs    338µs     2879.     260KB     13.5
+#> 3 subset(dat, x > 500)         486µs    573µs     1696.     509KB     16.1
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -113,9 +144,9 @@ summary(bnch, relative = TRUE)
 #> # A tibble: 3 x 6
 #>   expression                  min median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <dbl>  <dbl>     <dbl>     <dbl>    <dbl>
-#> 1 dat[dat$x > 500, ]         1.44   1.32      1.26      1.45     1   
-#> 2 dat[which(dat$x > 500), ]  1      1         1.66      1        1.05
-#> 3 subset(dat, x > 500)       1.83   1.66      1         1.90     1.02
+#> 1 dat[dat$x > 500, ]         1.37   1.31      1.29      1.45     1   
+#> 2 dat[which(dat$x > 500), ]  1      1         1.70      1        1.00
+#> 3 subset(dat, x > 500)       1.86   1.70      1         1.96     1.19
 ```
 
 ### `bench::press()`
@@ -200,10 +231,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   296ms   296ms
+#>   332ms   332ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    97µs   503ms
+#>    66µs   504ms
 ```
 
 ## Alternatives
