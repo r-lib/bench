@@ -34,6 +34,21 @@
     <loc>http://bench.r-lib.org/reference/bench_time_trans.html</loc>
   </url>
   <url>
+    <loc>http://bench.r-lib.org/reference/cb_fetch.html</loc>
+  </url>
+  <url>
+    <loc>http://bench.r-lib.org/reference/cb_plot_time.html</loc>
+  </url>
+  <url>
+    <loc>http://bench.r-lib.org/reference/cb_read.html</loc>
+  </url>
+  <url>
+    <loc>http://bench.r-lib.org/reference/cb_remove.html</loc>
+  </url>
+  <url>
+    <loc>http://bench.r-lib.org/reference/cb_run.html</loc>
+  </url>
+  <url>
     <loc>http://bench.r-lib.org/reference/hires_time.html</loc>
   </url>
   <url>

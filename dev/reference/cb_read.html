@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • bench</title>
+<title>Read continuous benchmark data from the git log — cb_read • bench</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Read continuous benchmark data from the git log — cb_read" />
+<meta property="og:description" content="Note if the benchmarks were run on a remote system you may need to fetch the
+data locally first with cb_fetch()." />
+<meta name="twitter:card" content="summary" />
 
 
 <meta name="robots" content="noindex">
@@ -64,7 +67,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -125,144 +128,54 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Read continuous benchmark data from the git log</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/continuous_benchmarking.R'><code>R/continuous_benchmarking.R</code></a></small>
+    <div class="hidden name"><code>cb_read.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Note if the benchmarks were run on a remote system you may need to fetch the
+data locally first with <code><a href='cb_fetch.html'>cb_fetch()</a></code>.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>cb_read</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>additional_columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="as_bench_mark.html">as_bench_mark()</a></code> </p>
-        </td>
-        <td><p>Coerce to a bench mark object Bench mark objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_bench_time.html">as_bench_time()</a></code> </p>
-        </td>
-        <td><p>Human readable times</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="autoplot.bench_mark.html">autoplot(<i>&lt;bench_mark&gt;</i>)</a></code> <code><a href="autoplot.bench_mark.html">plot(<i>&lt;bench_mark&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Autoplot method for bench_mark objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bench_bytes.html">as_bench_bytes()</a></code> <code><a href="bench_bytes.html">bench_bytes()</a></code> </p>
-        </td>
-        <td><p>Human readable memory sizes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bench_memory.html">bench_memory()</a></code> </p>
-        </td>
-        <td><p>Measure memory that an expression used.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bench_process_memory.html">bench_process_memory()</a></code> </p>
-        </td>
-        <td><p>Retrieve the current and maximum memory from the R process</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bench_time.html">bench_time()</a></code> </p>
-        </td>
-        <td><p>Measure Process CPU and real time that an expression used.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cb_fetch.html">cb_fetch()</a></code> <code><a href="cb_fetch.html">cb_merge()</a></code> <code><a href="cb_fetch.html">cb_push()</a></code> </p>
-        </td>
-        <td><p>Interact with the benchmark notes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cb_plot_time.html">cb_plot_time()</a></code> </p>
-        </td>
-        <td><p>Plot the execution time for continuous benchmarks</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cb_read.html">cb_read()</a></code> </p>
-        </td>
-        <td><p>Read continuous benchmark data from the git log</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cb_remove.html">cb_remove()</a></code> </p>
-        </td>
-        <td><p>rdname cb_fetch</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cb_run.html">cb_run()</a></code> <code><a href="cb_run.html">cb_run_one()</a></code> </p>
-        </td>
-        <td><p>Run continuous benchmarks for a package</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="hires_time.html">hires_time()</a></code> </p>
-        </td>
-        <td><p>Return the current high-resolution real time.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="knit_print.bench_mark.html">knit_print.bench_mark()</a></code> </p>
-        </td>
-        <td><p>Custom printing function for bench_mark objects in knitr documents</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mark.html">mark()</a></code> </p>
-        </td>
-        <td><p>Benchmark a series of functions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="press.html">press()</a></code> </p>
-        </td>
-        <td><p>Run setup code and benchmarks across a grid of parameters</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summary.bench_mark.html">summary(<i>&lt;bench_mark&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Summarize bench::mark results.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="workout.html">workout()</a></code> <code><a href="workout.html">workout_expressions()</a></code> </p>
-        </td>
-        <td><p>Workout a group of expressions individually</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>path</th>
+      <td><p>A path to a package or within a package.</p></td>
+    </tr>
+    <tr>
+      <th>additional_columns</th>
+      <td><p>A named list of additional columns to include. The
+names are the names you want the columsn to have. The values are the
+placeholder values used in 'git log'.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other cb: 
+<code><a href='cb_fetch.html'>cb_fetch</a>()</code>,
+<code><a href='cb_run.html'>cb_run</a>()</code></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>cb_read</span>(<span class='kw'>additional_columns</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"tree_hash"</span> <span class='kw'>=</span> <span class='st'>"%T"</span>, <span class='st'>"author_email"</span> <span class='kw'>=</span> <span class='st'>"%ae"</span>))
+}</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

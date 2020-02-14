@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • bench</title>
+<title>Interact with the benchmark notes — cb_fetch • bench</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Interact with the benchmark notes — cb_fetch" />
+<meta property="og:description" content="These functions let you interact with the benchmark notes using your git
+client." />
+<meta name="twitter:card" content="summary" />
 
 
 <meta name="robots" content="noindex">
@@ -64,7 +67,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -125,144 +128,54 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Interact with the benchmark notes</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/continuous_benchmarking.R'><code>R/continuous_benchmarking.R</code></a></small>
+    <div class="hidden name"><code>cb_fetch.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>These functions let you interact with the benchmark notes using your git
+client.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>cb_fetch</span>(<span class='kw'>remote</span> <span class='kw'>=</span> <span class='st'>"origin"</span>)
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="as_bench_mark.html">as_bench_mark()</a></code> </p>
-        </td>
-        <td><p>Coerce to a bench mark object Bench mark objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_bench_time.html">as_bench_time()</a></code> </p>
-        </td>
-        <td><p>Human readable times</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="autoplot.bench_mark.html">autoplot(<i>&lt;bench_mark&gt;</i>)</a></code> <code><a href="autoplot.bench_mark.html">plot(<i>&lt;bench_mark&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Autoplot method for bench_mark objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bench_bytes.html">as_bench_bytes()</a></code> <code><a href="bench_bytes.html">bench_bytes()</a></code> </p>
-        </td>
-        <td><p>Human readable memory sizes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bench_memory.html">bench_memory()</a></code> </p>
-        </td>
-        <td><p>Measure memory that an expression used.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bench_process_memory.html">bench_process_memory()</a></code> </p>
-        </td>
-        <td><p>Retrieve the current and maximum memory from the R process</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bench_time.html">bench_time()</a></code> </p>
-        </td>
-        <td><p>Measure Process CPU and real time that an expression used.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cb_fetch.html">cb_fetch()</a></code> <code><a href="cb_fetch.html">cb_merge()</a></code> <code><a href="cb_fetch.html">cb_push()</a></code> </p>
-        </td>
-        <td><p>Interact with the benchmark notes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cb_plot_time.html">cb_plot_time()</a></code> </p>
-        </td>
-        <td><p>Plot the execution time for continuous benchmarks</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cb_read.html">cb_read()</a></code> </p>
-        </td>
-        <td><p>Read continuous benchmark data from the git log</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cb_remove.html">cb_remove()</a></code> </p>
-        </td>
-        <td><p>rdname cb_fetch</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cb_run.html">cb_run()</a></code> <code><a href="cb_run.html">cb_run_one()</a></code> </p>
-        </td>
-        <td><p>Run continuous benchmarks for a package</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="hires_time.html">hires_time()</a></code> </p>
-        </td>
-        <td><p>Return the current high-resolution real time.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="knit_print.bench_mark.html">knit_print.bench_mark()</a></code> </p>
-        </td>
-        <td><p>Custom printing function for bench_mark objects in knitr documents</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mark.html">mark()</a></code> </p>
-        </td>
-        <td><p>Benchmark a series of functions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="press.html">press()</a></code> </p>
-        </td>
-        <td><p>Run setup code and benchmarks across a grid of parameters</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summary.bench_mark.html">summary(<i>&lt;bench_mark&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Summarize bench::mark results.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="workout.html">workout()</a></code> <code><a href="workout.html">workout_expressions()</a></code> </p>
-        </td>
-        <td><p>Workout a group of expressions individually</p></td>
-      </tr>
-    </tbody>
+<span class='fu'>cb_merge</span>(<span class='kw'>remote</span> <span class='kw'>=</span> <span class='st'>"origin"</span>)
+
+<span class='fu'>cb_push</span>(<span class='kw'>remote</span> <span class='kw'>=</span> <span class='st'>"origin"</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>remote</th>
+      <td><p>The git remote to use, defaults to 'origin'.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>By default the git client does not fetch or push notes from remotes,
+<code>cb_fetch()</code> and <code>cb_push()</code> can be used to do this.</p>
+<p><code>cb_merge()</code> is used to merge local and remote notes.</p>
+<p><code><a href='cb_remove.html'>cb_remove()</a></code> is used to remove the notes for the current commit.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other cb: 
+<code><a href='cb_read.html'>cb_read</a>()</code>,
+<code><a href='cb_run.html'>cb_run</a>()</code></p></div>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
     </ul>
+
   </div>
 </div>
 
