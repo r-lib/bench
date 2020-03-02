@@ -91,7 +91,7 @@ results <- bench::cb_read()
 And to plot the benchmark times per commit
 
 ``` r
-bench::cb_plot_times()
+bench::cb_plot_time(results)
 ```
 
 ## Usage
