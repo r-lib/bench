@@ -138,7 +138,7 @@ cb_write <- function(x, file) {
 
   file <- tempfile()
   on.exit(unlink(file))
-  write.table(x, sep = "\t", file = file, append = TRUE, row.names = FALSE, col.names = FALSE, quote = FALSE)
+  jsonlite::stream_out(x, file(file), verbose = FALSE)
   append_file_to_git_notes(file)
 }
 
@@ -178,7 +178,7 @@ cb_read <- function(path = ".", additional_columns = NULL) {
   setwd(path)
 
   additional_placeholders <- get_placeholders(additional_columns)
-  cmd <- glue::glue("git log --notes=benchmarks --pretty=format:'%H|%h|%P|\"%N\"|%s|%D{additional_placeholders}'")
+  cmd <- glue::glue("git log --notes=benchmarks --pretty=format:\"%H|%h|%P|'%N'|%s|%D{additional_placeholders}\"")
 
   x <- read.delim(
     pipe(cmd),
@@ -193,7 +193,8 @@ cb_read <- function(path = ".", additional_columns = NULL) {
       names(additional_columns)
     ),
     header = FALSE,
-    stringsAsFactors = FALSE
+    stringsAsFactors = FALSE,
+    quote = "'"
   )
 
   # read the benchmark notes into a df list-cols
@@ -233,7 +234,7 @@ cb_read_benchmark <- function(data) {
   if (!nzchar(data)) {
     return (tibble::tibble())
   }
-  x <- tibble::as_tibble(read.delim(text = data, sep = "\t", stringsAsFactors = FALSE, col.names = names(benchmark_cols), colClasses = benchmark_cols, header = FALSE, check.names = FALSE))
+  x <- tibble::as_tibble(jsonlite::stream_in(textConnection(data), verbose = FALSE))
   x$time <- as.POSIXct(strptime(x$time, format = ISO8601_format, tz = "UTC"))
   x
 }

@@ -27,6 +27,7 @@ Suggests:
     ggbeeswarm,
     ggplot2,
     ggridges,
+    jsonlite,
     mockery,
     parallel,
     scales,
