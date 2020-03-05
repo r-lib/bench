@@ -151,15 +151,15 @@ accurate interval timing is required.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>hires_time</span>()</div><div class='output co'>#&gt; [1] 1583158746</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>hires_time</span>()</div><div class='output co'>#&gt; [1] 1583437516</div><div class='input'>
 <span class='co'># R rounds doubles to 7 digits by default, see greater precision by setting</span>
 <span class='co'># the digits argument when printing</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'>hires_time</span>(), <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; [1] 1583158745.7194662094</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'>hires_time</span>(), <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; [1] 1583437515.636865139</div><div class='input'>
 <span class='co'># Generally used by recording two times and then subtracting them</span>
 <span class='no'>start</span> <span class='kw'>&lt;-</span> <span class='fu'>hires_time</span>()
 <span class='no'>end</span> <span class='kw'>&lt;-</span> <span class='fu'>hires_time</span>()
 <span class='no'>elapsed</span> <span class='kw'>&lt;-</span> <span class='no'>end</span> - <span class='no'>start</span>
-<span class='no'>elapsed</span></div><div class='output co'>#&gt; [1] 0.0005362034</div></pre>
+<span class='no'>elapsed</span></div><div class='output co'>#&gt; [1] 0.0005629063</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
