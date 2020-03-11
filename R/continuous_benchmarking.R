@@ -131,6 +131,12 @@ cb_write <- function(x, file) {
   x[["p75"]] <- vdapply(times, stats::quantile, .75)
   x[["p100"]] <- vdapply(times, stats::quantile, 1)
   x[["os"]] <- current_os()
+  x[["nodename"]] <- Sys.info()[["nodename"]]
+
+  load_averages <- bench::bench_load_average()
+  x[["load_1_min"]] <- load_average[["load_1_min"]]
+  x[["load_5_min"]] <- load_average[["load_5_min"]]
+  x[["load_15_min"]] <- load_average[["load_15_min"]]
 
   x$file <- file
   x$time <- as.character(Sys.time(), format = ISO8601_format, tz = "UTC")
