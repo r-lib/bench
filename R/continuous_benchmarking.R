@@ -134,9 +134,9 @@ cb_write <- function(x, file) {
   x[["nodename"]] <- Sys.info()[["nodename"]]
 
   load_averages <- bench::bench_load_average()
-  x[["load_1_min"]] <- load_average[["load_1_min"]]
-  x[["load_5_min"]] <- load_average[["load_5_min"]]
-  x[["load_15_min"]] <- load_average[["load_15_min"]]
+  x[["load_1_min"]] <- load_averages[["load_1_min"]]
+  x[["load_5_min"]] <- load_averages[["load_5_min"]]
+  x[["load_15_min"]] <- load_averages[["load_15_min"]]
 
   x$file <- file
   x$time <- as.character(Sys.time(), format = ISO8601_format, tz = "UTC")
