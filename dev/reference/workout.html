@@ -181,22 +181,22 @@ deparsed expression will be used.</p></td>
 })</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 3</span><span>
 #&gt;   exprs                 process     real
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> x &lt;- 1:1000            4.14µs   7.15µs
-#&gt; </span><span style='color: #555555;'>2</span><span> evens &lt;- x%%2 == 0    77.08µs  77.72µs
-#&gt; </span><span style='color: #555555;'>3</span><span> y &lt;- x[evens]          9.79µs  10.49µs
-#&gt; </span><span style='color: #555555;'>4</span><span> length(y)               573ns 953.67ns
-#&gt; </span><span style='color: #555555;'>5</span><span> length(which(evens))   4.19µs   4.53µs
-#&gt; </span><span style='color: #555555;'>6</span><span> sum(evens)              2.7µs    3.1µs</div><div class='input'>
+#&gt; </span><span style='color: #555555;'>1</span><span> x &lt;- 1:1000            4.41µs   7.39µs
+#&gt; </span><span style='color: #555555;'>2</span><span> evens &lt;- x%%2 == 0    37.97µs  38.38µs
+#&gt; </span><span style='color: #555555;'>3</span><span> y &lt;- x[evens]          5.35µs   5.72µs
+#&gt; </span><span style='color: #555555;'>4</span><span> length(y)               545ns 953.67ns
+#&gt; </span><span style='color: #555555;'>5</span><span> length(which(evens))   3.91µs   4.29µs
+#&gt; </span><span style='color: #555555;'>6</span><span> sum(evens)             2.62µs    3.1µs</div><div class='input'>
 <span class='co'># The equivalent to the above, reading the code from a file</span>
 <span class='fu'>workout_expressions</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/parse.html'>parse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/exprs.R"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"bench"</span>))))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 3</span><span>
 #&gt;   exprs                 process     real
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> x &lt;- 1:1000            3.04µs   5.25µs
-#&gt; </span><span style='color: #555555;'>2</span><span> evens &lt;- x%%2 == 0    31.51µs  31.95µs
-#&gt; </span><span style='color: #555555;'>3</span><span> y &lt;- x[evens]          5.27µs   5.72µs
-#&gt; </span><span style='color: #555555;'>4</span><span> length(y)               502ns 953.67ns
-#&gt; </span><span style='color: #555555;'>5</span><span> length(which(evens))   3.54µs   4.05µs
-#&gt; </span><span style='color: #555555;'>6</span><span> sum(evens)             2.34µs   2.86µs</div></span></pre>
+#&gt; </span><span style='color: #555555;'>1</span><span> x &lt;- 1:1000            3.96µs    6.2µs
+#&gt; </span><span style='color: #555555;'>2</span><span> evens &lt;- x%%2 == 0    40.67µs  41.01µs
+#&gt; </span><span style='color: #555555;'>3</span><span> y &lt;- x[evens]          5.35µs   5.72µs
+#&gt; </span><span style='color: #555555;'>4</span><span> length(y)               628ns   1.19µs
+#&gt; </span><span style='color: #555555;'>5</span><span> length(which(evens))   3.92µs   4.29µs
+#&gt; </span><span style='color: #555555;'>6</span><span> sum(evens)             2.42µs   2.86µs</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
