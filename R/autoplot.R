@@ -58,8 +58,10 @@ autoplot.bench_mark <- function(object,
     stop("`ggbeeswarm` must be installed to use `type = \"beeswarm\"` option.", call. = FALSE)
   }
 
-  # Just convert everything to a character first
-  object$expression <- as.character(object$expression)
+  # Just convert bench_expr to characters
+  if (inherits(object$expression, "bench_expr")) {
+    object$expression <- as.character(object$expression)
+  }
 
   if (tidyr_new_interface()) {
     res <- tidyr::unnest(object, c(time, gc))

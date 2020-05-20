@@ -1,5 +1,7 @@
 # bench (development version)
 
+* `autoplot.bench_mark()` again supports factor levels for `expression`, as intended (#82)
+
 # bench 1.1.1
 
 * `mark()` columns memory, result and mem_alloc columns are now always

@@ -341,7 +341,9 @@ parse_gc <- function(x) {
 utils::globalVariables(c("time", "gc"))
 
 unnest.bench_mark <- function(data, ...) {
-  data[["expression"]] <- as.character(data[["expression"]])
+  if (inherits(data[["expression"]], "bench_expr")) {
+    data[["expression"]] <- as.character(data[["expression"]])
+  }
 
   # suppressWarnings to avoid 'elements may not preserve their attributes'
   # warnings from dplyr::collapse
