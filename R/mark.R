@@ -26,6 +26,7 @@ NULL
 #'   profiling), track memory allocations using. If `FALSE` disable memory
 #'   tracking.
 #' @param env The environment which to evaluate the expressions
+#' @param tolerance Differences smaller than tolerance are not reported by `check`. The default value is close to 1.5e-8.
 #' @inheritParams summary.bench_mark
 #' @inherit summary.bench_mark return
 #' @aliases bench_mark
@@ -41,7 +42,7 @@ NULL
 #' @export
 mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
                  max_iterations = 10000, check = TRUE, memory = capabilities("profmem"), filter_gc = TRUE,
-                 relative = FALSE, time_unit = NULL, exprs = NULL, env = parent.frame()) {
+                 relative = FALSE, time_unit = NULL, exprs = NULL, env = parent.frame(), tolerance = sqrt(.Machine$double.eps)) {
 
   if (!is.null(iterations)) {
     min_iterations <- iterations
@@ -49,7 +50,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
   }
 
   if (isTRUE(check)) {
-    check_fun <- all.equal
+    check_fun <- function(target, current, ...) all.equal(target, current, ..., tolerance = tolerance)
   } else if (is.function(check)) {
     check_fun <- check
     check <- TRUE
