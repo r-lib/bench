@@ -243,3 +243,5 @@ bench::system_time(Sys.sleep(.5))
   - [microbenchmark](https://cran.r-project.org/package=microbenchmark)
   - [tictoc](https://cran.r-project.org/package=tictoc)
   - [system.time()](https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time)
+  - [Sys.time()](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Sys.time)
+  One may have a look at this [blog post](https://anirban166.github.io//Benchmarking/) for a comparison between them.
