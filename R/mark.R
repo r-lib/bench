@@ -130,7 +130,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     results$gc[[i]] <- parse_gc(gc_msg)
   }
 
-  out <- summary(bench_mark(tibble::as_tibble(results, validate = FALSE)),
+  out <- summary(bench_mark(tibble::as_tibble(results, .name_repair = "minimal")),
           filter_gc = filter_gc, relative = relative, time_unit = time_unit)
 
   file <- getOption("bench.file", NULL)
