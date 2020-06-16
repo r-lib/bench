@@ -18,7 +18,7 @@ Imports:
     profmem,
     rlang (>= 0.2.0),
     stats,
-    tibble,
+    tibble (>= 3.0.1),
     utils
 Suggests:
     covr,
