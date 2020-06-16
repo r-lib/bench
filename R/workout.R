@@ -24,12 +24,12 @@
 #' # The equivalent to the above, reading the code from a file
 #' workout_expressions(as.list(parse(system.file("examples/exprs.R", package = "bench"))))
 workout <- function(expr, description = NULL) {
-  expr <- rlang::enquo(expr)
-  env <- rlang::quo_get_env(expr)
-  if (rlang::quo_get_expr(expr)[[1]] == "{") {
-    exprs <- as.list(rlang::quo_get_expr(expr)[-1])
+  expr <- substitute(expr)
+  env <- parent.frame()
+  if (rlang::is_call(expr, "{")) {
+    exprs <- as.list(expr[-1])
   } else {
-    exprs <- list(rlang::quo_get_expr(expr))
+    exprs <- list(expr)
   }
   workout_expressions(exprs, env, description)
 }
