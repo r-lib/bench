@@ -1,5 +1,9 @@
 # bench (development version)
 
+* `bench::mark()` no longer supports unquote and splice operators.
+  This fixes inconsistencies in performance results with functions
+  like `rlang::list2()` (#61).
+
 * `autoplot.bench_mark()` again supports factor levels for `expression`, as intended (#82)
 
 # bench 1.1.1

@@ -58,7 +58,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
   }
 
   if (is.null(exprs)) {
-    exprs <- rlang::exprs(...)
+    exprs <- dots(...)
   }
 
   n_exprs <- length(exprs)

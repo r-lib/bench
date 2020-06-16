@@ -122,3 +122,14 @@ find_package_root <- function(path) {
 is_root <- function(path) {
   identical(path, dirname(path))
 }
+
+dots <- function(...) {
+  dots <- as.list(substitute(...()))
+
+  n <- length(dots)
+  if (n && rlang::is_missing(dots[[n]])) {
+    dots <- dots[-n]
+  }
+
+  dots
+}
