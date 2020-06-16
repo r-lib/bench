@@ -26,6 +26,7 @@ summary(results, relative = TRUE)
 \seealso{
 Useful links:
 \itemize{
+  \item \url{http://bench.r-lib.org/}
   \item \url{https://github.com/r-lib/bench}
   \item Report bugs at \url{https://github.com/r-lib/bench/issues}
 }
