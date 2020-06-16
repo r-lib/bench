@@ -22,6 +22,9 @@
     <loc>http://bench.r-lib.org/reference/bench_bytes_trans.html</loc>
   </url>
   <url>
+    <loc>http://bench.r-lib.org/reference/bench_load_average.html</loc>
+  </url>
+  <url>
     <loc>http://bench.r-lib.org/reference/bench_memory.html</loc>
   </url>
   <url>

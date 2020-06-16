@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -39,7 +43,6 @@
 <meta property="og:description" content="Given an block of expressions in {} workout() individually times each
 expression in the group. workout_expressions() is a lower level function most
 useful when reading lists of calls from a file." />
-<meta name="twitter:card" content="summary" />
 
 
 <meta name="robots" content="noindex">
@@ -67,7 +70,7 @@ useful when reading lists of calls from a file." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -113,7 +116,7 @@ useful when reading lists of calls from a file." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/bench">
+  <a href="https://github.com/r-lib/bench/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -181,30 +184,27 @@ deparsed expression will be used.</p></td>
 })</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 3</span><span>
 #&gt;   exprs                 process     real
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> x &lt;- 1:1000            4.41µs   7.39µs
-#&gt; </span><span style='color: #555555;'>2</span><span> evens &lt;- x%%2 == 0    37.97µs  38.38µs
-#&gt; </span><span style='color: #555555;'>3</span><span> y &lt;- x[evens]          5.35µs   5.72µs
-#&gt; </span><span style='color: #555555;'>4</span><span> length(y)               545ns 953.67ns
-#&gt; </span><span style='color: #555555;'>5</span><span> length(which(evens))   3.91µs   4.29µs
-#&gt; </span><span style='color: #555555;'>6</span><span> sum(evens)             2.62µs    3.1µs</div><div class='input'>
+#&gt; </span><span style='color: #555555;'>1</span><span> x &lt;- 1:1000            2.75µs   4.29µs
+#&gt; </span><span style='color: #555555;'>2</span><span> evens &lt;- x%%2 == 0    41.99µs  42.44µs
+#&gt; </span><span style='color: #555555;'>3</span><span> y &lt;- x[evens]          5.25µs   5.48µs
+#&gt; </span><span style='color: #555555;'>4</span><span> length(y)               818ns   1.19µs
+#&gt; </span><span style='color: #555555;'>5</span><span> length(which(evens))    4.4µs   4.77µs
+#&gt; </span><span style='color: #555555;'>6</span><span> sum(evens)             2.47µs   2.62µs</div><div class='input'>
 <span class='co'># The equivalent to the above, reading the code from a file</span>
 <span class='fu'>workout_expressions</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/parse.html'>parse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/exprs.R"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"bench"</span>))))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 3</span><span>
 #&gt;   exprs                 process     real
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;bch:expr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;bch:tm&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> x &lt;- 1:1000            3.96µs    6.2µs
-#&gt; </span><span style='color: #555555;'>2</span><span> evens &lt;- x%%2 == 0    40.67µs  41.01µs
-#&gt; </span><span style='color: #555555;'>3</span><span> y &lt;- x[evens]          5.35µs   5.72µs
-#&gt; </span><span style='color: #555555;'>4</span><span> length(y)               628ns   1.19µs
-#&gt; </span><span style='color: #555555;'>5</span><span> length(which(evens))   3.92µs   4.29µs
-#&gt; </span><span style='color: #555555;'>6</span><span> sum(evens)             2.42µs   2.86µs</div></span></pre>
+#&gt; </span><span style='color: #555555;'>1</span><span> x &lt;- 1:1000            2.36µs   3.58µs
+#&gt; </span><span style='color: #555555;'>2</span><span> evens &lt;- x%%2 == 0     38.5µs  38.86µs
+#&gt; </span><span style='color: #555555;'>3</span><span> y &lt;- x[evens]          4.96µs   5.48µs
+#&gt; </span><span style='color: #555555;'>4</span><span> length(y)               566ns 953.67ns
+#&gt; </span><span style='color: #555555;'>5</span><span> length(which(evens))   4.51µs   4.77µs
+#&gt; </span><span style='color: #555555;'>6</span><span> sum(evens)             2.43µs   2.86µs</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -215,7 +215,7 @@ deparsed expression will be used.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

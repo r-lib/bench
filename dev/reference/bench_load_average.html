@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Coerce to a bench mark object Bench mark objects — as_bench_mark • bench</title>
+<title>Get system load averages — bench_load_average • bench</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Coerce to a bench mark object Bench mark objects — as_bench_mark" />
-<meta property="og:description" content="This is typically needed only if you are performing additional manipulations
-after calling bench::mark()." />
+<meta property="og:title" content="Get system load averages — bench_load_average" />
+<meta property="og:description" content="Uses OS system APIs to return the load average for the past 1, 5 and 15 minutes." />
 
 
 <meta name="robots" content="noindex">
@@ -133,26 +132,17 @@ after calling bench::mark()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Coerce to a bench mark object Bench mark objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/mark.R'><code>R/mark.R</code></a></small>
-    <div class="hidden name"><code>as_bench_mark.Rd</code></div>
+    <h1>Get system load averages</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/bench/blob/master/R/load.R'><code>R/load.R</code></a></small>
+    <div class="hidden name"><code>bench_load_average.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is typically needed only if you are performing additional manipulations
-after calling <code><a href='mark.html'>bench::mark()</a></code>.</p>
+    <p>Uses OS system APIs to return the load average for the past 1, 5 and 15 minutes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_bench_mark</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>bench_load_average</span>()</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>Object to be coerced</p></td>
-    </tr>
-    </table>
 
 
   </div>
