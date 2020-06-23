@@ -68,6 +68,8 @@ bench::cb_run()
 bench::cb_push()
 ```
 
+You may need to set `git` credentials when running this on a CI service.
+
 To retrieve the full dataset of benchmark results locally use the following.
 
 ``` r
