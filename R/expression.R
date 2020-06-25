@@ -29,13 +29,20 @@ type_sum.bench_expr <- function(x) {
 
 #' @export
 `[.bench_expr` <- function(x, i, ...) {
-  new_x <- NextMethod("[")
-  new_bench_expr(new_x)
+  vctrs::vec_slice(x, i)
 }
 
 # @export
 vec_proxy.bench_expr <- function(x, ...) {
-  vctrs::vec_data(unclass(x))
+  desc <- attr(x, "description")
+  attributes(x) <- NULL
+  out <- list(x = x, desc = desc)
+  vctrs::new_data_frame(out, n = length(x))
+}
+
+# @export
+vec_restore.bench_expr <- function(x, to, ...) {
+  new_bench_expr(x$x, x$desc)
 }
 
 pillar_shaft.bench_expr <- function(x, ...) {
