@@ -29,7 +29,8 @@ type_sum.bench_expr <- function(x) {
 
 #' @export
 `[.bench_expr` <- function(x, i, ...) {
-  vctrs::vec_slice(x, i)
+  new_x <- NextMethod("[")
+  new_bench_expr(new_x)
 }
 
 # @export
