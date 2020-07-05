@@ -191,25 +191,7 @@ cb_read <- function(path = ".", additional_columns = NULL) {
   on.exit(setwd(old))
   setwd(path)
 
-  additional_placeholders <- get_placeholders(additional_columns)
-  cmd <- glue::glue("git log --notes=benchmarks --pretty=format:\"%H|%h|%P|'%N'|%s|%D{additional_placeholders}\"")
-
-  x <- read.delim(
-    pipe(cmd),
-    sep = "|",
-    col.names = c(
-      "commit_hash",
-      "abbrev_commit_hash",
-      "parent_hashes",
-      "benchmarks",
-      "subject",
-      "ref_names",
-      names(additional_columns)
-    ),
-    header = FALSE,
-    stringsAsFactors = FALSE,
-    quote = "'"
-  )
+  x <- parse_log(additional_columns)
 
   # read the benchmark notes into a df list-cols
   x$benchmarks <- lapply(x$benchmarks, cb_read_benchmark)
@@ -222,17 +204,59 @@ cb_read <- function(path = ".", additional_columns = NULL) {
   tibble::as_tibble(x)
 }
 
-get_placeholders <- function(additional_columns) {
-  if (length(additional_columns) == 0) {
+parse_log <- function(additional_columns) {
+  # Idea: git log command that outputs delimited data
+  # 1. Use \n\n\n as row delimiter
+  # 2. Use \n\n as column delimiter
+  # 3. Surround columns with <>
+  # Rationale:
+  # - notes may contain \n
+  # - subject may contain arbitrary character except \n
+  # - mark empty cells
+
+  columns <- c(
+    commit_hash = "%H",
+    abbrev_commit_hash = "%h",
+    parent_hashes = "%P",
+    benchmarks = "%N",
+    ref_names = "%D",
+    subject = "%s",
+    additional_columns
+  )
+
+  # Get log
+  placeholders <- get_log_format(columns)
+  cmd <- glue::glue("git log --notes=benchmarks --pretty=format:\"{placeholders}\"")
+
+  con <- pipe(cmd)
+  lines <- readLines(con)
+  close(con)
+  text <- glue::glue_collapse(lines, sep = "\n")
+
+  # Extract a vector of cells
+  split <- strsplit(text, "\n\n\n", fixed = TRUE)
+  splits <- strsplit(split[[1]], "\n\n", fixed = TRUE)
+  flat_splits <- gsub("^[<](.*)[>]$", "\\1", unlist(splits))
+
+  # Cells are arranged in row-major order,
+  # transpose and convert to a data frame to return
+  matrix <- t(matrix(flat_splits, nrow = length(columns)))
+  colnames(matrix) <- names(columns)
+
+  as.data.frame(matrix, stringsAsFactors = FALSE)
+}
+
+get_log_format <- function(columns) {
+  if (length(columns) == 0) {
     return("")
   }
-  if (!rlang::is_named(additional_columns)) {
+  if (!rlang::is_named(columns)) {
     rlang::abort("`additional_columns` must all be named")
   }
-  additional_placeholders <- glue::glue_collapse(unname(additional_columns), "|")
-  additional_placeholders <- glue::glue('|{additional_placeholders}')
+  placeholders <- glue::glue("<{unname(columns)}>\n\n", .trim = FALSE)
+  placeholders <- glue::glue_collapse(placeholders)
 
-  additional_placeholders
+  placeholders
 }
 
 parse_ref_names <- function(x) {
