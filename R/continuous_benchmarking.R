@@ -152,7 +152,7 @@ cb_write <- function(x, file) {
 
   file <- tempfile()
   on.exit(unlink(file))
-  jsonlite::stream_out(x, file(file), verbose = FALSE, digits = NA)
+  jsonlite::stream_out(x, file(file), verbose = FALSE, digits = 6, use_signif = TRUE)
   append_file_to_git_notes(file)
 }
 
