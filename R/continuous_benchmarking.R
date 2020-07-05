@@ -35,12 +35,20 @@ cb_run_one <- function(path, env = new.env(parent = globalenv())) {
 }
 
 git <- function(..., stdout = NULL) {
+  args <- list(...)
+
   withCallingHandlers(
-    system2("git", list(...), stdout = stdout),
+    exit_code <- system2("git", args, stdout = stdout),
     warning = function(e) {
       stop(e)
     }
   )
+
+  if (exit_code != 0) {
+    rlang::abort(paste0(
+      "git ", args[[1]], " failed with exit code ", exit_code, "."
+    ))
+  }
 }
 
 #' Interact with the benchmark notes
