@@ -207,12 +207,11 @@ cb_read <- function(path = ".", additional_columns = NULL) {
 parse_log <- function(additional_columns) {
   # Idea: git log command that outputs delimited data
   # 1. Use \n\n\n as row delimiter
-  # 2. Use \n\n as column delimiter
-  # 3. Surround columns with <>
+  # 2. Use >\n\n< as column delimiter
   # Rationale:
-  # - notes may contain \n
+  # - notes may contain \n and also empty lines, but start and end with {}
   # - subject may contain arbitrary character except \n
-  # - mark empty cells
+  # - need to mark empty cells
 
   columns <- c(
     commit_hash = "%H",
@@ -235,7 +234,7 @@ parse_log <- function(additional_columns) {
 
   # Extract a vector of cells
   split <- strsplit(text, "\n\n\n", fixed = TRUE)
-  splits <- strsplit(split[[1]], "\n\n", fixed = TRUE)
+  splits <- strsplit(split[[1]], ">\n\n<", fixed = TRUE)
   flat_splits <- gsub("^[<](.*)[>]$", "\\1", unlist(splits))
 
   # Cells are arranged in row-major order,
@@ -253,8 +252,9 @@ get_log_format <- function(columns) {
   if (!rlang::is_named(columns)) {
     rlang::abort("`additional_columns` must all be named")
   }
-  placeholders <- glue::glue("<{unname(columns)}>\n\n", .trim = FALSE)
-  placeholders <- glue::glue_collapse(placeholders)
+
+  columns[[length(columns)]] <- glue::glue("{columns[[length(columns)]]}\n\n", .trim = FALSE)
+  placeholders <- glue::glue_collapse(unname(columns), sep = ">\n\n<")
 
   placeholders
 }
