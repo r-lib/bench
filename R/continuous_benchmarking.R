@@ -192,7 +192,7 @@ cb_read <- function(path = ".", additional_columns = NULL) {
   setwd(path)
 
   additional_placeholders <- get_placeholders(additional_columns)
-  cmd <- glue::glue("git log --notes=benchmarks --pretty=format:\"%H|%h|%P|'%N'|%s|%D{additional_placeholders}\"")
+  cmd <- glue::glue("git log --notes=benchmarks --pretty=format:\"%H|%h|%P|\x1E%N\x1E|%s|%D{additional_placeholders}\"")
 
   x <- read.delim(
     pipe(cmd),
@@ -208,7 +208,7 @@ cb_read <- function(path = ".", additional_columns = NULL) {
     ),
     header = FALSE,
     stringsAsFactors = FALSE,
-    quote = "'"
+    quote = "\x1E"
   )
 
   # read the benchmark notes into a df list-cols
