@@ -141,7 +141,7 @@
     <p>Measure Process CPU and real time that an expression used.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>bench_time</span>(<span class='no'>expr</span>)</pre>
+    <pre class="usage"><span class='fu'>bench_time</span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,8 +170,9 @@ process time is larger than the real time for fast expressions.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># This will use ~.5 seconds of real time, but very little process time.</span>
-<span class='fu'>bench_time</span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span>(<span class='fl'>.5</span>))</div><div class='output co'>#&gt; process    real 
-#&gt;  70.9µs 500.6ms </div></pre>
+<span class='fu'>bench_time</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span><span class='op'>(</span><span class='fl'>.5</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; process    real 
+#&gt;  64.9µs 500.6ms </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -187,7 +188,7 @@ process time is larger than the real time for fast expressions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

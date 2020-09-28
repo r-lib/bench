@@ -145,7 +145,7 @@ are numeric vectors, so you can compare them numerically, but they can also
 be compared to human readable values such as '10ms'.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_bench_time</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>as_bench_time</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,9 +159,16 @@ shorthand sizes (see examples).</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1ns"</span>)</div><div class='output co'>#&gt; [1] 1ns</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1"</span>)</div><div class='output co'>#&gt; [1] 1s</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1us"</span>)</div><div class='output co'>#&gt; [1] 1µs</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1ms"</span>)</div><div class='output co'>#&gt; [1] 1ms</div><div class='input'><span class='fu'>as_bench_time</span>(<span class='st'>"1s"</span>)</div><div class='output co'>#&gt; [1] 1s</div><div class='input'>
-<span class='fu'>as_bench_time</span>(<span class='st'>"100ns"</span>) <span class='kw'>&lt;</span> <span class='st'>"1ms"</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='fu'>as_bench_time</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1MB"</span>, <span class='st'>"5MB"</span>, <span class='st'>"500KB"</span>)))</div><div class='output co'>#&gt; [1] NA</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>as_bench_time</span><span class='op'>(</span><span class='st'>"1ns"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1ns</div><div class='input'><span class='fu'>as_bench_time</span><span class='op'>(</span><span class='st'>"1"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1s</div><div class='input'><span class='fu'>as_bench_time</span><span class='op'>(</span><span class='st'>"1us"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1µs</div><div class='input'><span class='fu'>as_bench_time</span><span class='op'>(</span><span class='st'>"1ms"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1ms</div><div class='input'><span class='fu'>as_bench_time</span><span class='op'>(</span><span class='st'>"1s"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1s</div><div class='input'>
+<span class='fu'>as_bench_time</span><span class='op'>(</span><span class='st'>"100ns"</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='st'>"1ms"</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'>as_bench_time</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1MB"</span>, <span class='st'>"5MB"</span>, <span class='st'>"500KB"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] NA</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -177,7 +184,7 @@ shorthand sizes (see examples).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

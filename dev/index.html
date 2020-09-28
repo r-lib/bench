@@ -97,10 +97,12 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the release version from <a href="https://cran.r-project.org/">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"bench"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"bench"</span><span class="op">)</span></pre></div>
 <p>Or you can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># install.packages("remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"r-lib/bench"</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># install.packages("remotes")</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"r-lib/bench"</span><span class="op">)</span></pre></div>
 </div>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
@@ -123,14 +125,17 @@
 <a href="#continuous-benchmarking" class="anchor"></a>Continuous benchmarking</h2>
 <p><em>This feature is still in early and active development, but the brave can test it out.</em></p>
 <p>You can setup continuous benchmarking for an R package by adding <code>.R</code> scripts containing one or more calls to <code><a href="reference/mark.html">bench::mark()</a></code> in the <code>bench/</code> directory of an R package. Then from any CI service you can then fetch previous results, run the benchmarks and push the results back to the repository with the following.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/cb_fetch.html">cb_fetch</a></span>()
-<span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/cb_run.html">cb_run</a></span>()
-<span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/cb_fetch.html">cb_push</a></span>()</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/cb_fetch.html">cb_fetch</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/cb_run.html">cb_run</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/cb_fetch.html">cb_push</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p>To retrieve the full dataset of benchmark results locally use the following.</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/cb_fetch.html">cb_fetch</a></span>()
-<span class="no">results</span> <span class="kw">&lt;-</span> <span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/cb_read.html">cb_read</a></span>()</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/cb_fetch.html">cb_fetch</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/cb_read.html">cb_read</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p>And to plot the benchmark times per commit</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/cb_plot_time.html">cb_plot_time</a></span>(<span class="no">results</span>)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/cb_plot_time.html">cb_plot_time</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
@@ -140,22 +145,25 @@
 <a href="#benchmark" class="anchor"></a><code>bench::mark()</code>
 </h3>
 <p>Benchmarks can be run with <code><a href="reference/mark.html">bench::mark()</a></code>, which takes one or more expressions to benchmark against each other.</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">bench</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">42</span>)
-<span class="no">dat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">10000</span>, <span class="fl">1</span>, <span class="fl">1000</span>), <span class="kw">y</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">10000</span>, <span class="fl">1</span>, <span class="fl">1000</span>))</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://bench.r-lib.org/">bench</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
+<span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fl">1</span>, <span class="fl">1000</span><span class="op">)</span>, y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fl">1</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p><code><a href="reference/mark.html">bench::mark()</a></code> will throw an error if the results are not equivalent, so you don’t accidentally benchmark inequivalent code.</p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/mark.html">mark</a></span>(
-  <span class="no">dat</span>[<span class="no">dat</span>$<span class="no">x</span> <span class="kw">&gt;</span> <span class="fl">500</span>, ],
-  <span class="no">dat</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">dat</span>$<span class="no">x</span> <span class="kw">&gt;</span> <span class="fl">499</span>), ],
-  <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">dat</span>, <span class="no">x</span> <span class="kw">&gt;</span> <span class="fl">500</span>))
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/mark.html">mark</a></span><span class="op">(</span>
+  <span class="va">dat</span><span class="op">[</span><span class="va">dat</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">500</span>, <span class="op">]</span>,
+  <span class="va">dat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">499</span><span class="op">)</span>, <span class="op">]</span>,
+  <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="fl">500</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Error: Each result must equal the first result:</span>
 <span class="co">#&gt; `dat[dat$x &gt; 500, ]` does not equal `dat[which(dat$x &gt; 499), ]`</span></pre></div>
 <p>Results are easy to interpret, with human readable units.</p>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="no">bnch</span> <span class="kw">&lt;-</span> <span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/mark.html">mark</a></span>(
-  <span class="no">dat</span>[<span class="no">dat</span>$<span class="no">x</span> <span class="kw">&gt;</span> <span class="fl">500</span>, ],
-  <span class="no">dat</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">dat</span>$<span class="no">x</span> <span class="kw">&gt;</span> <span class="fl">500</span>), ],
-  <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">dat</span>, <span class="no">x</span> <span class="kw">&gt;</span> <span class="fl">500</span>))
-<span class="no">bnch</span>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="va">bnch</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/mark.html">mark</a></span><span class="op">(</span>
+  <span class="va">dat</span><span class="op">[</span><span class="va">dat</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">500</span>, <span class="op">]</span>,
+  <span class="va">dat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">500</span><span class="op">)</span>, <span class="op">]</span>,
+  <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="fl">500</span><span class="op">)</span><span class="op">)</span>
+<span class="va">bnch</span>
 <span class="co">#&gt; # A tibble: 3 x 6</span>
 <span class="co">#&gt;   expression                     min   median `itr/sec` mem_alloc `gc/sec`</span>
 <span class="co">#&gt;   &lt;bch:expr&gt;                &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span>
@@ -163,7 +171,8 @@
 <span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]    261µs    338µs     2879.     260KB     13.5</span>
 <span class="co">#&gt; 3 subset(dat, x &gt; 500)         486µs    573µs     1696.     509KB     16.1</span></pre></div>
 <p>By default the summary uses absolute measures, however relative results can be obtained by using <code>relative = TRUE</code> in your call to <code><a href="reference/mark.html">bench::mark()</a></code> or calling <code><a href="https://rdrr.io/r/base/summary.html">summary(relative = TRUE)</a></code> on the results.</p>
-<div class="sourceCode" id="cb9"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">bnch</span>, <span class="kw">relative</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">bnch</span>, relative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 3 x 6</span>
 <span class="co">#&gt;   expression                  min median `itr/sec` mem_alloc `gc/sec`</span>
 <span class="co">#&gt;   &lt;bch:expr&gt;                &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
@@ -176,34 +185,35 @@
 <a href="#benchpress" class="anchor"></a><code>bench::press()</code>
 </h3>
 <p><code><a href="reference/press.html">bench::press()</a></code> is used to run benchmarks against a grid of parameters. Provide setup and benchmarking code as a single unnamed argument then define sets of values as named arguments. The full combination of values will be expanded and the benchmarks are then <em>pressed</em> together in the result. This allows you to benchmark a set of expressions across a wide variety of input sizes, perform replications and other useful tasks.</p>
-<div class="sourceCode" id="cb10"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">42</span>)
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
 
-<span class="no">create_df</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">rows</span>, <span class="no">cols</span>) {
-  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span>(
-    <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="no">cols</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="no">rows</span>, <span class="fl">1</span>, <span class="fl">100</span>), <span class="kw">simplify</span> <span class="kw">=</span> <span class="fl">FALSE</span>),
-    <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep_len</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="no">letters</span>), <span class="no">cols</span>)))
-}
+<span class="va">create_df</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="va">cols</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">rows</span>, <span class="fl">1</span>, <span class="fl">100</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="va">letters</span><span class="op">)</span>, <span class="va">cols</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
 
-<span class="no">results</span> <span class="kw">&lt;-</span> <span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/press.html">press</a></span>(
-  <span class="kw">rows</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1000</span>, <span class="fl">10000</span>),
-  <span class="kw">cols</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">10</span>),
-  {
-    <span class="no">dat</span> <span class="kw">&lt;-</span> <span class="fu">create_df</span>(<span class="no">rows</span>, <span class="no">cols</span>)
-    <span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/mark.html">mark</a></span>(
-      <span class="kw">min_iterations</span> <span class="kw">=</span> <span class="fl">100</span>,
-      <span class="kw">bracket</span> <span class="kw">=</span> <span class="no">dat</span>[<span class="no">dat</span>$<span class="no">x</span> <span class="kw">&gt;</span> <span class="fl">500</span>, ],
-      <span class="kw">which</span> <span class="kw">=</span> <span class="no">dat</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">dat</span>$<span class="no">x</span> <span class="kw">&gt;</span> <span class="fl">500</span>), ],
-      <span class="kw">subset</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">dat</span>, <span class="no">x</span> <span class="kw">&gt;</span> <span class="fl">500</span>)
-    )
-  }
-)
+<span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/press.html">press</a></span><span class="op">(</span>
+  rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">10000</span><span class="op">)</span>,
+  cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">10</span><span class="op">)</span>,
+  <span class="op">{</span>
+    <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">create_df</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span>
+    <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/mark.html">mark</a></span><span class="op">(</span>
+      min_iterations <span class="op">=</span> <span class="fl">100</span>,
+      bracket <span class="op">=</span> <span class="va">dat</span><span class="op">[</span><span class="va">dat</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">500</span>, <span class="op">]</span>,
+      which <span class="op">=</span> <span class="va">dat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">500</span><span class="op">)</span>, <span class="op">]</span>,
+      subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="fl">500</span><span class="op">)</span>
+    <span class="op">)</span>
+  <span class="op">}</span>
+<span class="op">)</span>
 <span class="co">#&gt; Running with:</span>
 <span class="co">#&gt;    rows  cols</span>
 <span class="co">#&gt; 1  1000     2</span>
 <span class="co">#&gt; 2 10000     2</span>
 <span class="co">#&gt; 3  1000    10</span>
 <span class="co">#&gt; 4 10000    10</span>
-<span class="no">results</span>
+<span class="va">results</span>
 <span class="co">#&gt; # A tibble: 12 x 8</span>
 <span class="co">#&gt;    expression  rows  cols      min   median `itr/sec` mem_alloc `gc/sec`</span>
 <span class="co">#&gt;    &lt;bch:expr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span>
@@ -225,7 +235,8 @@
 <h2 class="hasAnchor">
 <a href="#plotting" class="anchor"></a>Plotting</h2>
 <p><code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">ggplot2::autoplot()</a></code> can be used to generate an informative default plot. This plot is colored by gc level (0, 1, or 2) and faceted by parameters (if any). By default it generates a <a href="https://github.com/eclarke/ggbeeswarm#geom_quasirandom">beeswarm</a> plot, however you can also specify other plot types (<code>jitter</code>, <code>ridge</code>, <code>boxplot</code>, <code>violin</code>). See <code><a href="reference/autoplot.bench_mark.html">?autoplot.bench_mark</a></code> for full details.</p>
-<div class="sourceCode" id="cb11"><pre class="r"><span class="kw pkg">ggplot2</span><span class="kw ns">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span>(<span class="no">results</span>)</pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-autoplot-1.png" width="100%"></p>
 <p>You can also produce fully custom plots by un-nesting the results and working with the data directly.</p>
 </div>
@@ -234,10 +245,11 @@
 <a href="#system_time" class="anchor"></a><code>system_time()</code>
 </h2>
 <p><strong>bench</strong> also includes <code><a href="reference/bench_time.html">system_time()</a></code>, a higher precision alternative to <a href="https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time">system.time()</a>.</p>
-<div class="sourceCode" id="cb12"><pre class="r"><span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/bench_time.html">system_time</a></span>({ <span class="no">i</span> <span class="kw">&lt;-</span> <span class="fl">1</span>; <span class="kw">while</span>(<span class="no">i</span> <span class="kw">&lt;</span> <span class="fl">1e7</span>) <span class="no">i</span> <span class="kw">&lt;-</span> <span class="no">i</span> + <span class="fl">1</span> })
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/bench_time.html">system_time</a></span><span class="op">(</span><span class="op">{</span> <span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">1</span>; <span class="kw">while</span><span class="op">(</span><span class="va">i</span> <span class="op">&lt;</span> <span class="fl">1e7</span><span class="op">)</span> <span class="va">i</span> <span class="op">&lt;-</span> <span class="va">i</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span><span class="op">)</span>
 <span class="co">#&gt; process    real </span>
 <span class="co">#&gt;   332ms   332ms</span>
-<span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="reference/bench_time.html">system_time</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span>(<span class="fl">.5</span>))
+<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/bench_time.html">system_time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span><span class="op">(</span><span class="fl">.5</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; process    real </span>
 <span class="co">#&gt;    66µs   504ms</span></pre></div>
 </div>
@@ -298,7 +310,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

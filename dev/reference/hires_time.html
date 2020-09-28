@@ -149,20 +149,23 @@ timer is ideally suited to performance measurement tasks, where cheap,
 accurate interval timing is required.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hires_time</span>()</pre>
+    <pre class="usage"><span class='fu'>hires_time</span><span class='op'>(</span><span class='op'>)</span></pre>
 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>hires_time</span>()</div><div class='output co'>#&gt; [1] 1594152963</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>hires_time</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1601309204</div><div class='input'>
 <span class='co'># R rounds doubles to 7 digits by default, see greater precision by setting</span>
 <span class='co'># the digits argument when printing</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'>hires_time</span>(), <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; [1] 1594152963.3729717731</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'>hires_time</span><span class='op'>(</span><span class='op'>)</span>, digits <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1601309204.4138827324</div><div class='input'>
 <span class='co'># Generally used by recording two times and then subtracting them</span>
-<span class='no'>start</span> <span class='kw'>&lt;-</span> <span class='fu'>hires_time</span>()
-<span class='no'>end</span> <span class='kw'>&lt;-</span> <span class='fu'>hires_time</span>()
-<span class='no'>elapsed</span> <span class='kw'>&lt;-</span> <span class='no'>end</span> - <span class='no'>start</span>
-<span class='no'>elapsed</span></div><div class='output co'>#&gt; [1] 0.0006067753</div></pre>
+<span class='va'>start</span> <span class='op'>&lt;-</span> <span class='fu'>hires_time</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>end</span> <span class='op'>&lt;-</span> <span class='fu'>hires_time</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>elapsed</span> <span class='op'>&lt;-</span> <span class='va'>end</span> <span class='op'>-</span> <span class='va'>start</span>
+<span class='va'>elapsed</span>
+</div><div class='output co'>#&gt; [1] 0.0006477833</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -178,7 +181,7 @@ accurate interval timing is required.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
