@@ -17,3 +17,4 @@
 ^script.R$
 ^depends.Rds$
 ^bench$
+^LICENSE\.md$
