@@ -215,7 +215,7 @@ cb_read <- function(path = ".", additional_columns = NULL) {
   x$benchmarks <- lapply(x$benchmarks, cb_read_benchmark)
 
   # Split the parents into character list-cols
-  x$parent_hashes <- strsplit(x$parent_hashes, " ")
+  x$parent_hashes <- strsplit(as.character(x$parent_hashes), " ")
 
   x$ref_names <- parse_ref_names(x$ref_names)
 
