@@ -1,4 +1,4 @@
-# bench (development version)
+# bench 1.1.2
 
 * Davis Vaughan is now the maintainer.
 
