@@ -13,8 +13,8 @@
 #' - [task_info(TASK_BASIC_INFO)](https://developer.apple.com/documentation/kernel/1537934-task_info?language=occ)
 #' - [rusage.ru_maxrss](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/getrusage.2.html)
 #' ## linux
-#' - [/proc/pid/status VmSize](http://man7.org/linux/man-pages/man5/proc.5.html)
-#' - [/proc/pid/status VmPeak](http://man7.org/linux/man-pages/man5/proc.5.html)
+#' - [/proc/pid/status VmSize](https://man7.org/linux/man-pages/man5/proc.5.html)
+#' - [/proc/pid/status VmPeak](https://man7.org/linux/man-pages/man5/proc.5.html)
 #' and on Windows
 #' [PROCESS_MEMORY_COUNTERS.PeakWorkingSetSize](https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters)
 #' @export

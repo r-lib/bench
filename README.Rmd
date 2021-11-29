@@ -62,7 +62,7 @@ The times and memory usage are returned as custom objects which have human
 readable formatting for display (e.g. `104ns`) and comparisons (e.g.
 `x$mem_alloc > "10MB"`).
 
-There is also full support for plotting with [ggplot2](http://ggplot2.tidyverse.org/)
+There is also full support for plotting with [ggplot2](https://ggplot2.tidyverse.org/)
 including custom scales and formatting.
 
 ## Continuous benchmarking

@@ -29,8 +29,8 @@ The OS APIs used are as follows
 
 \subsection{linux}{
 \itemize{
-\item \href{http://man7.org/linux/man-pages/man5/proc.5.html}{/proc/pid/status VmSize}
-\item \href{http://man7.org/linux/man-pages/man5/proc.5.html}{/proc/pid/status VmPeak}
+\item \href{https://man7.org/linux/man-pages/man5/proc.5.html}{/proc/pid/status VmSize}
+\item \href{https://man7.org/linux/man-pages/man5/proc.5.html}{/proc/pid/status VmPeak}
 and on Windows
 \href{https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters}{PROCESS_MEMORY_COUNTERS.PeakWorkingSetSize}
 }
