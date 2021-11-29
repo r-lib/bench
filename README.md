@@ -60,7 +60,7 @@ human readable formatting for display (e.g. `104ns`) and comparisons
 (e.g. `x$mem_alloc > "10MB"`).
 
 There is also full support for plotting with
-[ggplot2](http://ggplot2.tidyverse.org/) including custom scales and
+[ggplot2](https://ggplot2.tidyverse.org/) including custom scales and
 formatting.
 
 ## Usage
@@ -99,9 +99,9 @@ bnch
 #> # A tibble: 3 × 6
 #>   expression                     min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 dat[dat$x > 500, ]           258µs    383µs     2543.     377KB     17.1
-#> 2 dat[which(dat$x > 500), ]    204µs    260µs     3803.     260KB     17.7
-#> 3 subset(dat, x > 500)         332µs    426µs     2318.     510KB     20.7
+#> 1 dat[dat$x > 500, ]           309µs    423µs     2392.     377KB     15.0
+#> 2 dat[which(dat$x > 500), ]    212µs    279µs     3406.     260KB     14.8
+#> 3 subset(dat, x > 500)         380µs    446µs     2141.     510KB     17.9
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -113,9 +113,9 @@ summary(bnch, relative = TRUE)
 #> # A tibble: 3 × 6
 #>   expression                  min median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <dbl>  <dbl>     <dbl>     <dbl>    <dbl>
-#> 1 dat[dat$x > 500, ]         1.26   1.47      1.10      1.45     1   
-#> 2 dat[which(dat$x > 500), ]  1      1         1.64      1        1.03
-#> 3 subset(dat, x > 500)       1.63   1.64      1         1.96     1.21
+#> 1 dat[dat$x > 500, ]         1.46   1.52      1.12      1.45     1.01
+#> 2 dat[which(dat$x > 500), ]  1      1         1.59      1        1   
+#> 3 subset(dat, x > 500)       1.79   1.60      1         1.96     1.21
 ```
 
 ### `bench::press()`
@@ -200,10 +200,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   2.37s   2.37s
+#>   2.58s   2.59s
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    91µs   500ms
+#>    73µs   500ms
 ```
 
 ## Alternatives
