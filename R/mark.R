@@ -133,13 +133,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
   out <- summary(bench_mark(tibble::as_tibble(results, .name_repair = "minimal")),
           filter_gc = filter_gc, relative = relative, time_unit = time_unit)
 
-  file <- getOption("bench.file", NULL)
-  if (!is.null(file)) {
-    cb_write(out, file)
-    invisible(out)
-  } else {
-    out
-  }
+  out
 }
 
 bench_mark <- function(x) {
