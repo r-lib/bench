@@ -32,4 +32,18 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Davis Vaughan \email{davis@rstudio.com}
+
+Authors:
+\itemize{
+  \item Jim Hester
+}
+
+Other contributors:
+\itemize{
+  \item Drew Schmidt (read_proc_file implementation) [contributor]
+}
+
+}
 \keyword{internal}
