@@ -15,7 +15,7 @@ Only one unnamed expression is permitted.}
 possible combinations.}
 }
 \description{
-\code{press()} is used to run \code{\link[bench:mark]{bench::mark()}} across a grid of parameters and
+\code{press()} is used to run \code{\link[=mark]{mark()}} across a grid of parameters and
 then \emph{press} the results together.
 
 The parameters you want to set are given as named arguments and a grid of

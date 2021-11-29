@@ -1,5 +1,7 @@
 # bench (development version)
 
+* Davis Vaughan is now the maintainer.
+
 * `bench::mark()` and `bench::workout()` no longer support unquote
   and splice operators. This fixes inconsistencies in performance
   results with functions like `rlang::list2()` (#61).

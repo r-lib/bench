@@ -35,6 +35,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Jim Hester \email{james.f.hester@gmail.com}
 
+Authors:
+\itemize{
+  \item Davis Vaughan \email{davis@rstudio.com}
+}
+
 Other contributors:
 \itemize{
   \item Drew Schmidt (read_proc_file implementation) [contributor]

@@ -2,7 +2,7 @@
 % Please edit documentation in R/mark.R
 \name{summary.bench_mark}
 \alias{summary.bench_mark}
-\title{Summarize \link[bench:mark]{bench::mark} results.}
+\title{Summarize \link{mark} results.}
 \usage{
 \method{summary}{bench_mark}(object, filter_gc = TRUE, relative = FALSE, time_unit = NULL, ...)
 }
@@ -55,7 +55,7 @@ garbage collection (0-2, columns) for each iteration (rows).
 }
 }
 \description{
-Summarize \link[bench:mark]{bench::mark} results.
+Summarize \link{mark} results.
 }
 \details{
 If \code{filter_gc == TRUE} (the default) runs that contain a garbage

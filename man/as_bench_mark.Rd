@@ -11,5 +11,5 @@ as_bench_mark(x)
 }
 \description{
 This is typically needed only if you are performing additional manipulations
-after calling \code{\link[bench:mark]{bench::mark()}}.
+after calling \code{\link[=mark]{mark()}}.
 }
