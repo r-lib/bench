@@ -1,5 +1,7 @@
 # bench (development version)
 
+# bench 1.1.2
+
 * Davis Vaughan is now the maintainer.
 
 * `autoplot.bench_mark()` again supports factor levels for `expression`, as intended (#82)

@@ -1,6 +1,6 @@
 Package: bench
 Title: High Precision Timing of R Expressions
-Version: 1.1.1.9000
+Version: 1.1.2.9000
 Authors@R: c(
     person("Jim", "Hester", role = "aut"),
     person("Davis", "Vaughan", , "davis@rstudio.com", role = c("aut", "cre")),
