@@ -2,7 +2,7 @@
 
 #ifdef __WIN32
 #include <windows.h>
-#elif defined(__MACH__)
+#elif defined(__MACH__) && defined (__APPLE__)
 #include <mach/mach_time.h>
 #include <time.h>
 #include <sys/time.h>
@@ -31,7 +31,7 @@ long double real_time() {
   }
   return (long double) count.QuadPart / frequency.QuadPart;
 }
-#elif defined(__MACH__)
+#elif defined(__MACH__) && defined(__APPLE__)
 long double real_time() {
 
   // https://developer.apple.com/library/content/qa/qa1398/_index.html
