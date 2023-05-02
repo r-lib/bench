@@ -126,6 +126,21 @@ describe("mark", {
       2 + 2,
     )
   })
+  it("truncates long expressions when printing (#94)", {
+    local_reproducible_output(width = 30)
+
+    name <- paste0(rep("a", 100), collapse = "")
+    exprs <- list(as.name(name))
+
+    assign(name, 1, envir = environment())
+
+    out <- mark(exprs = exprs)
+
+    # Only snapshot static columns
+    out <- out[c("expression", "result")]
+
+    expect_snapshot(out)
+  })
 })
 
 describe("summary.bench_mark", {
