@@ -1,5 +1,8 @@
 # bench (development version)
 
+* Long unnamed `bench_expr` expressions are now truncated correctly when used as
+  columns of a tibble (#94).
+
 * bench now uses testthat 3e (#129).
 
 * Fixed `-Wstrict-prototypes` warnings, as requested by CRAN (#124).
