@@ -54,7 +54,7 @@ res <- bench::mark(
   dat[which(dat$x > 500), ],
   subset(dat, x > 500))
 
-if (require(ggplot2) && require(tidyr)) {
+if (require(ggplot2) && require(tidyr) && require(ggbeeswarm)) {
 
   # Beeswarm plot
   autoplot(res)
