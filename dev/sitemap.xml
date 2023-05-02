@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://bench.r-lib.org/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>http://bench.r-lib.org/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>http://bench.r-lib.org/MAINTENANCE.html</loc>
+  </url>
+  <url>
+    <loc>http://bench.r-lib.org/authors.html</loc>
+  </url>
+  <url>
     <loc>http://bench.r-lib.org/index.html</loc>
+  </url>
+  <url>
+    <loc>http://bench.r-lib.org/news/index.html</loc>
   </url>
   <url>
     <loc>http://bench.r-lib.org/reference/as_bench_mark.html</loc>
@@ -53,6 +68,9 @@
   </url>
   <url>
     <loc>http://bench.r-lib.org/reference/hires_time.html</loc>
+  </url>
+  <url>
+    <loc>http://bench.r-lib.org/reference/index.html</loc>
   </url>
   <url>
     <loc>http://bench.r-lib.org/reference/knit_print.bench_mark.html</loc>
