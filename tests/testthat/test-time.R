@@ -1,5 +1,3 @@
-context("test-time.R")
-
 describe("as_bench_time", {
   it("accepts numeric input unchanged", {
     expect_equal(unclass(as_bench_time(123L)), 123L)

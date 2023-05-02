@@ -1,5 +1,3 @@
-context("test-mark.R")
-
 describe("mark_", {
   it("If min_time is Inf, runs for max_iterations", {
     res <- .Call(mark_, quote(1), new.env(), Inf, as.integer(0), as.integer(10))
@@ -35,7 +33,7 @@ describe("mark", {
   it("Uses all.equal to check results by default", {
     res <- mark(1 + 1, 1L + 1L, check = TRUE, iterations = 1)
 
-    expect_is(res$result, "list")
+    expect_type(res$result, "list")
     expect_true(all.equal(res$result[[1]], res$result[[2]]))
   })
   it("Can use other functions to check results like identical to check results", {
@@ -51,7 +49,7 @@ describe("mark", {
     # Function that always returns true
     res <- mark(1 + 1, 1 + 2, check = function(x, y) TRUE, iterations = 1)
 
-    expect_is(res$result, "list")
+    expect_type(res$result, "list")
     expect_equal(res$result[[1]], 2)
     expect_equal(res$result[[2]], 3)
   })
@@ -63,7 +61,7 @@ describe("mark", {
 
     expect_equal(length(res$memory), 2)
 
-    expect_is(res$memory[[1]], "Rprofmem")
+    expect_s3_class(res$memory[[1]], "Rprofmem")
     expect_equal(ncol(res$memory[[1]]), 3)
     expect_gte(nrow(res$memory[[1]]), 0)
   })
@@ -79,30 +77,31 @@ describe("mark", {
     expect_equal(res$result, list(NULL))
   })
   it("Can errors with the deparsed expressions", {
-    expect_error(msg = "`1` does not equal `3`",
-      mark(1, 1, 3, max_iterations = 10))
+    expect_snapshot(error = TRUE, {
+      mark(1, 1, 3, max_iterations = 10)
+    })
   })
 
   it("Works when calls are different lengths", {
-    expect_error(msg = "does not equal",
+    expect_snapshot(error = TRUE, {
       # Here the first call deparses to length 2, the second to length 4
       mark(if (TRUE) 2, if (TRUE) 1 else 3)
-    )
+    })
   })
   it("works with memory = FALSE", {
     res <- mark(1, memory = FALSE)
-    expect_is(res, "bench_mark")
+    expect_s3_class(res, "bench_mark")
     expect_equal(res$memory, vector("list", 1))
     expect_equal(res$mem_alloc, as_bench_bytes(NA))
   })
   it("works with check = FALSE", {
     res <- mark(1, check = FALSE)
-    expect_is(res, "bench_mark")
+    expect_s3_class(res, "bench_mark")
     expect_equal(res$result, list(NULL))
   })
   it("works with memory = FALSE and check = FALSE", {
     res <- mark(1, memory = FALSE, check = FALSE)
-    expect_is(res, "bench_mark")
+    expect_s3_class(res, "bench_mark")
     expect_equal(res$memory, list(NULL))
     expect_equal(res$mem_alloc, as_bench_bytes(NA))
   })

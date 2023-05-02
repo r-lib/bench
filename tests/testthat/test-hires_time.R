@@ -7,7 +7,7 @@ describe("hires_time", {
     start <- hires_time()
     Sys.sleep(.1)
     end <- hires_time()
-    expect_is(start, "numeric")
+    expect_type(start, "double")
     expect_true(end > start)
   })
 })

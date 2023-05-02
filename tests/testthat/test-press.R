@@ -1,5 +1,3 @@
-context("test-press.R")
-
 describe("press", {
 
   it("Adds parameters to output", {
