@@ -3,9 +3,10 @@ Title: High Precision Timing of R Expressions
 Version: 1.1.2.9000
 Authors@R: c(
     person("Jim", "Hester", role = "aut"),
-    person("Davis", "Vaughan", , "davis@rstudio.com", role = c("aut", "cre")),
+    person("Davis", "Vaughan", , "davis@posit.co", role = c("aut", "cre")),
     person("Drew", "Schmidt", role = "ctb",
-           comment = "read_proc_file implementation")
+           comment = "read_proc_file implementation"),
+    person("Posit Software, PBC", role = c("cph", "fnd"))
   )
 Description: Tools to accurately benchmark and analyze execution times for
     R expressions.
