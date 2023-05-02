@@ -39,7 +39,7 @@ SEXP mark_(SEXP expr, SEXP env, SEXP min_time, SEXP min_itr, SEXP max_itr) {
 
     long double elapsed = expr_elapsed_time(expr, env);
 
-    // 1E is record separator 
+    // 1E is record separator
     REprintf("\x1E");
     REAL(out)[i] = elapsed - overhead;
     total+=elapsed;
