@@ -1,5 +1,7 @@
 # bench (development version)
 
+* bench no longer Suggests mockery.
+
 # bench 1.1.2
 
 * Davis Vaughan is now the maintainer.

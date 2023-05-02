@@ -69,9 +69,7 @@ describe("mark", {
   })
 
   it("works without capabilities('profmem')", {
-    mockery::stub(mark, "capabilities", FALSE)
-
-    res <- mark(1, 2, check = FALSE, iterations = 1)
+    res <- mark(1, 2, check = FALSE, iterations = 1, memory = FALSE)
 
     expect_equal(res$memory, vector("list", 2))
     expect_equal(res$mem_alloc, as_bench_bytes(c(NA, NA)))
