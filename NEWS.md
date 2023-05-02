@@ -1,5 +1,7 @@
 # bench (development version)
 
+* bench now uses testthat 3e (#129).
+
 * Fixed `-Wstrict-prototypes` warnings, as requested by CRAN (#124).
 
 * bench no longer Suggests mockery.
