@@ -38,8 +38,6 @@ auto_name_vec <- function(names) {
   names
 }
 
-utils::globalVariables("_rval_")
-
 with_gcinfo <- function(expr) {
   tf <- tempfile()
   con <- file(tf, "wb")
