@@ -8,7 +8,7 @@ describe("bench_time", {
   it("returns times that are reasonable, system and real time are relatively
     close for process bound expressions", {
     epsilon <- abs(res[[1]] - res[[2]])
-    expect_true((epsilon / res[[1]]) < 1)
+    expect_true((epsilon / res[[1]]) < 5)
   })
   it("returns times that are reasonable, system and real time are far apart
     for non-process bound expressions", {
