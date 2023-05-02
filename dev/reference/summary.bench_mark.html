@@ -162,9 +162,9 @@ runs contain a gc.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   expression                     min   median `itr/sec` mem_alloc `gc/sec` n_itr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]           380µs    393µs     <span style="text-decoration: underline;">2</span>127.     375KB     40.0  <span style="text-decoration: underline;">1</span>064</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt; 500), ]    280µs    291µs     <span style="text-decoration: underline;">2</span>436.     258KB     26.0  <span style="text-decoration: underline;">1</span>218</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 500)         515µs    529µs     <span style="text-decoration: underline;">1</span>772.     492KB     14.0   886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]           388µs    485µs     <span style="text-decoration: underline;">1</span>720.     379KB     20.0   860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt; 500), ]    323µs    358µs     <span style="text-decoration: underline;">2</span>422.     261KB     16.0  <span style="text-decoration: underline;">1</span>211</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 500)         517µs    640µs     <span style="text-decoration: underline;">1</span>337.     496KB     20.0   669</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: n_gc &lt;dbl&gt;, total_time &lt;bch:tm&gt;, result &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   memory &lt;list&gt;, time &lt;list&gt;, gc &lt;list&gt;</span></span>
 <span class="r-in"><span></span></span>
@@ -173,9 +173,9 @@ runs contain a gc.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   expression                  min median `itr/sec` mem_alloc `gc/sec` n_itr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]         1.36   1.35      1.34      1.45     3.22  <span style="text-decoration: underline;">1</span>044</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt; 500), ]  1      1         1.81      1        2.45  <span style="text-decoration: underline;">1</span>205</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 500)       1.84   1.82      1         1.91     1      879</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]         1.20   1.35      1.30      1.45     1.31   850</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt; 500), ]  1      1         1.76      1        1     <span style="text-decoration: underline;">1</span>203</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 500)       1.60   1.79      1         1.90     1.30   659</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: n_gc &lt;dbl&gt;, total_time &lt;bch:tm&gt;, result &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   memory &lt;list&gt;, time &lt;list&gt;, gc &lt;list&gt;</span></span>
 </code></pre></div>
@@ -188,7 +188,7 @@ runs contain a gc.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="http://jimhester.com" class="external-link">Jim Hester</a>, Davis Vaughan.</p>
+  <p></p><p>Developed by <a href="http://jimhester.com" class="external-link">Jim Hester</a>, Davis Vaughan, Posit Software, PBC.</p>
 </div>
 
 <div class="pkgdown">

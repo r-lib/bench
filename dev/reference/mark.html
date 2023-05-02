@@ -208,9 +208,9 @@ garbage collection (0-2, columns) for each iteration (rows).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   expression                     min   median `itr/sec` mem_alloc `gc/sec` n_itr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]          30.7µs     33µs    <span style="text-decoration: underline;">29</span>928.     4.4KB     10.6  <span style="text-decoration: underline;">2</span>813</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt; 500), ]   32.5µs   34.7µs    <span style="text-decoration: underline;">28</span>495.    2.96KB     10.7  <span style="text-decoration: underline;">2</span>664</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 500)          54µs   57.1µs    <span style="text-decoration: underline;">17</span>354.    5.71KB      0    <span style="text-decoration: underline;">1</span>733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]          34.7µs   39.5µs    <span style="text-decoration: underline;">23</span>955.    4.29KB     10.7  <span style="text-decoration: underline;">2</span>241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt; 500), ]   36.2µs   41.3µs    <span style="text-decoration: underline;">22</span>662.    2.88KB     10.9  <span style="text-decoration: underline;">2</span>070</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 500)        59.8µs   68.1µs    <span style="text-decoration: underline;">13</span>768.     5.6KB      0    <span style="text-decoration: underline;">1</span>375</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: n_gc &lt;dbl&gt;, total_time &lt;bch:tm&gt;, result &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   memory &lt;list&gt;, time &lt;list&gt;, gc &lt;list&gt;</span></span>
 </code></pre></div>
@@ -223,7 +223,7 @@ garbage collection (0-2, columns) for each iteration (rows).</p></li>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="http://jimhester.com" class="external-link">Jim Hester</a>, Davis Vaughan.</p>
+  <p></p><p>Developed by <a href="http://jimhester.com" class="external-link">Jim Hester</a>, Davis Vaughan, Posit Software, PBC.</p>
 </div>
 
 <div class="pkgdown">

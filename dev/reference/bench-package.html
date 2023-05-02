@@ -83,9 +83,10 @@
     </div>
     <div id="author">
     <h2>Author</h2>
-    <p><strong>Maintainer</strong>: Davis Vaughan <a href="mailto:davis@rstudio.com">davis@rstudio.com</a></p>
+    <p><strong>Maintainer</strong>: Davis Vaughan <a href="mailto:davis@posit.co">davis@posit.co</a></p>
 <p>Authors:</p><ul><li><p>Jim Hester</p></li>
 </ul><p>Other contributors:</p><ul><li><p>Drew Schmidt (read_proc_file implementation) [contributor]</p></li>
+<li><p>Posit Software, PBC [copyright holder, funder]</p></li>
 </ul></div>
 
     <div id="ref-examples">
@@ -103,9 +104,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   expression                     min   median `itr/sec` mem_alloc `gc/sec` n_itr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]           389µs    399µs     <span style="text-decoration: underline;">2</span>178.     378KB     18.0  <span style="text-decoration: underline;">1</span>089</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt; 500), ]    286µs    294µs     <span style="text-decoration: underline;">3</span>127.     260KB     18.0  <span style="text-decoration: underline;">1</span>563</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 500)         516µs    527µs     <span style="text-decoration: underline;">1</span>743.     495KB     18.0   872</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]           436µs    493µs     <span style="text-decoration: underline;">1</span>684.     377KB     14.0   842</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt; 500), ]    285µs    357µs     <span style="text-decoration: underline;">2</span>346.     259KB     13.9  <span style="text-decoration: underline;">1</span>183</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 500)         513µs    637µs     <span style="text-decoration: underline;">1</span>413.     494KB     14.0   707</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: n_gc &lt;dbl&gt;, total_time &lt;bch:tm&gt;, result &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   memory &lt;list&gt;, time &lt;list&gt;, gc &lt;list&gt;</span></span>
 <span class="r-in"><span></span></span>
@@ -114,9 +115,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   expression                  min median `itr/sec` mem_alloc `gc/sec` n_itr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]         1.36   1.36      1.27      1.45     1.02  <span style="text-decoration: underline;">1</span>080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt; 500), ]  1      1         1.79      1        1     <span style="text-decoration: underline;">1</span>554</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 500)       1.80   1.80      1         1.90     1.00   863</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]         1.53   1.38      1.20      1.45     1.01   835</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt; 500), ]  1      1         1.69      1        1.01  <span style="text-decoration: underline;">1</span>176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 500)       1.80   1.79      1         1.90     1      700</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: n_gc &lt;dbl&gt;, total_time &lt;bch:tm&gt;, result &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   memory &lt;list&gt;, time &lt;list&gt;, gc &lt;list&gt;</span></span>
 </code></pre></div>
@@ -129,7 +130,7 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="http://jimhester.com" class="external-link">Jim Hester</a>, Davis Vaughan.</p>
+  <p></p><p>Developed by <a href="http://jimhester.com" class="external-link">Jim Hester</a>, Davis Vaughan, Posit Software, PBC.</p>
 </div>
 
 <div class="pkgdown">
