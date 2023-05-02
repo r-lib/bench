@@ -103,7 +103,11 @@ expressions to benchmark against each other.
 ``` r
 library(bench)
 set.seed(42)
-dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
+
+dat <- data.frame(
+  x = runif(10000, 1, 1000), 
+  y = runif(10000, 1, 1000)
+)
 ```
 
 `bench::mark()` will throw an error if the results are not equivalent,
@@ -131,9 +135,9 @@ bnch
 #> # A tibble: 3 × 6
 #>   expression                     min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 dat[dat$x > 500, ]           284µs    408µs     2384.     977KB     15.2
-#> 2 dat[which(dat$x > 500), ]    210µs    282µs     3462.     260KB     18.1
-#> 3 subset(dat, x > 500)         362µs    469µs     2111.     510KB     23.1
+#> 1 dat[dat$x > 500, ]           329µs    440µs     2215.     377KB     14.5
+#> 2 dat[which(dat$x > 500), ]    255µs    306µs     3038.     260KB     15.3
+#> 3 subset(dat, x > 500)         447µs    525µs     1748.     510KB     19.5
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -145,9 +149,9 @@ summary(bnch, relative = TRUE)
 #> # A tibble: 3 × 6
 #>   expression                  min median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <dbl>  <dbl>     <dbl>     <dbl>    <dbl>
-#> 1 dat[dat$x > 500, ]         1.35   1.45      1.13      3.76     1   
-#> 2 dat[which(dat$x > 500), ]  1      1         1.64      1        1.19
-#> 3 subset(dat, x > 500)       1.72   1.67      1         1.96     1.53
+#> 1 dat[dat$x > 500, ]         1.29   1.44      1.27      1.45     1   
+#> 2 dat[which(dat$x > 500), ]  1      1         1.74      1        1.05
+#> 3 subset(dat, x > 500)       1.75   1.71      1         1.96     1.34
 ```
 
 ### `bench::press()`
@@ -163,9 +167,9 @@ variety of input sizes, perform replications and other useful tasks.
 set.seed(42)
 
 create_df <- function(rows, cols) {
-  as.data.frame(setNames(
-    replicate(cols, runif(rows, 1, 100), simplify = FALSE),
-    rep_len(c("x", letters), cols)))
+  out <- replicate(cols, runif(rows, 1, 100), simplify = FALSE)
+  out <- setNames(out, rep_len(c("x", letters), cols))
+  as.data.frame(out)
 }
 
 results <- bench::press(
@@ -192,18 +196,18 @@ results
 #> # A tibble: 12 × 8
 #>    expression  rows  cols      min   median `itr/sec` mem_alloc `gc/sec`
 #>    <bch:expr> <dbl> <dbl> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#>  1 bracket     1000     2   26.4µs   34.4µs    27900.   15.84KB     14.0
-#>  2 which       1000     2   25.6µs   32.8µs    30345.    7.91KB     15.2
-#>  3 subset      1000     2   47.6µs   59.5µs    16242.    27.7KB     12.7
-#>  4 bracket    10000     2   63.5µs   69.9µs    13555.  156.46KB     38.3
-#>  5 which      10000     2     48µs   55.1µs    17510.   78.23KB     27.7
-#>  6 subset     10000     2  118.1µs  135.2µs     7114.  273.79KB     35.0
-#>  7 bracket     1000    10   65.1µs   84.4µs    11628.   47.52KB     15.9
-#>  8 which       1000    10   58.1µs     74µs    13456.    7.91KB     18.9
-#>  9 subset      1000    10   88.4µs  110.4µs     8923.   59.38KB     16.1
-#> 10 bracket    10000    10  154.9µs  167.4µs     5790.   469.4KB     49.2
-#> 11 which      10000    10   73.2µs   91.6µs    11010.   78.23KB     16.8
-#> 12 subset     10000    10  210.2µs  233.6µs     4182.  586.73KB     50.7
+#>  1 bracket     1000     2   31.9µs   36.5µs    25976.   15.84KB    23.4 
+#>  2 which       1000     2   30.7µs   34.6µs    28111.    7.91KB    25.3 
+#>  3 subset      1000     2   54.3µs     61µs    15813.    27.7KB    24.4 
+#>  4 bracket    10000     2   64.7µs   77.5µs    11807.  156.46KB    38.2 
+#>  5 which      10000     2     50µs   57.4µs    16739.   78.23KB    26.5 
+#>  6 subset     10000     2  126.1µs  145.3µs     6531.  273.79KB    38.0 
+#>  7 bracket     1000    10   81.1µs   93.9µs     9805.   47.52KB    17.3 
+#>  8 which       1000    10   71.9µs   77.9µs    12270.    7.91KB    14.7 
+#>  9 subset      1000    10  105.4µs  116.5µs     7724.   59.38KB     8.46
+#> 10 bracket    10000    10    160µs  183.7µs     5248.   469.4KB    53.9 
+#> 11 which      10000    10   91.8µs  104.6µs     8717.   78.23KB    14.2 
+#> 12 subset     10000    10  239.5µs  272.9µs     3406.  586.73KB    41.7
 ```
 
 ## Plotting
@@ -245,12 +249,18 @@ to
 [system.time()](https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time).
 
 ``` r
-bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
+bench::system_time({ 
+  i <- 1
+  while(i < 1e7) {
+    i <- i + 1
+  }
+})
 #> process    real 
-#>   211ms   211ms
+#>   257ms   261ms
+
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    66µs   502ms
+#>    52µs   504ms
 ```
 
 ## Alternatives
