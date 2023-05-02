@@ -12,6 +12,10 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
 
+      - name: Install package
+        run |
+          R CMD INSTALL .
+
       - name: Fetch existing benchmarks
         run: |
           bench::cb_fetch()
