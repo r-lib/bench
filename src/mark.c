@@ -72,7 +72,7 @@ SEXP system_time_(SEXP expr, SEXP env) {
   return out;
 }
 
-SEXP hires_time_() {
+SEXP hires_time_(void) {
   double time = real_time();
   SEXP out = PROTECT(Rf_allocVector(REALSXP, 1));
   REAL(out)[0] = time;
@@ -115,8 +115,8 @@ SEXP parse_gc_(SEXP x) {
   return out;
 }
 
-extern SEXP bench_process_memory_();
-extern SEXP bench_load_average_();
+extern SEXP bench_process_memory_(void);
+extern SEXP bench_load_average_(void);
 
 static const R_CallMethodDef CallEntries[] = {
     {"mark_", (DL_FUNC) &mark_, 5},

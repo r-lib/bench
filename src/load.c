@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #endif
 
-SEXP bench_load_average_() {
+SEXP bench_load_average_(void) {
 
   SEXP out = PROTECT(Rf_allocVector(REALSXP, 3));
   REAL(out)[0] = NA_REAL;

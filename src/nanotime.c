@@ -16,7 +16,7 @@
 
 
 #if defined(_WIN32) || defined(_WIN64)
-long double real_time() {
+long double real_time(void) {
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms644904(v=vs.85).aspx
   static LARGE_INTEGER frequency;
   frequency.QuadPart = 0;
@@ -32,7 +32,7 @@ long double real_time() {
   return (long double) count.QuadPart / frequency.QuadPart;
 }
 #elif defined(__MACH__)
-long double real_time() {
+long double real_time(void) {
 
   // https://developer.apple.com/library/content/qa/qa1398/_index.html
   //static mach_timebase_info_data_t info;
@@ -51,14 +51,14 @@ long double real_time() {
   return (long double)nanos / NSEC_PER_SEC;
 }
 #elif defined(__sun)
-long double real_time() {
+long double real_time(void) {
   hrtime_t time = gethrtime();
   // The man page doesn't mention any error return values
 
   return (long double)time / NSEC_PER_SEC;
 }
 #else
-long double real_time() {
+long double real_time(void) {
   struct timespec ts;
   if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {
     Rf_error("clock_gettime(CLOCK_REALTIME, ...) failed");
@@ -68,7 +68,7 @@ long double real_time() {
 }
 #endif
 
-long double process_cpu_time() {
+long double process_cpu_time(void) {
 #if defined(_WIN32) || defined(_WIN64)
   HANDLE proc = GetCurrentProcess();
   FILETIME creation_time;

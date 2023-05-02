@@ -76,7 +76,7 @@ int read_proc_file(const char *file, uint64_t *val, char *field, int fieldlen) {
 }
 #endif
 
-SEXP bench_process_memory_() {
+SEXP bench_process_memory_(void) {
 
   SEXP out = PROTECT(Rf_allocVector(REALSXP, 2));
   REAL(out)[0] = NA_REAL;
