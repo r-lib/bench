@@ -47,7 +47,10 @@ vec_restore.bench_expr <- function(x, to, ...) {
 }
 
 pillar_shaft.bench_expr <- function(x, ...) {
-  pillar::new_pillar_shaft_simple(format.bench_expr(x), align = "left", ...)
+  # We format bench expressions exactly like character vectors. This ensures
+  # they are truncated as needed, which is useful for long unnamed expressions
+  # (#94). This is the same logic as `pillar:::pillar_shaft.factor()`.
+  pillar::pillar_shaft(as.character(x), ...)
 }
 
 scale_type.bench_expr <- function(x) {
