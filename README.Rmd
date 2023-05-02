@@ -55,7 +55,7 @@ number of advantages over [alternatives](#alternatives).
   of time rather than for a specific number of iterations.
 - Expressions are run in batches and summary statistics are calculated after
   filtering out iterations with garbage collections. This allows you to isolate
-  the performance  and effects of garbage collection on running time (for more details see [Neal
+  the performance and effects of garbage collection on running time (for more details see [Neal
   2014](https://radfordneal.wordpress.com/2014/02/02/inaccurate-results-from-microbenchmark/)).
 
 The times and memory usage are returned as custom objects which have human
@@ -106,6 +106,7 @@ dat <- data.frame(x = runif(10000, 1, 1000), y=runif(10000, 1, 1000))
 
 `bench::mark()` will throw an error if the results are not equivalent, so you
 don't accidentally benchmark inequivalent code.
+
 ```{r example1-1, error = TRUE}
 bench::mark(
   dat[dat$x > 500, ],
@@ -114,6 +115,7 @@ bench::mark(
 ```
 
 Results are easy to interpret, with human readable units.
+
 ```{r example1-2}
 bnch <- bench::mark(
   dat[dat$x > 500, ],
@@ -125,6 +127,7 @@ bnch
 By default the summary uses absolute measures, however relative results can be
 obtained by using `relative = TRUE` in your call to `bench::mark()` or calling
 `summary(relative = TRUE)` on the results.
+
 ```{r example1-3}
 summary(bnch, relative = TRUE)
 ```
@@ -160,6 +163,7 @@ results <- bench::press(
     )
   }
 )
+
 results
 ```
 
@@ -179,15 +183,16 @@ ggplot2::autoplot(results)
 You can also produce fully custom plots by un-nesting the results and
 working with the data directly.
 
-```{r custom-plot, message = FALSE, cache = TRUE, dependson = "example2", dpi = 300, eval = !bench:::tidyr_new_interface(), include = !bench:::tidyr_new_interface()}
+```{r custom-plot, message = FALSE, cache = TRUE, dependson = "example2", dpi = 300}
 library(tidyverse)
+
 results %>%
-  unnest() %>%
+  unnest(c(time, gc)) %>%
   filter(gc == "none") %>%
   mutate(expression = as.character(expression)) %>%
   ggplot(aes(x = mem_alloc, y = time, color = expression)) +
-    geom_point() +
-    scale_color_bench_expr(scales::brewer_pal(type = "qual", palette = 3))
+  geom_point() +
+  scale_color_bench_expr(scales::brewer_pal(type = "qual", palette = 3))
 ```
 
 ## `system_time()`

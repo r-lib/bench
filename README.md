@@ -129,9 +129,9 @@ bnch
 #> # A tibble: 3 × 6
 #>   expression                     min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 dat[dat$x > 500, ]           265µs    396µs     2457.     377KB     16.5
-#> 2 dat[which(dat$x > 500), ]    207µs    273µs     3671.     260KB     17.3
-#> 3 subset(dat, x > 500)         356µs    462µs     2185.     510KB     19.9
+#> 1 dat[dat$x > 500, ]           274µs    401µs     2444.     377KB     16.4
+#> 2 dat[which(dat$x > 500), ]    204µs    266µs     3822.     260KB     15.7
+#> 3 subset(dat, x > 500)         358µs    468µs     2124.     510KB     20.0
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -143,9 +143,9 @@ summary(bnch, relative = TRUE)
 #> # A tibble: 3 × 6
 #>   expression                  min median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <dbl>  <dbl>     <dbl>     <dbl>    <dbl>
-#> 1 dat[dat$x > 500, ]         1.28   1.45      1.12      1.45     1   
-#> 2 dat[which(dat$x > 500), ]  1      1         1.68      1        1.05
-#> 3 subset(dat, x > 500)       1.72   1.69      1         1.96     1.21
+#> 1 dat[dat$x > 500, ]         1.34   1.50      1.15      1.45     1.04
+#> 2 dat[which(dat$x > 500), ]  1      1         1.80      1        1   
+#> 3 subset(dat, x > 500)       1.75   1.75      1         1.96     1.27
 ```
 
 ### `bench::press()`
@@ -185,22 +185,23 @@ results <- bench::press(
 #> 2 10000     2
 #> 3  1000    10
 #> 4 10000    10
+
 results
 #> # A tibble: 12 × 8
 #>    expression  rows  cols      min   median `itr/sec` mem_alloc `gc/sec`
 #>    <bch:expr> <dbl> <dbl> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#>  1 bracket     1000     2   27.5µs   34.7µs    26681.   15.84KB     13.3
-#>  2 which       1000     2   25.8µs   33.1µs    29634.    7.91KB     14.8
-#>  3 subset      1000     2     47µs   58.9µs    16680.    27.7KB     12.7
-#>  4 bracket    10000     2   63.5µs   70.3µs    13400.  156.46KB     37.5
-#>  5 which      10000     2     48µs   54.7µs    17438.   78.23KB     27.0
-#>  6 subset     10000     2  114.8µs  133.8µs     7122.  273.79KB     38.4
-#>  7 bracket     1000    10   67.7µs   84.1µs    11783.   47.52KB     15.6
-#>  8 which       1000    10   64.2µs   74.9µs    13078.    7.91KB     18.8
-#>  9 subset      1000    10   98.6µs  111.8µs     8757.   59.38KB     12.9
-#> 10 bracket    10000    10  156.4µs  170.5µs     5697.   469.4KB     50.3
-#> 11 which      10000    10   74.7µs   91.3µs    10830.   78.23KB     14.7
-#> 12 subset     10000    10  215.6µs  237.9µs     4083.  586.73KB     49.5
+#>  1 bracket     1000     2   26.4µs   34.4µs    27900.   15.84KB     14.0
+#>  2 which       1000     2   25.6µs   32.8µs    30345.    7.91KB     15.2
+#>  3 subset      1000     2   47.6µs   59.5µs    16242.    27.7KB     12.7
+#>  4 bracket    10000     2   63.5µs   69.9µs    13555.  156.46KB     38.3
+#>  5 which      10000     2     48µs   55.1µs    17510.   78.23KB     27.7
+#>  6 subset     10000     2  118.1µs  135.2µs     7114.  273.79KB     35.0
+#>  7 bracket     1000    10   65.1µs   84.4µs    11628.   47.52KB     15.9
+#>  8 which       1000    10   58.1µs     74µs    13456.    7.91KB     18.9
+#>  9 subset      1000    10   88.4µs  110.4µs     8923.   59.38KB     16.1
+#> 10 bracket    10000    10  154.9µs  167.4µs     5790.   469.4KB     49.2
+#> 11 which      10000    10   73.2µs   91.6µs    11010.   78.23KB     16.8
+#> 12 subset     10000    10  210.2µs  233.6µs     4182.  586.73KB     50.7
 ```
 
 ## Plotting
@@ -221,6 +222,20 @@ ggplot2::autoplot(results)
 You can also produce fully custom plots by un-nesting the results and
 working with the data directly.
 
+``` r
+library(tidyverse)
+
+results %>%
+  unnest(c(time, gc)) %>%
+  filter(gc == "none") %>%
+  mutate(expression = as.character(expression)) %>%
+  ggplot(aes(x = mem_alloc, y = time, color = expression)) +
+  geom_point() +
+  scale_color_bench_expr(scales::brewer_pal(type = "qual", palette = 3))
+```
+
+<img src="man/figures/README-custom-plot-1.png" width="100%" />
+
 ## `system_time()`
 
 **bench** also includes `system_time()`, a higher precision alternative
@@ -230,10 +245,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   225ms   227ms
+#>   209ms   210ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    97µs   504ms
+#>    88µs   503ms
 ```
 
 ## Alternatives
