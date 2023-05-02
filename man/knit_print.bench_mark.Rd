@@ -22,10 +22,12 @@ chunk option 'bench.all_columns = TRUE'.
 }
 \details{
 You can set \code{bench.all_columns = TRUE} to show all columns of the bench mark
-object.\preformatted{```\{r bench.all_columns = TRUE\}
+object.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{```\{r bench.all_columns = TRUE\}
 bench::mark(
   subset(mtcars, cyl == 3),
   mtcars[mtcars$cyl == 3, ])
 ```
-}
+}\if{html}{\out{</div>}}
 }
