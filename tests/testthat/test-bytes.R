@@ -1,5 +1,3 @@
-context("test-bytes.R")
-
 describe("as_bench_bytes", {
   it("accepts numeric input unchanged", {
     expect_equal(unclass(as_bench_bytes(123L)), 123L)
