@@ -334,7 +334,7 @@ knit_print.bench_mark <- function(x, ..., options) {
 #nocov end
 
 parse_gc <- function(x) {
-  # \x1E is Record Separator 
+  # \x1E is Record Separator
   x <- strsplit(paste0(x, collapse = ""), "\x1E")[[1]]
   tibble::as_tibble(.Call(parse_gc_, x))
 }
