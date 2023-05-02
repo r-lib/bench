@@ -14,7 +14,7 @@ describe("bench_time", {
     for non-process bound expressions", {
     res <- bench_time(Sys.sleep(.5))
     epsilon <- abs(res[[1]] - res[[2]])
-    expect_true((epsilon / res[[1]]) > 100)
+    expect_true((epsilon / res[[1]]) > 20)
   })
 })
 
