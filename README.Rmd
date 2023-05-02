@@ -13,16 +13,16 @@ knitr::opts_chunk$set(
 )
 options(width = 120)
 ```
+
 # bench
 
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/bench)](https://cran.r-project.org/package=bench)
-[![R-CMD-check](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/r-lib/bench/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/bench?branch=main)
+
+[![CRAN status](https://www.r-pkg.org/badges/version/bench)](https://cran.r-project.org/package=bench) [![R-CMD-check](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml) [![Codecov test coverage](https://codecov.io/gh/r-lib/bench/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/bench?branch=main)
+
 <!-- badges: end -->
 
-The goal of bench is to benchmark code, tracking execution time,
-memory allocations and garbage collections.
+The goal of bench is to benchmark code, tracking execution time, memory allocations and garbage collections.
 
 ## Installation
 
@@ -41,38 +41,28 @@ pak::pak("r-lib/bench")
 
 ## Features
 
-`bench::mark()` is used to benchmark one or a series of expressions, we feel it has a
-number of advantages over [alternatives](#alternatives).
+`bench::mark()` is used to benchmark one or a series of expressions, we feel it has a number of advantages over [alternatives](#alternatives).
 
-- Always uses the highest precision APIs available for each operating system (often nanoseconds).
-- Tracks memory allocations for each expression.
-- Tracks the number and type of R garbage collections per expression iteration.
-- Verifies equality of expression results by default, to avoid accidentally
-  benchmarking inequivalent code.
-- Has `bench::press()`, which allows you to easily perform and combine
-  benchmarks across a large grid of values.
-- Uses adaptive stopping by default, running each expression for a set amount
-  of time rather than for a specific number of iterations.
-- Expressions are run in batches and summary statistics are calculated after
-  filtering out iterations with garbage collections. This allows you to isolate
-  the performance and effects of garbage collection on running time (for more details see [Neal
-  2014](https://radfordneal.wordpress.com/2014/02/02/inaccurate-results-from-microbenchmark/)).
+-   Always uses the highest precision APIs available for each operating system (often nanoseconds).
+-   Tracks memory allocations for each expression.
+-   Tracks the number and type of R garbage collections per expression iteration.
+-   Verifies equality of expression results by default, to avoid accidentally benchmarking inequivalent code.
+-   Has `bench::press()`, which allows you to easily perform and combine benchmarks across a large grid of values.
+-   Uses adaptive stopping by default, running each expression for a set amount of time rather than for a specific number of iterations.
+-   Expressions are run in batches and summary statistics are calculated after filtering out iterations with garbage collections. This allows you to isolate the performance and effects of garbage collection on running time (for more details see [Neal 2014](https://radfordneal.wordpress.com/2014/02/02/inaccurate-results-from-microbenchmark/)).
 
-The times and memory usage are returned as custom objects which have human
-readable formatting for display (e.g. `104ns`) and comparisons (e.g.
-`x$mem_alloc > "10MB"`).
+The times and memory usage are returned as custom objects which have human readable formatting for display (e.g. `104ns`) and comparisons (e.g. `x$mem_alloc > "10MB"`).
 
-There is also full support for plotting with [ggplot2](https://ggplot2.tidyverse.org/)
-including custom scales and formatting.
+There is also full support for plotting with [ggplot2](https://ggplot2.tidyverse.org/) including custom scales and formatting.
 
 ## Continuous benchmarking
 
 *This feature is still in early and active development, but the brave can test it out.*
 
-You can setup continuous benchmarking for an R package by adding `.R` scripts containing one or more calls to `bench::mark()` in the `bench/` directory of an R package. 
+You can setup continuous benchmarking for an R package by adding `.R` scripts containing one or more calls to `bench::mark()` in the `bench/` directory of an R package.
 Then from any CI service you can then fetch previous results, run the benchmarks and push the results back to the repository with the following.
 
-```r
+``` r
 bench::cb_fetch()
 bench::cb_run()
 bench::cb_push()
@@ -80,14 +70,14 @@ bench::cb_push()
 
 To retrieve the full dataset of benchmark results locally use the following.
 
-```r
+``` r
 bench::cb_fetch()
 results <- bench::cb_read()
 ```
 
 And to plot the benchmark times per commit
 
-```r
+``` r
 bench::cb_plot_time(results)
 ```
 
@@ -95,8 +85,7 @@ bench::cb_plot_time(results)
 
 ### `bench::mark()`
 
-Benchmarks can be run with `bench::mark()`, which takes one or more expressions
-to benchmark against each other.
+Benchmarks can be run with `bench::mark()`, which takes one or more expressions to benchmark against each other.
 
 ```{r example, cache = TRUE}
 library(bench)
@@ -108,8 +97,7 @@ dat <- data.frame(
 )
 ```
 
-`bench::mark()` will throw an error if the results are not equivalent, so you
-don't accidentally benchmark inequivalent code.
+`bench::mark()` will throw an error if the results are not equivalent, so you don't accidentally benchmark inequivalent code.
 
 ```{r example-1, error = TRUE, cache = TRUE, dependson = "example"}
 bench::mark(
@@ -130,9 +118,7 @@ bnch <- bench::mark(
 bnch
 ```
 
-By default the summary uses absolute measures, however relative results can be
-obtained by using `relative = TRUE` in your call to `bench::mark()` or calling
-`summary(relative = TRUE)` on the results.
+By default the summary uses absolute measures, however relative results can be obtained by using `relative = TRUE` in your call to `bench::mark()` or calling `summary(relative = TRUE)` on the results.
 
 ```{r example-3, cache = TRUE, dependson = "example-2"}
 summary(bnch, relative = TRUE)
@@ -141,11 +127,9 @@ summary(bnch, relative = TRUE)
 ### `bench::press()`
 
 `bench::press()` is used to run benchmarks against a grid of parameters.
-Provide setup and benchmarking code as a single unnamed argument then define
-sets of values as named arguments. The full combination of values will be
-expanded and the benchmarks are then _pressed_ together in the result. This
-allows you to benchmark a set of expressions across a wide variety of input
-sizes, perform replications and other useful tasks.
+Provide setup and benchmarking code as a single unnamed argument then define sets of values as named arguments.
+The full combination of values will be expanded and the benchmarks are then *pressed* together in the result.
+This allows you to benchmark a set of expressions across a wide variety of input sizes, perform replications and other useful tasks.
 
 ```{r example2, cache = TRUE}
 set.seed(42)
@@ -175,19 +159,16 @@ results
 
 ## Plotting
 
-`ggplot2::autoplot()` can be used to generate an informative default plot. This
-plot is colored by gc level (0, 1, or 2) and faceted by parameters (if any). By
-default it generates a
-[beeswarm](https://github.com/eclarke/ggbeeswarm#geom_quasirandom) plot,
-however you can also specify other plot types (`jitter`, `ridge`,
-`boxplot`, `violin`). See `?autoplot.bench_mark` for full details.
+`ggplot2::autoplot()` can be used to generate an informative default plot.
+This plot is colored by gc level (0, 1, or 2) and faceted by parameters (if any).
+By default it generates a [beeswarm](https://github.com/eclarke/ggbeeswarm#geom_quasirandom) plot, however you can also specify other plot types (`jitter`, `ridge`, `boxplot`, `violin`).
+See `?autoplot.bench_mark` for full details.
 
 ```{r autoplot, message = FALSE, warning = FALSE, cache = TRUE, dependson = "example2", dpi = 300}
 ggplot2::autoplot(results)
 ```
 
-You can also produce fully custom plots by un-nesting the results and
-working with the data directly.
+You can also produce fully custom plots by un-nesting the results and working with the data directly.
 
 ```{r custom-plot, message = FALSE, cache = TRUE, dependson = "example2", dpi = 300}
 library(tidyverse)
@@ -216,9 +197,9 @@ bench::system_time({
 bench::system_time(Sys.sleep(.5))
 ```
 
-## Alternatives
+## Alternatives {#alternatives}
 
-- [rbenchmark](https://cran.r-project.org/package=rbenchmark)
-- [microbenchmark](https://cran.r-project.org/package=microbenchmark)
-- [tictoc](https://cran.r-project.org/package=tictoc)
-- [system.time()](https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time)
+-   [rbenchmark](https://cran.r-project.org/package=rbenchmark)
+-   [microbenchmark](https://cran.r-project.org/package=microbenchmark)
+-   [tictoc](https://cran.r-project.org/package=tictoc)
+-   [system.time()](https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time)

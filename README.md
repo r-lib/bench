@@ -10,6 +10,7 @@ status](https://www.r-pkg.org/badges/version/bench)](https://cran.r-project.org/
 [![R-CMD-check](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/r-lib/bench/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/bench?branch=main)
+
 <!-- badges: end -->
 
 The goal of bench is to benchmark code, tracking execution time, memory
@@ -56,7 +57,7 @@ feel it has a number of advantages over [alternatives](#alternatives).
 
 The times and memory usage are returned as custom objects which have
 human readable formatting for display (e.g. `104ns`) and comparisons
-(e.g. `x$mem_alloc > "10MB"`).
+(e.g. `x$mem_alloc > "10MB"`).
 
 There is also full support for plotting with
 [ggplot2](https://ggplot2.tidyverse.org/) including custom scales and
