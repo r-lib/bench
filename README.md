@@ -28,8 +28,8 @@ Or you can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("r-lib/bench")
+# install.packages("pak")
+pak::pak("r-lib/bench")
 ```
 
 ## Features
@@ -129,9 +129,9 @@ bnch
 #> # A tibble: 3 × 6
 #>   expression                     min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 dat[dat$x > 500, ]           278µs    392µs     2481.     377KB     16.6
-#> 2 dat[which(dat$x > 500), ]    205µs    266µs     3756.     260KB     17.7
-#> 3 subset(dat, x > 500)         355µs    462µs     2162.     510KB     17.3
+#> 1 dat[dat$x > 500, ]           265µs    396µs     2457.     377KB     16.5
+#> 2 dat[which(dat$x > 500), ]    207µs    273µs     3671.     260KB     17.3
+#> 3 subset(dat, x > 500)         356µs    462µs     2185.     510KB     19.9
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -143,9 +143,9 @@ summary(bnch, relative = TRUE)
 #> # A tibble: 3 × 6
 #>   expression                  min median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <dbl>  <dbl>     <dbl>     <dbl>    <dbl>
-#> 1 dat[dat$x > 500, ]         1.36   1.48      1.15      1.45     1   
-#> 2 dat[which(dat$x > 500), ]  1      1         1.74      1        1.06
-#> 3 subset(dat, x > 500)       1.73   1.74      1         1.96     1.04
+#> 1 dat[dat$x > 500, ]         1.28   1.45      1.12      1.45     1   
+#> 2 dat[which(dat$x > 500), ]  1      1         1.68      1        1.05
+#> 3 subset(dat, x > 500)       1.72   1.69      1         1.96     1.21
 ```
 
 ### `bench::press()`
@@ -189,18 +189,18 @@ results
 #> # A tibble: 12 × 8
 #>    expression  rows  cols      min   median `itr/sec` mem_alloc `gc/sec`
 #>    <bch:expr> <dbl> <dbl> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#>  1 bracket     1000     2     30µs   35.8µs    25614.   15.84KB     12.8
-#>  2 which       1000     2   26.3µs   34.6µs    25452.    7.91KB     12.7
-#>  3 subset      1000     2   52.6µs   62.1µs    13154.    27.7KB     10.4
-#>  4 bracket    10000     2   62.1µs   69.3µs    13811.  156.46KB     41.1
-#>  5 which      10000     2   47.9µs   53.8µs    17927.   78.23KB     24.9
-#>  6 subset     10000     2  111.7µs  131.3µs     7309.  273.79KB     39.4
-#>  7 bracket     1000    10   65.3µs   82.6µs    11875.   47.52KB     15.4
-#>  8 which       1000    10   60.1µs   73.5µs    13446.    7.91KB     18.8
-#>  9 subset      1000    10   90.5µs  110.4µs     8852.   59.38KB     15.1
-#> 10 bracket    10000    10    148µs    168µs     5733.   469.4KB     49.2
-#> 11 which      10000    10   69.9µs   88.7µs    11382.   78.23KB     18.7
-#> 12 subset     10000    10  207.6µs  236.8µs     4088.  586.73KB     47.4
+#>  1 bracket     1000     2   27.5µs   34.7µs    26681.   15.84KB     13.3
+#>  2 which       1000     2   25.8µs   33.1µs    29634.    7.91KB     14.8
+#>  3 subset      1000     2     47µs   58.9µs    16680.    27.7KB     12.7
+#>  4 bracket    10000     2   63.5µs   70.3µs    13400.  156.46KB     37.5
+#>  5 which      10000     2     48µs   54.7µs    17438.   78.23KB     27.0
+#>  6 subset     10000     2  114.8µs  133.8µs     7122.  273.79KB     38.4
+#>  7 bracket     1000    10   67.7µs   84.1µs    11783.   47.52KB     15.6
+#>  8 which       1000    10   64.2µs   74.9µs    13078.    7.91KB     18.8
+#>  9 subset      1000    10   98.6µs  111.8µs     8757.   59.38KB     12.9
+#> 10 bracket    10000    10  156.4µs  170.5µs     5697.   469.4KB     50.3
+#> 11 which      10000    10   74.7µs   91.3µs    10830.   78.23KB     14.7
+#> 12 subset     10000    10  215.6µs  237.9µs     4083.  586.73KB     49.5
 ```
 
 ## Plotting
@@ -230,10 +230,10 @@ to
 ``` r
 bench::system_time({ i <- 1; while(i < 1e7) i <- i + 1 })
 #> process    real 
-#>   218ms   219ms
+#>   225ms   227ms
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>   105µs   504ms
+#>    97µs   504ms
 ```
 
 ## Alternatives
