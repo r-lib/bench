@@ -2,7 +2,7 @@
 % Please edit documentation in R/mark.R
 \name{knit_print.bench_mark}
 \alias{knit_print.bench_mark}
-\title{Custom printing function for bench_mark objects in knitr documents}
+\title{Custom printing function for \code{bench_mark} objects in knitr documents}
 \usage{
 knit_print.bench_mark(x, ..., options)
 }
@@ -13,21 +13,23 @@ knit_print.bench_mark(x, ..., options)
 except two optional arguments \code{options} and \code{inline}; see
 the references below.}
 
-\item{options}{A list of knitr chunk options set in the currently evaluated chunk.}
+\item{options}{A list of knitr chunk options set in the currently evaluated
+chunk.}
 }
 \description{
-By default data columns ('result', 'memory', 'time', 'gc') are omitted when
-printing in knitr. If you would like to include these columns set the knitr
-chunk option 'bench.all_columns = TRUE'.
+By default, data columns (\code{result}, \code{memory}, \code{time}, \code{gc}) are omitted when
+printing in knitr. If you would like to include these columns, set the knitr
+chunk option \code{bench.all_columns = TRUE}.
 }
 \details{
 You can set \code{bench.all_columns = TRUE} to show all columns of the bench mark
 object.
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{```\{r bench.all_columns = TRUE\}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{```\{r, bench.all_columns = TRUE\}
 bench::mark(
   subset(mtcars, cyl == 3),
-  mtcars[mtcars$cyl == 3, ])
+  mtcars[mtcars$cyl == 3, ]
+)
 ```
 }\if{html}{\out{</div>}}
 }

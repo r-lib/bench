@@ -1,5 +1,7 @@
 # bench (development version)
 
+* `bench_mark` tibbles now respect the knitr paged df option (#103).
+
 * Fixed an issue where macOS specific C code paths were accidentally being used
   on GNU Hurd (#118).
 
