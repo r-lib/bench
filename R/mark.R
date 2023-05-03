@@ -23,8 +23,8 @@ NULL
 #'   stored. If `check` is a function that function will be called with each
 #'   pair of results to determine consistency.
 #' @param memory If `TRUE` (the default when R is compiled with memory
-#'   profiling), track memory allocations using. If `FALSE` disable memory
-#'   tracking.
+#'   profiling), track memory allocations using [utils::Rprofmem()]. If `FALSE`
+#'   disable memory tracking.
 #' @param env The environment which to evaluate the expressions
 #' @inheritParams summary.bench_mark
 #' @inherit summary.bench_mark return

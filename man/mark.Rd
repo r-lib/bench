@@ -41,8 +41,8 @@ stored. If \code{check} is a function that function will be called with each
 pair of results to determine consistency.}
 
 \item{memory}{If \code{TRUE} (the default when R is compiled with memory
-profiling), track memory allocations using. If \code{FALSE} disable memory
-tracking.}
+profiling), track memory allocations using \code{\link[utils:Rprofmem]{utils::Rprofmem()}}. If \code{FALSE}
+disable memory tracking.}
 
 \item{filter_gc}{If \code{TRUE} remove iterations that contained at least one
 garbage collection before summarizing. If \code{TRUE} but an expression had
