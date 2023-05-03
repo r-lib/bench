@@ -82,10 +82,6 @@ is_latex_output <- function() {
   get("is_latex_output", asNamespace("knitr"))()
 }
 
-collapse <- function(x, sep) {
-  paste0(x, collapse = sep)
-}
-
 lengths <- function(x, use.names = TRUE) {
   viapply(x, length, USE.NAMES = use.names)
 }
@@ -93,32 +89,6 @@ lengths <- function(x, use.names = TRUE) {
 # check if the new interface is being used
 tidyr_new_interface <- function() {
   utils::packageVersion("tidyr") > "0.8.99"
-}
-
-# Read lines as UTF-8
-read_lines <- function (path, n = -1L, encoding = "UTF-8") {
-  base::readLines(path, n = n, encoding = encoding, warn = FALSE)
-}
-
-has_description <- function(path) {
-  file.exists(file.path(path, "DESCRIPTION"))
-}
-
-find_package_root <- function(path) {
-  path <- normalizePath(path, mustWork = FALSE)
-
-  while(!has_description(path)) {
-    path <- dirname(path)
-    if (is_root(path)) {
-      return(NULL)
-    }
-  }
-
-  sub("[/\\]$", "", path)
-}
-
-is_root <- function(path) {
-  identical(path, dirname(path))
 }
 
 dots <- function(...) {
