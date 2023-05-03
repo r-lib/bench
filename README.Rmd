@@ -81,6 +81,8 @@ And to plot the benchmark times per commit
 bench::cb_plot_time(results)
 ```
 
+You may need to set git credentials when running this on GitHub Actions using a Linux runner.
+
 ## Usage
 
 ### `bench::mark()`
