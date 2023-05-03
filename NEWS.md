@@ -1,5 +1,8 @@
 # bench (development version)
 
+* Fixed an issue where macOS specific C code paths were accidentally being used
+  on GNU Hurd (#118).
+
 * Long unnamed `bench_expr` expressions are now truncated correctly when used as
   columns of a tibble (#94).
 
