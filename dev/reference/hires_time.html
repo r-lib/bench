@@ -89,19 +89,19 @@ accurate interval timing is required.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">hires_time</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1683061106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1683120798</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># R rounds doubles to 7 digits by default, see greater precision by setting</span></span></span>
 <span class="r-in"><span><span class="co"># the digits argument when printing</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">hires_time</span><span class="op">(</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1683061106.0869817734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1683120798.0021812916</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Generally used by recording two times and then subtracting them</span></span></span>
 <span class="r-in"><span><span class="va">start</span> <span class="op">&lt;-</span> <span class="fu">hires_time</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">end</span> <span class="op">&lt;-</span> <span class="fu">hires_time</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">elapsed</span> <span class="op">&lt;-</span> <span class="va">end</span> <span class="op">-</span> <span class="va">start</span></span></span>
 <span class="r-in"><span><span class="va">elapsed</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0007147789</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.001245499</span>
 </code></pre></div>
     </div>
   </div>
