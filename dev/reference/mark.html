@@ -129,8 +129,8 @@ pair of results to determine consistency.</p></dd>
 
 <dt>memory</dt>
 <dd><p>If <code>TRUE</code> (the default when R is compiled with memory
-profiling), track memory allocations using. If <code>FALSE</code> disable memory
-tracking.</p></dd>
+profiling), track memory allocations using <code><a href="https://rdrr.io/r/utils/Rprofmem.html" class="external-link">utils::Rprofmem()</a></code>. If <code>FALSE</code>
+disable memory tracking.</p></dd>
 
 
 <dt>filter_gc</dt>
@@ -208,9 +208,9 @@ garbage collection (0-2, columns) for each iteration (rows).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   expression      min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;bch:&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt;…   31µs 33.4µs    <span style="text-decoration: underline;">29</span>255.    4.41KB     12.9  <span style="text-decoration: underline;">2</span>267     1     77.5ms</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(d… 32.5µs 34.9µs    <span style="text-decoration: underline;">28</span>293.    2.98KB     11.7  <span style="text-decoration: underline;">2</span>418     1     85.5ms</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat,… 53.9µs 57.6µs    <span style="text-decoration: underline;">17</span>083.    5.73KB     11.4  <span style="text-decoration: underline;">1</span>504     1       88ms</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt;… 52.2µs 57.2µs    <span style="text-decoration: underline;">16</span>704.    4.21KB      0    <span style="text-decoration: underline;">1</span>668     0     99.9ms</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(d…   55µs 59.4µs    <span style="text-decoration: underline;">15</span>596.    2.82KB     12.7  <span style="text-decoration: underline;">1</span>227     1     78.7ms</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat,… 90.5µs 98.3µs     <span style="text-decoration: underline;">8</span>561.    5.52KB      0     856     0      100ms</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: result &lt;list&gt;, memory &lt;list&gt;, time &lt;list&gt;, gc &lt;list&gt;</span></span>
 </code></pre></div>
     </div>
