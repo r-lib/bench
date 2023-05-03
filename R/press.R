@@ -16,7 +16,7 @@
 #' @param ... If named, parameters to define, if unnamed the expression to run.
 #'   Only one unnamed expression is permitted.
 #' @param .grid A pre-built grid of values to use, typically a [data.frame] or
-#'   [tibble]. This is useful if you only want to benchmark a subset of all 
+#'   [tibble]. This is useful if you only want to benchmark a subset of all
 #'   possible combinations.
 #' @export
 #' @examples
@@ -64,18 +64,26 @@ press <- function(..., .grid = NULL) {
     parameters <- expand.grid(lapply(args[!unnamed], rlang::eval_tidy), stringsAsFactors = FALSE)
   }
 
-  status <- format(tibble::as_tibble(parameters), n = Inf)
-  message(glue::glue("
-      Running with:
-      {status[[2]]}"))
+  quiet <- bench_press_quiet()
+
+  if (!quiet) {
+    status <- format(tibble::as_tibble(parameters), n = Inf)
+    message(glue::glue("Running with:\n{status[[2]]}"))
+  }
+
   eval_one <- function(row) {
     e <- rlang::new_data_mask(new.env(parent = emptyenv()))
+
     for (col in seq_along(parameters)) {
       var <- names(parameters)[[col]]
       value <- parameters[row, col]
       assign(var, value, envir = e)
     }
-    message(status[[row + 3L]])
+
+    if (!quiet) {
+      message(status[[row + 3L]])
+    }
+
     rlang::eval_tidy(args[[which(unnamed)]], data = e)
   }
 
@@ -90,3 +98,13 @@ press <- function(..., .grid = NULL) {
   parameters <- parameters[rep(seq_len(nrow(parameters)), each = rows[[1]]), , drop = FALSE]
   bench_mark(tibble::as_tibble(cbind(res[1], parameters, res[-1])))
 }
+
+bench_press_quiet <- function() {
+  # Internal option to silence `press()` during testing
+  isTRUE(getOption("bench.press_quiet", default = FALSE))
+}
+
+local_press_quiet <- function(frame = rlang::caller_env()) {
+  rlang::local_options(bench.press_quiet = TRUE, .frame = frame)
+}
+
