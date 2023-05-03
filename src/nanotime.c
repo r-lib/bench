@@ -1,8 +1,9 @@
 #include "nanotime.h"
+#include "os.h"
 
-#ifdef __WIN32
+#if OS_WINDOWS
 #include <windows.h>
-#elif defined(__MACH__)
+#elif OS_MACOS
 #include <mach/mach_time.h>
 #include <time.h>
 #include <sys/time.h>
@@ -15,7 +16,7 @@
 #endif
 
 
-#if defined(_WIN32) || defined(_WIN64)
+#if OS_WINDOWS
 long double real_time(void) {
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms644904(v=vs.85).aspx
   static LARGE_INTEGER frequency;
@@ -31,7 +32,7 @@ long double real_time(void) {
   }
   return (long double) count.QuadPart / frequency.QuadPart;
 }
-#elif defined(__MACH__)
+#elif OS_MACOS
 long double real_time(void) {
 
   // https://developer.apple.com/library/content/qa/qa1398/_index.html
@@ -50,7 +51,7 @@ long double real_time(void) {
   uint64_t nanos = time * ratio;
   return (long double)nanos / NSEC_PER_SEC;
 }
-#elif defined(__sun)
+#elif OS_SOLARIS
 long double real_time(void) {
   hrtime_t time = gethrtime();
   // The man page doesn't mention any error return values
@@ -69,7 +70,7 @@ long double real_time(void) {
 #endif
 
 long double process_cpu_time(void) {
-#if defined(_WIN32) || defined(_WIN64)
+#if OS_WINDOWS
   HANDLE proc = GetCurrentProcess();
   FILETIME creation_time;
   FILETIME exit_time;
@@ -86,18 +87,21 @@ long double process_cpu_time(void) {
   user.HighPart = user_time.dwHighDateTime;
   user.LowPart = user_time.dwLowDateTime;
   return (((long double)kernel.QuadPart + (long double)user.QuadPart) * 1e-7);
-#elif defined(__sun)
+#elif OS_SOLARIS
   hrtime_t time = gethrvtime();
   // The man page doesn't mention any error return values
 
   return (long double)time / NSEC_PER_SEC;
 #elif defined(CLOCK_PROCESS_CPUTIME_ID)
+  // Modern macOS and Linux
   struct timespec ts;
   if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts) != 0) {
     Rf_error("clock_gettime(CLOCK_PROCESS_CPUTIME_ID, ...) failed");
   }
   return ts.tv_sec + (long double)ts.tv_nsec / NSEC_PER_SEC;
 #else
+  // macOS before 10.12 didn't define `CLOCK_PROCESS_CPUTIME_ID`
+  // https://github.com/r-lib/bench/commit/cfd4e2392f980e29d833f4df42a43ea2ba131aaf
   struct rusage ru;
   if (getrusage(RUSAGE_SELF, &ru) != 0) {
     Rf_error("getrusage(RUSAGE_SELF, ...) failed");

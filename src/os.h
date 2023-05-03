@@ -19,4 +19,10 @@
 #define OS_LINUX 0
 #endif
 
+#ifdef __sun
+#define OS_SOLARIS 1
+#else
+#define OS_SOLARIS 0
+#endif
+
 #endif
