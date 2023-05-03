@@ -119,7 +119,7 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     error <- NULL
     gc_msg <- with_gcinfo({
       tryCatch(error = function(e) { e$call <- NULL; error <<- e},
-      res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(min_iterations), as.integer(max_iterations))
+      res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(min_iterations), as.integer(max_iterations), TRUE)
       )
     })
     if (!is.null(error)) {

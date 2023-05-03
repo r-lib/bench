@@ -1,22 +1,22 @@
 describe("mark_", {
   it("If min_time is Inf, runs for max_iterations", {
-    res <- .Call(mark_, quote(1), new.env(), Inf, as.integer(0), as.integer(10))
+    res <- .Call(mark_, quote(1), new.env(), Inf, as.integer(0), as.integer(10), FALSE)
     expect_equal(length(res), 10)
 
-    res <- .Call(mark_, quote(1), new.env(), Inf, as.integer(0), as.integer(20))
+    res <- .Call(mark_, quote(1), new.env(), Inf, as.integer(0), as.integer(20), FALSE)
     expect_equal(length(res), 20)
   })
 
   it("If min_time is 0, runs for min_iterations", {
-    res <- .Call(mark_, quote(1), new.env(), 0, as.integer(1), as.integer(10))
+    res <- .Call(mark_, quote(1), new.env(), 0, as.integer(1), as.integer(10), FALSE)
     expect_equal(length(res), 1)
 
-    res <- .Call(mark_, quote(1), new.env(), 0, as.integer(5), as.integer(10))
+    res <- .Call(mark_, quote(1), new.env(), 0, as.integer(5), as.integer(10), FALSE)
     expect_equal(length(res), 5)
   })
 
   it("If min_time is 0, runs for min_iterations", {
-    res <- .Call(mark_, quote({i <- 1; while(i < 10000) i <- i + 1}), new.env(), .1, as.integer(1), as.integer(1000))
+    res <- .Call(mark_, quote({i <- 1; while(i < 10000) i <- i + 1}), new.env(), .1, as.integer(1), as.integer(1000), FALSE)
 
     expect_gte(length(res), 1)
     expect_lte(length(res), 1000)
@@ -24,7 +24,7 @@ describe("mark_", {
 
   it("Evaluates code in the environment", {
     e <- new.env(parent = baseenv())
-    res <- .Call(mark_, quote({a <- 42}), e, Inf, as.integer(1), as.integer(1))
+    res <- .Call(mark_, quote({a <- 42}), e, Inf, as.integer(1), as.integer(1), FALSE)
     expect_equal(e[["a"]], 42)
   })
 })
