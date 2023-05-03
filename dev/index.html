@@ -141,6 +141,7 @@
 <p>And to plot the benchmark times per commit</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/cb_plot_time.html">cb_plot_time</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
+<p>You may need to set git credentials when running this on GitHub Actions using a Linux runner.</p>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -178,18 +179,18 @@
 <span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
 <span><span class="co">#&gt;   expression                     min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span><span class="co">#&gt;   &lt;bch:expr&gt;                &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]           329µs    440µs     2215.     377KB     14.5</span></span>
-<span><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]    255µs    306µs     3038.     260KB     15.3</span></span>
-<span><span class="co">#&gt; 3 subset(dat, x &gt; 500)         447µs    525µs     1748.     510KB     19.5</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]           277µs    383µs     2485.     377KB     16.3</span></span>
+<span><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]    203µs    276µs     3635.     260KB     16.9</span></span>
+<span><span class="co">#&gt; 3 subset(dat, x &gt; 500)         361µs    487µs     1981.     510KB     16.8</span></span></code></pre></div>
 <p>By default the summary uses absolute measures, however relative results can be obtained by using <code>relative = TRUE</code> in your call to <code><a href="reference/mark.html">bench::mark()</a></code> or calling <code>summary(relative = TRUE)</code> on the results.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">bnch</span>, relative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
 <span><span class="co">#&gt;   expression                  min median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span><span class="co">#&gt;   &lt;bch:expr&gt;                &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]         1.29   1.44      1.27      1.45     1   </span></span>
-<span><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]  1      1         1.74      1        1.05</span></span>
-<span><span class="co">#&gt; 3 subset(dat, x &gt; 500)       1.75   1.71      1         1.96     1.34</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 dat[dat$x &gt; 500, ]         1.36   1.39      1.25      1.45     1   </span></span>
+<span><span class="co">#&gt; 2 dat[which(dat$x &gt; 500), ]  1      1         1.84      1        1.03</span></span>
+<span><span class="co">#&gt; 3 subset(dat, x &gt; 500)       1.78   1.77      1         1.96     1.03</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="benchpress">
@@ -229,18 +230,18 @@
 <span><span class="co">#&gt; # A tibble: 12 × 8</span></span>
 <span><span class="co">#&gt;    expression  rows  cols      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span><span class="co">#&gt;    &lt;bch:expr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 bracket     1000     2   31.9µs   36.5µs    25976.   15.84KB    23.4 </span></span>
-<span><span class="co">#&gt;  2 which       1000     2   30.7µs   34.6µs    28111.    7.91KB    25.3 </span></span>
-<span><span class="co">#&gt;  3 subset      1000     2   54.3µs     61µs    15813.    27.7KB    24.4 </span></span>
-<span><span class="co">#&gt;  4 bracket    10000     2   64.7µs   77.5µs    11807.  156.46KB    38.2 </span></span>
-<span><span class="co">#&gt;  5 which      10000     2     50µs   57.4µs    16739.   78.23KB    26.5 </span></span>
-<span><span class="co">#&gt;  6 subset     10000     2  126.1µs  145.3µs     6531.  273.79KB    38.0 </span></span>
-<span><span class="co">#&gt;  7 bracket     1000    10   81.1µs   93.9µs     9805.   47.52KB    17.3 </span></span>
-<span><span class="co">#&gt;  8 which       1000    10   71.9µs   77.9µs    12270.    7.91KB    14.7 </span></span>
-<span><span class="co">#&gt;  9 subset      1000    10  105.4µs  116.5µs     7724.   59.38KB     8.46</span></span>
-<span><span class="co">#&gt; 10 bracket    10000    10    160µs  183.7µs     5248.   469.4KB    53.9 </span></span>
-<span><span class="co">#&gt; 11 which      10000    10   91.8µs  104.6µs     8717.   78.23KB    14.2 </span></span>
-<span><span class="co">#&gt; 12 subset     10000    10  239.5µs  272.9µs     3406.  586.73KB    41.7</span></span></code></pre></div>
+<span><span class="co">#&gt;  1 bracket     1000     2     27µs     34µs    27964.   15.84KB     19.6</span></span>
+<span><span class="co">#&gt;  2 which       1000     2   25.7µs   33.4µs    29553.    7.91KB     17.7</span></span>
+<span><span class="co">#&gt;  3 subset      1000     2   45.9µs   58.2µs    16793.    27.7KB     17.1</span></span>
+<span><span class="co">#&gt;  4 bracket    10000     2   64.1µs   70.8µs    13447.  156.46KB     40.5</span></span>
+<span><span class="co">#&gt;  5 which      10000     2   46.7µs   54.7µs    17586.   78.23KB     23.3</span></span>
+<span><span class="co">#&gt;  6 subset     10000     2  116.2µs  132.1µs     7228.  273.79KB     40.9</span></span>
+<span><span class="co">#&gt;  7 bracket     1000    10   77.2µs   85.4µs    11335.   47.52KB     19.9</span></span>
+<span><span class="co">#&gt;  8 which       1000    10   67.8µs   75.2µs    13073.    7.91KB     23.2</span></span>
+<span><span class="co">#&gt;  9 subset      1000    10   84.7µs  107.5µs     9281.   59.38KB     18.8</span></span>
+<span><span class="co">#&gt; 10 bracket    10000    10  130.2µs  169.1µs     5799.   469.4KB     52.2</span></span>
+<span><span class="co">#&gt; 11 which      10000    10   75.1µs     96µs    10187.   78.23KB     17.4</span></span>
+<span><span class="co">#&gt; 12 subset     10000    10  222.7µs    253µs     3810.  586.73KB     43.3</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -276,11 +277,11 @@
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt; process    real </span></span>
-<span><span class="co">#&gt;   257ms   261ms</span></span>
+<span><span class="co">#&gt;   222ms   223ms</span></span>
 <span></span>
 <span><span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="reference/bench_time.html">system_time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; process    real </span></span>
-<span><span class="co">#&gt;    52µs   504ms</span></span></code></pre></div>
+<span><span class="co">#&gt;    88µs   502ms</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="alternatives">Alternatives<a class="anchor" aria-label="anchor" href="#alternatives"></a>
