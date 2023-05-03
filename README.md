@@ -94,6 +94,9 @@ And to plot the benchmark times per commit
 bench::cb_plot_time(results)
 ```
 
+You may need to set git credentials when running this on GitHub Actions
+using a Linux runner.
+
 ## Usage
 
 ### `bench::mark()`
@@ -136,9 +139,9 @@ bnch
 #> # A tibble: 3 × 6
 #>   expression                     min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 dat[dat$x > 500, ]           329µs    440µs     2215.     377KB     14.5
-#> 2 dat[which(dat$x > 500), ]    255µs    306µs     3038.     260KB     15.3
-#> 3 subset(dat, x > 500)         447µs    525µs     1748.     510KB     19.5
+#> 1 dat[dat$x > 500, ]           277µs    383µs     2485.     377KB     16.3
+#> 2 dat[which(dat$x > 500), ]    203µs    276µs     3635.     260KB     16.9
+#> 3 subset(dat, x > 500)         361µs    487µs     1981.     510KB     16.8
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -150,9 +153,9 @@ summary(bnch, relative = TRUE)
 #> # A tibble: 3 × 6
 #>   expression                  min median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <dbl>  <dbl>     <dbl>     <dbl>    <dbl>
-#> 1 dat[dat$x > 500, ]         1.29   1.44      1.27      1.45     1   
-#> 2 dat[which(dat$x > 500), ]  1      1         1.74      1        1.05
-#> 3 subset(dat, x > 500)       1.75   1.71      1         1.96     1.34
+#> 1 dat[dat$x > 500, ]         1.36   1.39      1.25      1.45     1   
+#> 2 dat[which(dat$x > 500), ]  1      1         1.84      1        1.03
+#> 3 subset(dat, x > 500)       1.78   1.77      1         1.96     1.03
 ```
 
 ### `bench::press()`
@@ -197,18 +200,18 @@ results
 #> # A tibble: 12 × 8
 #>    expression  rows  cols      min   median `itr/sec` mem_alloc `gc/sec`
 #>    <bch:expr> <dbl> <dbl> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#>  1 bracket     1000     2   31.9µs   36.5µs    25976.   15.84KB    23.4 
-#>  2 which       1000     2   30.7µs   34.6µs    28111.    7.91KB    25.3 
-#>  3 subset      1000     2   54.3µs     61µs    15813.    27.7KB    24.4 
-#>  4 bracket    10000     2   64.7µs   77.5µs    11807.  156.46KB    38.2 
-#>  5 which      10000     2     50µs   57.4µs    16739.   78.23KB    26.5 
-#>  6 subset     10000     2  126.1µs  145.3µs     6531.  273.79KB    38.0 
-#>  7 bracket     1000    10   81.1µs   93.9µs     9805.   47.52KB    17.3 
-#>  8 which       1000    10   71.9µs   77.9µs    12270.    7.91KB    14.7 
-#>  9 subset      1000    10  105.4µs  116.5µs     7724.   59.38KB     8.46
-#> 10 bracket    10000    10    160µs  183.7µs     5248.   469.4KB    53.9 
-#> 11 which      10000    10   91.8µs  104.6µs     8717.   78.23KB    14.2 
-#> 12 subset     10000    10  239.5µs  272.9µs     3406.  586.73KB    41.7
+#>  1 bracket     1000     2     27µs     34µs    27964.   15.84KB     19.6
+#>  2 which       1000     2   25.7µs   33.4µs    29553.    7.91KB     17.7
+#>  3 subset      1000     2   45.9µs   58.2µs    16793.    27.7KB     17.1
+#>  4 bracket    10000     2   64.1µs   70.8µs    13447.  156.46KB     40.5
+#>  5 which      10000     2   46.7µs   54.7µs    17586.   78.23KB     23.3
+#>  6 subset     10000     2  116.2µs  132.1µs     7228.  273.79KB     40.9
+#>  7 bracket     1000    10   77.2µs   85.4µs    11335.   47.52KB     19.9
+#>  8 which       1000    10   67.8µs   75.2µs    13073.    7.91KB     23.2
+#>  9 subset      1000    10   84.7µs  107.5µs     9281.   59.38KB     18.8
+#> 10 bracket    10000    10  130.2µs  169.1µs     5799.   469.4KB     52.2
+#> 11 which      10000    10   75.1µs     96µs    10187.   78.23KB     17.4
+#> 12 subset     10000    10  222.7µs    253µs     3810.  586.73KB     43.3
 ```
 
 ## Plotting
@@ -257,11 +260,11 @@ bench::system_time({
   }
 })
 #> process    real 
-#>   257ms   261ms
+#>   222ms   223ms
 
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    52µs   504ms
+#>    88µs   502ms
 ```
 
 ## Alternatives
