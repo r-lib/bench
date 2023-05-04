@@ -15,8 +15,8 @@ and memory allocated outside R's garbage collector heap.
 The OS APIs used are as follows
 \subsection{Windows}{
 \itemize{
-\item \href{https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters}{PROCESS_MEMORY_COUNTERS.WorkingSetSize}
-\item \href{https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters}{PROCESS_MEMORY_COUNTERS.PeakWorkingSetSize}
+\item \href{https://learn.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters}{PROCESS_MEMORY_COUNTERS.WorkingSetSize}
+\item \href{https://learn.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters}{PROCESS_MEMORY_COUNTERS.PeakWorkingSetSize}
 }
 }
 
@@ -31,8 +31,6 @@ The OS APIs used are as follows
 \itemize{
 \item \href{https://man7.org/linux/man-pages/man5/proc.5.html}{/proc/pid/status VmSize}
 \item \href{https://man7.org/linux/man-pages/man5/proc.5.html}{/proc/pid/status VmPeak}
-and on Windows
-\href{https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters}{PROCESS_MEMORY_COUNTERS.PeakWorkingSetSize}
 }
 }
 }
