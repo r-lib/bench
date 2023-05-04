@@ -1,42 +1,17 @@
 #nocov start
 .onLoad <- function(...) {
-  register_s3_method("tidyr", "unnest", "bench_mark")
-  register_s3_method("dplyr", "filter", "bench_mark")
-  register_s3_method("dplyr", "group_by", "bench_mark")
-  register_s3_method("ggplot2", "autoplot", "bench_mark")
+  s3_register("tidyr::unnest", "bench_mark")
+  s3_register("dplyr::filter", "bench_mark")
+  s3_register("dplyr::group_by", "bench_mark")
+  s3_register("ggplot2::autoplot", "bench_mark")
 
-  register_s3_method("ggplot2", "scale_type", "bench_expr")
-  register_s3_method("ggplot2", "scale_type", "bench_time")
-  register_s3_method("ggplot2", "scale_type", "bench_bytes")
+  s3_register("ggplot2::scale_type", "bench_expr")
+  s3_register("ggplot2::scale_type", "bench_time")
+  s3_register("ggplot2::scale_type", "bench_bytes")
 
-  register_s3_method("knitr", "knit_print", "bench_mark")
+  s3_register("knitr::knit_print", "bench_mark")
 
-  register_s3_method("vctrs", "vec_proxy", "bench_expr")
-  register_s3_method("vctrs", "vec_restore", "bench_expr")
+  s3_register("vctrs::vec_proxy", "bench_expr")
+  s3_register("vctrs::vec_restore", "bench_expr")
 }
-
-register_s3_method <- function(pkg, generic, class, fun = NULL) {
-  stopifnot(is.character(pkg), length(pkg) == 1)
-  stopifnot(is.character(generic), length(generic) == 1)
-  stopifnot(is.character(class), length(class) == 1)
-
-  if (is.null(fun)) {
-    fun <- get(paste0(generic, ".", class), envir = parent.frame())
-  } else {
-    stopifnot(is.function(fun))
-  }
-
-  if (pkg %in% loadedNamespaces()) {
-    registerS3method(generic, class, fun, envir = asNamespace(pkg))
-  }
-
-  # Always register hook in case package is later unloaded & reloaded
-  setHook(
-    packageEvent(pkg, "onLoad"),
-    function(...) {
-      registerS3method(generic, class, fun, envir = asNamespace(pkg))
-    }
-  )
-}
-
 #nocov end
