@@ -1,4 +1,4 @@
-# bench (development version)
+# bench 1.1.3
 
 * Long unnamed `bench_expr` expressions are now truncated correctly when used as
   columns of a tibble (#94).
