@@ -1,18 +1,18 @@
 # bench (development version)
 
-* R >=3.5.0 is now required, which is aligned with tidyverse standards.
+* Long unnamed `bench_expr` expressions are now truncated correctly when used as
+  columns of a tibble (#94).
 
 * `bench_mark` tibbles now respect the knitr paged df option (#103).
 
 * Fixed an issue where macOS specific C code paths were accidentally being used
   on GNU Hurd (#118).
 
-* Long unnamed `bench_expr` expressions are now truncated correctly when used as
-  columns of a tibble (#94).
+* Fixed `-Wstrict-prototypes` warnings, as requested by CRAN (#124).
+
+* R >=3.5.0 is now required, which is aligned with tidyverse standards.
 
 * bench now uses testthat 3e (#129).
-
-* Fixed `-Wstrict-prototypes` warnings, as requested by CRAN (#124).
 
 * bench no longer Suggests mockery.
 
