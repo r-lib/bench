@@ -23,6 +23,7 @@ print.bench_expr <- function(x, ...) {
   NextMethod()
 }
 
+#' @export
 type_sum.bench_expr <- function(x) {
   "bch:expr"
 }
@@ -46,11 +47,12 @@ vec_restore.bench_expr <- function(x, to, ...) {
   new_bench_expr(x$x, x$desc)
 }
 
+#' @export
 pillar_shaft.bench_expr <- function(x, ...) {
   # We format bench expressions exactly like character vectors. This ensures
   # they are truncated as needed, which is useful for long unnamed expressions
   # (#94). This is the same logic as `pillar:::pillar_shaft.factor()`.
-  pillar::pillar_shaft(as.character(x), ...)
+  pillar_shaft(as.character(x), ...)
 }
 
 scale_type.bench_expr <- function(x) {

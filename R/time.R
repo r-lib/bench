@@ -189,10 +189,12 @@ mean.bench_time <- function(x, ...) {
   new_bench_time(NextMethod(.Generic))
 }
 
+#' @export
 pillar_shaft.bench_time <- function(x, ...) {
   pillar::new_pillar_shaft_simple(format.bench_time(x), align = "right", ...)
 }
 
+#' @export
 type_sum.bench_time <- function(x) {
   "bch:tm"
 }

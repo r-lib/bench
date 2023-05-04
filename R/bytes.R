@@ -37,7 +37,6 @@ new_bench_bytes <- function(x) {
   structure(x, class = c("bench_bytes", "numeric"))
 }
 
-#' @importFrom methods setOldClass
 setOldClass(c("bench_bytes", "numeric"), numeric())
 
 #' @export
@@ -149,10 +148,12 @@ Ops.bench_bytes <- function (e1, e2) {
   NextMethod(.Generic)
 }
 
+#' @export
 pillar_shaft.bench_bytes <- function(x, ...) {
   pillar::new_pillar_shaft_simple(format.bench_bytes(x), align = "right", ...)
 }
 
+#' @export
 type_sum.bench_bytes <- function(x) {
   "bch:byt"
 }
