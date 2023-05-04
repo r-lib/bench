@@ -1,5 +1,7 @@
 # bench (development version)
 
+* R >=3.5.0 is now required, which is aligned with tidyverse standards.
+
 * `bench_mark` tibbles now respect the knitr paged df option (#103).
 
 * Fixed an issue where macOS specific C code paths were accidentally being used
