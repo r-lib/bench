@@ -48,14 +48,12 @@
 autoplot.bench_mark <- function(object,
   type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),...) {
 
-  if (!(requireNamespace("ggplot2") && requireNamespace("tidyr"))) {
-    stop("`ggplot2` and `tidyr` must be installed to use `autoplot`.", call. = FALSE)
-  }
+  rlang::check_installed(c("ggplot2", "tidyr"), "for `autoplot()`.")
 
   type <- match.arg(type)
 
-  if (type == "beeswarm" && !requireNamespace("ggbeeswarm", quietly = TRUE)) {
-    stop("`ggbeeswarm` must be installed to use `type = \"beeswarm\"` option.", call. = FALSE)
+  if (type == "beeswarm") {
+    rlang::check_installed("ggbeeswarm", "to use `type = \"beeswarm\" option.")
   }
 
   # Just convert bench_expr to characters
@@ -73,26 +71,26 @@ autoplot.bench_mark <- function(object,
 
   switch(type,
     beeswarm = p <- p +
-      ggplot2::aes_string("expression", "time", color = "gc") +
+      ggplot2::aes(.data$expression, .data$time, color = .data$gc) +
       ggbeeswarm::geom_quasirandom(...) +
       ggplot2::coord_flip(),
 
     jitter = p <- p +
-      ggplot2::aes_string("expression", "time", color = "gc") +
+      ggplot2::aes(.data$expression, .data$time, color = .data$gc) +
       ggplot2::geom_jitter(...) +
       ggplot2::coord_flip(),
 
     ridge = p <- p +
-      ggplot2::aes_string("time", "expression") +
+      ggplot2::aes(.data$time, .data$expression) +
       ggridges::geom_density_ridges(...),
 
     boxplot = p <- p +
-      ggplot2::aes_string("expression", "time") +
+      ggplot2::aes(.data$expression, .data$time) +
       ggplot2::geom_boxplot(...) +
       ggplot2::coord_flip(),
 
     violin = p <- p +
-      ggplot2::aes_string("expression", "time") +
+      ggplot2::aes(.data$expression, .data$time) +
       ggplot2::geom_violin(...) +
       ggplot2::coord_flip())
 
