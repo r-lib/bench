@@ -37,6 +37,7 @@ Suggests:
     tidyr (>= 0.8.1),
     vctrs,
     withr
+Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
