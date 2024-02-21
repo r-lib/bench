@@ -10,7 +10,7 @@
 #' @param ... Additional arguments passed to the plotting geom.
 #' @details This function requires some optional dependencies. [ggplot2][ggplot2::ggplot2-package],
 #' [tidyr][tidyr::tidyr-package], and depending on the plot type
-#' [ggbeeswarm][ggbeeswarm::ggbeeswarm], [ggridges][ggridges::ggridges].
+#' [ggbeeswarm][ggbeeswarm::ggbeeswarm], [ggridges][ggridges::ggridges-package].
 #'
 #' For `type` of `beeswarm` and `jitter` the points are colored by the highest
 #' level garbage collection performed during each iteration.
@@ -51,7 +51,7 @@ autoplot.bench_mark <- function(object,
   if (!(requireNamespace("ggplot2") && requireNamespace("tidyr"))) {
     stop("`ggplot2` and `tidyr` must be installed to use `autoplot`.", call. = FALSE)
   }
-  
+
   type <- match.arg(type)
 
   if (type == "beeswarm" && !requireNamespace("ggbeeswarm", quietly = TRUE)) {
