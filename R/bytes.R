@@ -170,7 +170,7 @@ bench_bytes_trans <- function(base = 2) {
   if (is.null(base)) {
     return(
       scales::trans_new("bch:byt", as.numeric, as_bench_bytes,
-        scales::pretty_breaks(), domain = c(1e-100, Inf)
+        breaks = scales::pretty_breaks(), domain = c(1e-100, Inf)
       )
     )
   }
@@ -178,7 +178,7 @@ bench_bytes_trans <- function(base = 2) {
   inv <- function(x) as_bench_bytes(base ^ as.numeric(x))
 
   scales::trans_new(paste0("bch:byt-", format(base)), trans, inv,
-    scales::log_breaks(base = base), domain = c(1e-100, Inf))
+    breaks = scales::log_breaks(base = base), domain = c(1e-100, Inf))
 }
 
 scale_type.bench_bytes <- function(x) "bench_bytes"

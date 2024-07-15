@@ -1,5 +1,8 @@
 # bench (development version)
 
+* `scale_*_bench_*()` functions now supply more informative axis breaks 
+  (@simonpcouch, #143).
+
 # bench 1.1.3
 
 * Long unnamed `bench_expr` expressions are now truncated correctly when used as
