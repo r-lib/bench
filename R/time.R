@@ -210,7 +210,7 @@ bench_time_trans <- function(base = 10) {
   if (is.null(base)) {
     return(
       scales::trans_new("bch:tm", as.numeric, as_bench_time,
-        scales::pretty_breaks(), domain = c(1e-100, Inf)
+        breaks = scales::pretty_breaks(), domain = c(1e-100, Inf)
       )
     )
   }
@@ -219,7 +219,7 @@ bench_time_trans <- function(base = 10) {
   inv <- function(x) as_bench_time(base ^ as.numeric(x))
 
   scales::trans_new(paste0("bch:tm-", format(base)), trans, inv,
-    scales::log_breaks(base = base), domain = c(1e-100, Inf))
+    breaks = scales::log_breaks(base = base), domain = c(1e-100, Inf))
 }
 
 scale_type.bench_time <- function(x) "bench_time"
