@@ -55,7 +55,7 @@ describe("mark", {
   })
 
   it("works with capabilities('profmem')", {
-    skip_if_not(isTRUE(capabilities("profmem")[[1]]))
+    skip_if_not(capabilities("profmem"))
 
     res <- mark(1, 2, check = FALSE, iterations = 1)
 
