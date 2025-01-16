@@ -348,11 +348,7 @@ unnest.bench_mark <- function(data, ...) {
 
   # suppressWarnings to avoid 'elements may not preserve their attributes'
   # warnings from dplyr::collapse
-  if (tidyr_new_interface()) {
-    data <- suppressWarnings(NextMethod(.Generic, data, ...))
-  } else {
-    data <- suppressWarnings(NextMethod(.Generic, data, time, gc, .drop = FALSE))
-  }
+  data <- suppressWarnings(NextMethod(.Generic, data, ...))
 
   # Add bench_time class back to the time column
   data$time <- as_bench_time(data$time)

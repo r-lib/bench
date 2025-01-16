@@ -49,7 +49,7 @@
 autoplot.bench_mark <- function(object,
   type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),...) {
 
-  rlang::check_installed(c("ggplot2", "tidyr"), "for `autoplot()`.")
+  rlang::check_installed(c("ggplot2", "tidyr (>= 1.0.0)"), "for `autoplot()`.")
 
   type <- match.arg(type)
 
@@ -62,11 +62,7 @@ autoplot.bench_mark <- function(object,
     object$expression <- as.character(object$expression)
   }
 
-  if (tidyr_new_interface()) {
-    res <- tidyr::unnest(object, c(time, gc))
-  } else {
-    res <- tidyr::unnest(object)
-  }
+  res <- tidyr::unnest(object, c(time, gc))
   p <- ggplot2::ggplot(res)
 
 
