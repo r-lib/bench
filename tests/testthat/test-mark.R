@@ -301,13 +301,9 @@ describe("summary.bench_mark", {
 
 describe("unnest.bench_mark", {
   it("does not contain result or memory columns", {
-    skip_if_not_installed("tidyr")
+    skip_if_not_installed("tidyr", "1.0.0")
     bnch <- mark(1 + 1, 2 + 0)
-    if (tidyr_new_interface()) {
-      res <- tidyr::unnest(bnch, c(time, gc))
-    } else {
-      res <- tidyr::unnest(bnch)
-    }
+    res <- tidyr::unnest(bnch, c(time, gc))
 
     gc_cols <- colnames(bnch$gc[[1]])
 

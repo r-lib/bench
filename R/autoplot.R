@@ -51,7 +51,7 @@ autoplot.bench_mark <- function(
   type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),
   ...
 ) {
-  rlang::check_installed(c("ggplot2", "tidyr"), "for `autoplot()`.")
+  rlang::check_installed(c("ggplot2", "tidyr (>= 1.0.0)"), "for `autoplot()`.")
 
   type <- match.arg(type)
 
@@ -64,38 +64,30 @@ autoplot.bench_mark <- function(
     object$expression <- as.character(object$expression)
   }
 
-  if (tidyr_new_interface()) {
-    res <- tidyr::unnest(object, c(time, gc))
-  } else {
-    res <- tidyr::unnest(object)
-  }
+  res <- tidyr::unnest(object, c(time, gc))
   p <- ggplot2::ggplot(res)
 
   switch(
     type,
     beeswarm = p <- p +
-      ggplot2::aes(.data$expression, .data$time, color = .data$gc) +
-      ggbeeswarm::geom_quasirandom(...) +
-      ggplot2::coord_flip(),
+      ggplot2::aes(.data$time, .data$expression, color = .data$gc) +
+      ggbeeswarm::geom_quasirandom(..., orientation = "y"),
 
     jitter = p <- p +
-      ggplot2::aes(.data$expression, .data$time, color = .data$gc) +
-      ggplot2::geom_jitter(...) +
-      ggplot2::coord_flip(),
+      ggplot2::aes(.data$time, .data$expression, color = .data$gc) +
+      ggplot2::geom_jitter(...),
 
     ridge = p <- p +
       ggplot2::aes(.data$time, .data$expression) +
       ggridges::geom_density_ridges(...),
 
     boxplot = p <- p +
-      ggplot2::aes(.data$expression, .data$time) +
-      ggplot2::geom_boxplot(...) +
-      ggplot2::coord_flip(),
+      ggplot2::aes(.data$time, .data$expression) +
+      ggplot2::geom_boxplot(...),
 
     violin = p <- p +
-      ggplot2::aes(.data$expression, .data$time) +
-      ggplot2::geom_violin(...) +
-      ggplot2::coord_flip()
+      ggplot2::aes(.data$time, .data$expression) +
+      ggplot2::geom_violin(...)
   )
 
   parameters <- setdiff(
