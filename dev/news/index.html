@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bench</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.3.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.4.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,9 +46,12 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bench-development-version">bench (development version)<a class="anchor" aria-label="anchor" href="#bench-development-version"></a></h2>
-<ul><li><p>The <code>.grid</code> argument of <code><a href="../reference/press.html">press()</a></code> now subsets data.frames and tibbles consistently (<a href="https://github.com/r-lib/bench/issues/142" class="external-link">#142</a>).</p></li>
-<li><p><code><a href="../reference/press.html">press()</a></code> gains a new <code>.quiet</code> argument to silence progress messages (<a href="https://github.com/r-lib/bench/issues/145" class="external-link">#145</a>).</p></li>
-<li><p>Fixed an issue in <code><a href="../reference/bench_time_trans.html">bench_time_trans()</a></code> and <code><a href="../reference/bench_bytes_trans.html">bench_bytes_trans()</a></code> where pretty breaks were not being applied correctly (<a href="https://github.com/r-lib/bench/issues/140" class="external-link">#140</a>, <a href="https://github.com/plietar" class="external-link">@plietar</a>, <a href="https://github.com/simonpcouch" class="external-link">@simonpcouch</a>).</p></li>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.4" id="bench-114">bench 1.1.4<a class="anchor" aria-label="anchor" href="#bench-114"></a></h2>
+<ul><li><p><code><a href="../reference/press.html">press()</a></code> gains a new <code>.quiet</code> argument to silence progress messages (<a href="https://github.com/r-lib/bench/issues/145" class="external-link">#145</a>).</p></li>
+<li><p>The <code>.grid</code> argument of <code><a href="../reference/press.html">press()</a></code> now subsets data.frames and tibbles consistently (<a href="https://github.com/r-lib/bench/issues/142" class="external-link">#142</a>).</p></li>
+<li><p><code><a href="../reference/bench_time_trans.html">bench_time_trans()</a></code> and <code><a href="../reference/bench_bytes_trans.html">bench_bytes_trans()</a></code> once again apply pretty breaks correctly (<a href="https://github.com/r-lib/bench/issues/140" class="external-link">#140</a>, <a href="https://github.com/plietar" class="external-link">@plietar</a>, <a href="https://github.com/simonpcouch" class="external-link">@simonpcouch</a>).</p></li>
 <li><p>R &gt;=4.0.0 is now required, which is aligned with tidyverse standards.</p></li>
 <li><p>Switched to modern ggplot2 conventions internally (<a href="https://github.com/r-lib/bench/issues/141" class="external-link">#141</a>, <a href="https://github.com/olivroy" class="external-link">@olivroy</a>).</p></li>
 </ul></div>

@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bench</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.3.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.4.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,9 +80,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   expression           min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;bch&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ] 151µs  158µs     <span style="text-decoration: underline;">3</span>548.     374KB     32.0  <span style="text-decoration: underline;">1</span>774    16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt;… 136µs  144µs     <span style="text-decoration: underline;">4</span>164.     258KB     26.0  <span style="text-decoration: underline;">2</span>082    13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 5… 204µs  217µs     <span style="text-decoration: underline;">2</span>616.     492KB     30.0  <span style="text-decoration: underline;">1</span>308    15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ] 152µs  158µs     <span style="text-decoration: underline;">3</span>505.     374KB     31.6  <span style="text-decoration: underline;">1</span>776    16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt;… 135µs  142µs     <span style="text-decoration: underline;">4</span>222.     258KB     25.7  <span style="text-decoration: underline;">2</span>133    13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 5… 204µs  215µs     <span style="text-decoration: underline;">2</span>668.     492KB     30.0  <span style="text-decoration: underline;">1</span>334    15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: total_time &lt;bch:tm&gt;, result &lt;list&gt;, memory &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   time &lt;list&gt;, gc &lt;list&gt;</span></span>
 <span class="r-in"><span></span></span>
@@ -91,9 +91,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   expression           min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]  1.11   1.10      1.38      1.45     1.32  <span style="text-decoration: underline;">1</span>758    16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt;…  1      1         1.51      1        1     <span style="text-decoration: underline;">2</span>069    13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 5…  1.49   1.50      1         1.91     1.22  <span style="text-decoration: underline;">1</span>293    15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dat[dat$x &gt; 500, ]  1.13   1.11      1.38      1.45     1.34  <span style="text-decoration: underline;">1</span>760    16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dat[which(dat$x &gt;…  1      1         1.53      1        1     <span style="text-decoration: underline;">2</span>120    13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> subset(dat, x &gt; 5…  1.52   1.51      1         1.91     1.22  <span style="text-decoration: underline;">1</span>319    15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: total_time &lt;bch:tm&gt;, result &lt;list&gt;, memory &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   time &lt;list&gt;, gc &lt;list&gt;</span></span>
 </code></pre></div>
