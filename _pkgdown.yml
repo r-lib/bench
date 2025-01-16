@@ -14,6 +14,6 @@ template:
     ganalytics: UA-115082821-1
 
 news:
-  release:
-  - text: "Version 1.0.1"
-    href: https://www.tidyverse.org/blog/2018/06/bench-1.0.1/
+ releases:
+ - text: "bench 1.0.1"
+   href: https://www.tidyverse.org/blog/2018/06/bench-1.0.1/
