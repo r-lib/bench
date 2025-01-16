@@ -18,6 +18,7 @@
 #' @param .grid A pre-built grid of values to use, typically a [data.frame] or
 #'   [tibble]. This is useful if you only want to benchmark a subset of all
 #'   possible combinations.
+#' @param .quiet If `TRUE`, progress messages will not be emitted.
 #' @export
 #' @examples
 #' # Helper function to create a simple data.frame of the specified dimensions
@@ -42,8 +43,13 @@
 #'     )
 #'   }
 #' )
-press <- function(..., .grid = NULL) {
+press <- function(..., .grid = NULL, .quiet = FALSE) {
   args <- rlang::quos(...)
+
+  assert(
+    "`.quiet` must be `TRUE` or `FALSE`",
+    isTRUE(.quiet) || isFALSE(.quiet)
+  )
 
   unnamed <- names(args) == ""
 
@@ -70,9 +76,7 @@ press <- function(..., .grid = NULL) {
     )
   }
 
-  quiet <- bench_press_quiet()
-
-  if (!quiet) {
+  if (!.quiet) {
     status <- format(tibble::as_tibble(parameters), n = Inf)
     message(glue::glue("Running with:\n{status[[2]]}"))
   }
@@ -86,7 +90,7 @@ press <- function(..., .grid = NULL) {
       assign(var, value, envir = e)
     }
 
-    if (!quiet) {
+    if (!.quiet) {
       message(status[[row + 3L]])
     }
 
@@ -107,13 +111,4 @@ press <- function(..., .grid = NULL) {
     drop = FALSE
   ]
   bench_mark(tibble::as_tibble(cbind(res[1], parameters, res[-1])))
-}
-
-bench_press_quiet <- function() {
-  # Internal option to silence `press()` during testing
-  isTRUE(getOption("bench.press_quiet", default = FALSE))
-}
-
-local_press_quiet <- function(frame = rlang::caller_env()) {
-  rlang::local_options(bench.press_quiet = TRUE, .frame = frame)
 }
