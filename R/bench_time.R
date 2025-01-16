@@ -16,7 +16,8 @@
 bench_time <- function(expr) {
   stats::setNames(
     as_bench_time(.Call(system_time_, substitute(expr), parent.frame())),
-    c("process", "real"))
+    c("process", "real")
+  )
 }
 
 #' @export
@@ -46,5 +47,8 @@ bench_memory <- function(expr) {
 
   memory <- parse_allocations(f)
 
-  tibble::tibble(mem_alloc = bench_bytes(sum(memory$bytes, na.rm = TRUE)), memory = list(memory))
+  tibble::tibble(
+    mem_alloc = bench_bytes(sum(memory$bytes, na.rm = TRUE)),
+    memory = list(memory)
+  )
 }

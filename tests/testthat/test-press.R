@@ -1,5 +1,4 @@
 describe("press", {
-
   it("Adds parameters to output", {
     local_press_quiet()
 
@@ -64,7 +63,7 @@ describe("press", {
     local_press_quiet()
 
     res <- press(
-      .grid = data.frame(x = c(1, 2), y = c(1,3)),
+      .grid = data.frame(x = c(1, 2), y = c(1, 3)),
       mark(list(x, y), max_iterations = 10)
     )
 

@@ -87,7 +87,11 @@ scale_y_bench_expr <- function(...) {
 #' @rdname scale_bench_expr
 #' @keywords internal
 #' @export
-scale_colour_bench_expr <- function(palette = scales::hue_pal(...), ..., aesthetics = "colour") {
+scale_colour_bench_expr <- function(
+  palette = scales::hue_pal(...),
+  ...,
+  aesthetics = "colour"
+) {
   sc <- ggplot2::discrete_scale(aesthetics, "bench_expr", palette, ...)
   sc$transform <- as.character
   sc

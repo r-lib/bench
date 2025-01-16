@@ -46,9 +46,11 @@
 #'   }
 #' }
 # Lazily registered in `.onLoad()`
-autoplot.bench_mark <- function(object,
-  type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),...) {
-
+autoplot.bench_mark <- function(
+  object,
+  type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),
+  ...
+) {
   rlang::check_installed(c("ggplot2", "tidyr"), "for `autoplot()`.")
 
   type <- match.arg(type)
@@ -69,8 +71,8 @@ autoplot.bench_mark <- function(object,
   }
   p <- ggplot2::ggplot(res)
 
-
-  switch(type,
+  switch(
+    type,
     beeswarm = p <- p +
       ggplot2::aes(.data$expression, .data$time, color = .data$gc) +
       ggbeeswarm::geom_quasirandom(...) +
@@ -93,21 +95,26 @@ autoplot.bench_mark <- function(object,
     violin = p <- p +
       ggplot2::aes(.data$expression, .data$time) +
       ggplot2::geom_violin(...) +
-      ggplot2::coord_flip())
+      ggplot2::coord_flip()
+  )
 
   parameters <- setdiff(
     colnames(object),
-    c("expression", summary_cols, data_cols, c("level0", "level1", "level2")))
+    c("expression", summary_cols, data_cols, c("level0", "level1", "level2"))
+  )
 
   if (length(parameters) == 0) {
     return(p)
   }
 
   if (length(parameters) == 2) {
-    return(p +
-      ggplot2::facet_grid(
-        paste0(parameters[[1]], "~", parameters[[2]]),
-        labeller = ggplot2::label_both))
+    return(
+      p +
+        ggplot2::facet_grid(
+          paste0(parameters[[1]], "~", parameters[[2]]),
+          labeller = ggplot2::label_both
+        )
+    )
   }
 
   p + ggplot2::facet_wrap(parameters, labeller = ggplot2::label_both)
@@ -117,7 +124,12 @@ autoplot.bench_mark <- function(object,
 #' @param x A `bench_mark` object.
 #' @param y Ignored, required for compatibility with the `plot()` generic.
 #' @export
-plot.bench_mark <- function(x, ..., type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"), y) {
+plot.bench_mark <- function(
+  x,
+  ...,
+  type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),
+  y
+) {
   type <- match.arg(type)
   ggplot2::autoplot(x, type = type, ...)
 }
