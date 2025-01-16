@@ -9,7 +9,7 @@
 status](https://www.r-pkg.org/badges/version/bench)](https://cran.r-project.org/package=bench)
 [![R-CMD-check](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/r-lib/bench/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/bench?branch=main)
+coverage](https://codecov.io/gh/r-lib/bench/graph/badge.svg)](https://app.codecov.io/gh/r-lib/bench)
 
 <!-- badges: end -->
 
@@ -75,7 +75,7 @@ library(bench)
 set.seed(42)
 
 dat <- data.frame(
-  x = runif(10000, 1, 1000), 
+  x = runif(10000, 1, 1000),
   y = runif(10000, 1, 1000)
 )
 ```
@@ -105,9 +105,9 @@ bnch
 #> # A tibble: 3 × 6
 #>   expression                     min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 dat[dat$x > 500, ]           277µs    383µs     2485.     377KB     16.3
-#> 2 dat[which(dat$x > 500), ]    203µs    276µs     3635.     260KB     16.9
-#> 3 subset(dat, x > 500)         361µs    487µs     1981.     510KB     16.8
+#> 1 dat[dat$x > 500, ]           151µs    202µs     4994.     377KB     36.8
+#> 2 dat[which(dat$x > 500), ]    124µs    168µs     6169.     260KB     33.2
+#> 3 subset(dat, x > 500)         184µs    232µs     3911.     510KB     40.3
 ```
 
 By default the summary uses absolute measures, however relative results
@@ -119,9 +119,9 @@ summary(bnch, relative = TRUE)
 #> # A tibble: 3 × 6
 #>   expression                  min median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr>                <dbl>  <dbl>     <dbl>     <dbl>    <dbl>
-#> 1 dat[dat$x > 500, ]         1.36   1.39      1.25      1.45     1   
-#> 2 dat[which(dat$x > 500), ]  1      1         1.84      1        1.03
-#> 3 subset(dat, x > 500)       1.78   1.77      1         1.96     1.03
+#> 1 dat[dat$x > 500, ]         1.22   1.20      1.28      1.45     1.11
+#> 2 dat[which(dat$x > 500), ]  1      1         1.58      1        1   
+#> 3 subset(dat, x > 500)       1.48   1.38      1         1.96     1.21
 ```
 
 ### `bench::press()`
@@ -219,18 +219,18 @@ to
 [system.time()](https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time).
 
 ``` r
-bench::system_time({ 
+bench::system_time({
   i <- 1
-  while(i < 1e7) {
+  while (i < 1e7) {
     i <- i + 1
   }
 })
 #> process    real 
-#>   222ms   223ms
+#>   1.73s    1.7s
 
 bench::system_time(Sys.sleep(.5))
 #> process    real 
-#>    88µs   502ms
+#>    58µs   497ms
 ```
 
 ## Alternatives

@@ -18,7 +18,9 @@ options(width = 120)
 
 <!-- badges: start -->
 
-[![CRAN status](https://www.r-pkg.org/badges/version/bench)](https://cran.r-project.org/package=bench) [![R-CMD-check](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml) [![Codecov test coverage](https://codecov.io/gh/r-lib/bench/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/bench?branch=main)
+[![CRAN status](https://www.r-pkg.org/badges/version/bench)](https://cran.r-project.org/package=bench)
+[![R-CMD-check](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/bench/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/r-lib/bench/graph/badge.svg)](https://app.codecov.io/gh/r-lib/bench)
 
 <!-- badges: end -->
 
@@ -66,7 +68,7 @@ library(bench)
 set.seed(42)
 
 dat <- data.frame(
-  x = runif(10000, 1, 1000), 
+  x = runif(10000, 1, 1000),
   y = runif(10000, 1, 1000)
 )
 ```
@@ -161,9 +163,9 @@ results %>%
 **bench** also includes `system_time()`, a higher precision alternative to [system.time()](https://www.rdocumentation.org/packages/base/versions/3.5.0/topics/system.time).
 
 ```{r system-time, cache = TRUE}
-bench::system_time({ 
+bench::system_time({
   i <- 1
-  while(i < 1e7) {
+  while (i < 1e7) {
     i <- i + 1
   }
 })
