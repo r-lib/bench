@@ -13,5 +13,8 @@ test_that("`vec_slice()` slices `description` attribute", {
   x <- new_bench_expr(x, c("a", "b"))
 
   expect_identical(attr(vctrs::vec_slice(x, 2), "description"), "b")
-  expect_identical(attr(vctrs::vec_slice(x, c(2, 2, 1)), "description"), c("b", "b", "a"))
+  expect_identical(
+    attr(vctrs::vec_slice(x, c(2, 2, 1)), "description"),
+    c("b", "b", "a")
+  )
 })

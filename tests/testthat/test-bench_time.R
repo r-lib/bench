@@ -26,6 +26,6 @@ describe("bench_memory", {
     expect_equal(names(res), c("mem_alloc", "memory"))
   })
   it("returns reasonable memory allocation", {
-      expect_true(res[["mem_alloc"]] > "10MB")
-    })
+    expect_true(res[["mem_alloc"]] > "10MB")
+  })
 })

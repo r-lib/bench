@@ -57,11 +57,17 @@ press <- function(..., .grid = NULL) {
 
   if (!is.null(.grid)) {
     if (any(!unnamed)) {
-      stop("Must supply either `.grid` or named arguments, not both", call. = FALSE)
+      stop(
+        "Must supply either `.grid` or named arguments, not both",
+        call. = FALSE
+      )
     }
     parameters <- .grid
   } else {
-    parameters <- expand.grid(lapply(args[!unnamed], rlang::eval_tidy), stringsAsFactors = FALSE)
+    parameters <- expand.grid(
+      lapply(args[!unnamed], rlang::eval_tidy),
+      stringsAsFactors = FALSE
+    )
   }
 
   quiet <- bench_press_quiet()
@@ -95,7 +101,11 @@ press <- function(..., .grid = NULL) {
     # TODO: print parameters / results that are unequal?
   }
   res <- do.call(rbind, res)
-  parameters <- parameters[rep(seq_len(nrow(parameters)), each = rows[[1]]), , drop = FALSE]
+  parameters <- parameters[
+    rep(seq_len(nrow(parameters)), each = rows[[1]]),
+    ,
+    drop = FALSE
+  ]
   bench_mark(tibble::as_tibble(cbind(res[1], parameters, res[-1])))
 }
 
@@ -107,4 +117,3 @@ bench_press_quiet <- function() {
 local_press_quiet <- function(frame = rlang::caller_env()) {
   rlang::local_options(bench.press_quiet = TRUE, .frame = frame)
 }
-

@@ -101,22 +101,26 @@ s3_register <- function(generic, class, method = NULL) {
     method_fn <- get_method(method)
     stopifnot(is.function(method_fn))
 
-
     # Only register if generic can be accessed
     if (exists(generic, envir)) {
       registerS3method(generic, class, method_fn, envir = envir)
     } else if (identical(Sys.getenv("NOT_CRAN"), "true")) {
       warn <- .rlang_s3_register_compat("warn")
 
-      warn(c(
-        sprintf(
-          "Can't find generic `%s` in package %s to register S3 method.",
-          generic,
-          package
-        ),
-        "i" = "This message is only shown to developers using devtools.",
-        "i" = sprintf("Do you need to update %s to the latest version?", package)
-      ))
+      warn(
+        c(
+          sprintf(
+            "Can't find generic `%s` in package %s to register S3 method.",
+            generic,
+            package
+          ),
+          "i" = "This message is only shown to developers using devtools.",
+          "i" = sprintf(
+            "Do you need to update %s to the latest version?",
+            package
+          )
+        )
+      )
     }
   }
 
@@ -150,9 +154,11 @@ s3_register <- function(generic, class, method = NULL) {
   )
 
   # Only use rlang if it is fully loaded (#1482)
-  if (try_rlang &&
-        requireNamespace("rlang", quietly = TRUE) &&
-        environmentIsLocked(asNamespace("rlang"))) {
+  if (
+    try_rlang &&
+      requireNamespace("rlang", quietly = TRUE) &&
+      environmentIsLocked(asNamespace("rlang"))
+  ) {
     switch(
       fn,
       is_interactive = return(rlang::is_interactive)

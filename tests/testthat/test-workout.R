@@ -1,6 +1,5 @@
 describe("workout", {
   it("times each expression and names them", {
-
     res <- workout(
       x <- 1:1000
     )
@@ -22,7 +21,9 @@ describe("workout", {
 
 describe("workout_expressions", {
   it("times given expressions", {
-    res <- workout_expressions(as.list(parse(file = system.file("examples/exprs.R", package = "bench"))))
+    res <- workout_expressions(
+      as.list(parse(file = system.file("examples/exprs.R", package = "bench")))
+    )
     expect_named(res, c("exprs", "process", "real"))
     expect_true(nrow(res) == 6)
   })

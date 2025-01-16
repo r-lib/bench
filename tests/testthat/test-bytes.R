@@ -40,7 +40,8 @@ describe("format.bench_bytes", {
     v <- c(NA, 1, 2^13, 2^20, NaN, 2^15)
     expect_equal(
       format(bench_bytes(v), trim = TRUE),
-      c("NA", "1B", "8KB", "1MB", "NaN", "32KB"))
+      c("NA", "1B", "8KB", "1MB", "NaN", "32KB")
+    )
 
     expect_equal(format(bench_bytes(numeric())), character())
   })
@@ -105,7 +106,7 @@ describe("Ops.bench_bytes", {
     expect_equal(x - 100, bench_bytes(c(0, 100, 200)))
     expect_equal(x * 100, bench_bytes(c(10000, 20000, 30000)))
     expect_equal(x / 2, bench_bytes(c(50, 100, 150)))
-    expect_equal(x ^ 2, bench_bytes(c(10000, 40000, 90000)))
+    expect_equal(x^2, bench_bytes(c(10000, 40000, 90000)))
   })
 
   it("errors for other binary operators", {
