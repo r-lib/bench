@@ -5,7 +5,7 @@
 \alias{plot.bench_mark}
 \title{Autoplot method for bench_mark objects}
 \usage{
-\method{autoplot}{bench_mark}(
+autoplot.bench_mark(
   object,
   type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),
   ...

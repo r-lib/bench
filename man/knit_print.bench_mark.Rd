@@ -4,7 +4,7 @@
 \alias{knit_print.bench_mark}
 \title{Custom printing function for \code{bench_mark} objects in knitr documents}
 \usage{
-\method{knit_print}{bench_mark}(x, ..., options)
+knit_print.bench_mark(x, ..., options)
 }
 \arguments{
 \item{x}{An R object to be printed}

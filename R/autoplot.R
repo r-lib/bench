@@ -45,7 +45,7 @@
 #'       autoplot("violin")
 #'   }
 #' }
-#' @exportS3Method ggplot2::autoplot
+# Lazily registered in `.onLoad()`
 autoplot.bench_mark <- function(object,
   type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),...) {
 
