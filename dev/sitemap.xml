@@ -1,84 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>http://bench.r-lib.org/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/MAINTENANCE.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/authors.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/index.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/news/index.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/as_bench_mark.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/as_bench_time.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/autoplot.bench_mark.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/bench-package.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/bench_bytes.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/bench_bytes_trans.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/bench_load_average.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/bench_memory.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/bench_process_memory.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/bench_time.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/bench_time_trans.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/hires_time.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/knit_print.bench_mark.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/mark.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/press.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/scale_bench_expr.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/scale_bench_time.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/summary.bench_mark.html</loc>
-  </url>
-  <url>
-    <loc>http://bench.r-lib.org/reference/workout.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://bench.r-lib.org/dev/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/LICENSE-text.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/LICENSE.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/MAINTENANCE.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/authors.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/index.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/news/index.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/as_bench_mark.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/as_bench_time.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/autoplot.bench_mark.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/bench-package.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/bench_bytes.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/bench_bytes_trans.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/bench_load_average.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/bench_memory.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/bench_process_memory.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/bench_time.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/bench_time_trans.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/hires_time.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/index.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/knit_print.bench_mark.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/mark.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/press.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/scale_bench_expr.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/scale_bench_time.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/summary.bench_mark.html</loc></url>
+<url><loc>https://bench.r-lib.org/dev/reference/workout.html</loc></url>
 </urlset>
+
