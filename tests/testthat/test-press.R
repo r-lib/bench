@@ -84,4 +84,14 @@ describe("press", {
 
     expect_equal(res$result[[1]], 2)
   })
+
+  it("`.grid` subsets tibbles and data.frames the same way (#142)", {
+    x <- data.frame(a = 1, b = 2)
+    out <- press(mark(c(a, b)), .grid = x, .quiet = TRUE)
+    expect_identical(out$result[[1L]], c(1, 2))
+
+    x <- tibble::tibble(a = 1, b = 2)
+    out <- press(mark(c(a, b)), .grid = x, .quiet = TRUE)
+    expect_identical(out$result[[1L]], c(1, 2))
+  })
 })

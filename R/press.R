@@ -76,25 +76,30 @@ press <- function(..., .grid = NULL, .quiet = FALSE) {
     )
   }
 
+  # For consistent `[` methods
+  parameters <- tibble::as_tibble(parameters)
+
   if (!.quiet) {
-    status <- format(tibble::as_tibble(parameters), n = Inf)
+    status <- format(parameters, n = Inf)
     message(glue::glue("Running with:\n{status[[2]]}"))
   }
 
   eval_one <- function(row) {
-    e <- rlang::new_data_mask(new.env(parent = emptyenv()))
+    env <- rlang::new_data_mask(new.env(parent = emptyenv()))
+    names <- names(parameters)
 
-    for (col in seq_along(parameters)) {
-      var <- names(parameters)[[col]]
-      value <- parameters[row, col]
-      assign(var, value, envir = e)
+    for (i in seq_along(parameters)) {
+      name <- names[[i]]
+      column <- parameters[[i]]
+      value <- column[row]
+      assign(name, value, envir = env)
     }
 
     if (!.quiet) {
       message(status[[row + 3L]])
     }
 
-    rlang::eval_tidy(args[[which(unnamed)]], data = e)
+    rlang::eval_tidy(args[[which(unnamed)]], data = env)
   }
 
   res <- lapply(seq_len(nrow(parameters)), eval_one)
@@ -105,10 +110,6 @@ press <- function(..., .grid = NULL, .quiet = FALSE) {
     # TODO: print parameters / results that are unequal?
   }
   res <- do.call(rbind, res)
-  parameters <- parameters[
-    rep(seq_len(nrow(parameters)), each = rows[[1]]),
-    ,
-    drop = FALSE
-  ]
+  parameters <- parameters[rep(seq_len(nrow(parameters)), each = rows[[1]]), ]
   bench_mark(tibble::as_tibble(cbind(res[1], parameters, res[-1])))
 }
