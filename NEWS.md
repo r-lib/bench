@@ -1,5 +1,7 @@
 # bench (development version)
 
+* `press()` gains a new `.quiet` argument to silence progress messages (#145).
+
 * Fixed an issue in `bench_time_trans()` and `bench_bytes_trans()` where pretty
   breaks were not being applied correctly (#140, @plietar, @simonpcouch).
 
