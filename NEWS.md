@@ -1,5 +1,8 @@
 # bench (development version)
 
+* Fixed an issue in `bench_time_trans()` and `bench_bytes_trans()` where pretty
+  breaks were not being applied correctly (#140, @plietar, @simonpcouch).
+
 * R >=4.0.0 is now required, which is aligned with tidyverse standards.
 
 * Switched to modern ggplot2 conventions internally (#141, @olivroy).

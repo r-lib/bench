@@ -169,16 +169,25 @@ type_sum.bench_bytes <- function(x) {
 bench_bytes_trans <- function(base = 2) {
   if (is.null(base)) {
     return(
-      scales::trans_new("bch:byt", as.numeric, as_bench_bytes,
-        scales::pretty_breaks(), domain = c(1e-100, Inf)
+      scales::trans_new(
+        name = "bch:byt",
+        transform = as.numeric,
+        inverse = as_bench_bytes,
+        breaks = scales::pretty_breaks(),
+        domain = c(1e-100, Inf)
       )
     )
   }
   trans <- function(x) log(as.numeric(x), base)
   inv <- function(x) as_bench_bytes(base ^ as.numeric(x))
 
-  scales::trans_new(paste0("bch:byt-", format(base)), trans, inv,
-    scales::log_breaks(base = base), domain = c(1e-100, Inf))
+  scales::trans_new(
+    name = paste0("bch:byt-", format(base)),
+    transform = trans,
+    inverse = inv,
+    breaks = scales::log_breaks(base = base),
+    domain = c(1e-100, Inf)
+  )
 }
 
 # Lazily registered in `.onLoad()`
