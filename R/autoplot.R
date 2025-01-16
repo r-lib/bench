@@ -54,7 +54,7 @@ autoplot.bench_mark <- function(object,
   type <- match.arg(type)
 
   if (type == "beeswarm") {
-    rlang::check_installed("ggbeeswarm", "to use `type = \"beeswarm\" option.")
+    rlang::check_installed("ggbeeswarm", "to use `type = \"beeswarm\".")
   }
 
   # Just convert bench_expr to characters
