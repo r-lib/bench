@@ -181,6 +181,7 @@ bench_bytes_trans <- function(base = 2) {
     scales::log_breaks(base = base), domain = c(1e-100, Inf))
 }
 
+# Lazily registered in `.onLoad()`
 scale_type.bench_bytes <- function(x) "bench_bytes"
 
 #' Position scales for bench_time data

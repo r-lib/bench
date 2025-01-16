@@ -37,7 +37,7 @@ Autoplot method for bench_mark objects
 \details{
 This function requires some optional dependencies. \link[ggplot2:ggplot2-package]{ggplot2},
 \link[tidyr:tidyr-package]{tidyr}, and depending on the plot type
-\link[ggbeeswarm:ggbeeswarm]{ggbeeswarm}, \link[ggridges:ggridges]{ggridges}.
+\link[ggbeeswarm:ggbeeswarm]{ggbeeswarm}, \link[ggridges:ggridges-package]{ggridges}.
 
 For \code{type} of \code{beeswarm} and \code{jitter} the points are colored by the highest
 level garbage collection performed during each iteration.

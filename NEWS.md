@@ -1,5 +1,7 @@
 # bench (development version)
 
+* Switched to modern ggplot2 conventions internally (#141, @olivroy).
+
 # bench 1.1.3
 
 * Long unnamed `bench_expr` expressions are now truncated correctly when used as
@@ -79,7 +81,7 @@
 * `summary.bench_mark()` gains a `time_unit` argument, so you can report all
   times in a consistent scale if desired (#18, #26).
 
-* `bench_mark()` now checks for user interrupts, to allow you to stop benchmarking 
+* `bench_mark()` now checks for user interrupts, to allow you to stop benchmarking
   if it takes longer than you were expecting (#49).
 
 * New `bench_memory()` to capture just the memory allocated by an expression.

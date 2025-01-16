@@ -1,28 +1,19 @@
-url: http://bench.r-lib.org
+url: https://bench.r-lib.org
 
 authors:
   "Jim Hester":
-    href: http://jimhester.com
+    href: https://www.jimhester.com/
 
 development:
   mode: auto
 
 template:
+  bootstrap: 5
+  package: tidytemplate
   params:
     ganalytics: UA-115082821-1
 
-navbar:
-  type: default
-  left:
-  - text: Home
-    href: index.html
-  - text: Reference
-    href: reference/index.html
-  - text: News
-    menu:
-    - text: "Release notes"
-    - text: "Version 1.0.1"
-      href: https://www.tidyverse.org/articles/2018/06/bench-1.0.1/
-    - text: "------------------"
-    - text: "Change log"
-      href: news/index.html
+news:
+ releases:
+ - text: "bench 1.0.1"
+   href: https://www.tidyverse.org/blog/2018/06/bench-1.0.1/

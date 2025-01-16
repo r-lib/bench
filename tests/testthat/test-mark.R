@@ -1,18 +1,18 @@
 describe("mark_", {
   it("If min_time is Inf, runs for max_iterations", {
     res <- .Call(mark_, quote(1), new.env(), Inf, as.integer(0), as.integer(10), FALSE)
-    expect_equal(length(res), 10)
+    expect_length(res, 10)
 
     res <- .Call(mark_, quote(1), new.env(), Inf, as.integer(0), as.integer(20), FALSE)
-    expect_equal(length(res), 20)
+    expect_length(res, 20)
   })
 
   it("If min_time is 0, runs for min_iterations", {
     res <- .Call(mark_, quote(1), new.env(), 0, as.integer(1), as.integer(10), FALSE)
-    expect_equal(length(res), 1)
+    expect_length(res, 1)
 
     res <- .Call(mark_, quote(1), new.env(), 0, as.integer(5), as.integer(10), FALSE)
-    expect_equal(length(res), 5)
+    expect_length(res, 5)
   })
 
   it("If min_time is 0, runs for min_iterations", {
@@ -59,7 +59,7 @@ describe("mark", {
 
     res <- mark(1, 2, check = FALSE, iterations = 1)
 
-    expect_equal(length(res$memory), 2)
+    expect_length(res$memory, 2)
 
     expect_s3_class(res$memory[[1]], "Rprofmem")
     expect_equal(ncol(res$memory[[1]]), 3)
@@ -218,8 +218,7 @@ describe("summary.bench_mark", {
     expect_equal(res$n_itr, c(3, 2))
     expect_equal(res$total_time, as_bench_time(c(.489, .676)))
 
-    expect_warning(regexp = NA,
-      res2 <- summary(x, filter_gc = FALSE))
+    expect_no_warning(res2 <- summary(x, filter_gc = FALSE))
 
     expect_identical(res, res2)
   })

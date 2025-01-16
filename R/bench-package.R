@@ -2,6 +2,7 @@
 #' @importFrom methods setOldClass
 #' @importFrom pillar pillar_shaft
 #' @importFrom pillar type_sum
+#' @importFrom rlang .data
 ## usethis namespace: end
 NULL
 

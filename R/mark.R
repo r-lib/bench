@@ -322,6 +322,7 @@ parse_allocations <- function(filename) {
 #'
 #' @param options A list of knitr chunk options set in the currently evaluated
 #'   chunk.
+# Lazily registered in `.onLoad()`
 knit_print.bench_mark <- function(x, ..., options) {
   if (!isTRUE(options$bench.all_columns)) {
     x <- x[!colnames(x) %in% data_cols]
@@ -339,6 +340,7 @@ parse_gc <- function(x) {
 
 utils::globalVariables(c("time", "gc"))
 
+# Lazily registered in `.onLoad()`
 unnest.bench_mark <- function(data, ...) {
   if (inherits(data[["expression"]], "bench_expr")) {
     data[["expression"]] <- as.character(data[["expression"]])
@@ -376,12 +378,14 @@ rbind.bench_mark <- function(..., deparse.level = 1) {
   res
 }
 
+# Lazily registered in `.onLoad()`
 filter.bench_mark <- function(.data, ...) {
   dots <- rlang::quos(...)
   idx <- Reduce(`&`, lapply(dots, rlang::eval_tidy, data = .data))
   .data[idx, ]
 }
 
+# Lazily registered in `.onLoad()`
 group_by.bench_mark <- function(.data, ...) {
   bench_mark(NextMethod())
 }

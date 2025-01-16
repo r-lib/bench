@@ -222,6 +222,7 @@ bench_time_trans <- function(base = 10) {
     scales::log_breaks(base = base), domain = c(1e-100, Inf))
 }
 
+# Lazily registered in `.onLoad()`
 scale_type.bench_time <- function(x) "bench_time"
 
 #' Position scales for bench_time data

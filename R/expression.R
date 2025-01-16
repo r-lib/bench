@@ -34,7 +34,7 @@ type_sum.bench_expr <- function(x) {
   new_bench_expr(new_x)
 }
 
-# @export
+# Lazily registered in `.onLoad()`
 vec_proxy.bench_expr <- function(x, ...) {
   desc <- attr(x, "description")
   attributes(x) <- NULL
@@ -42,7 +42,7 @@ vec_proxy.bench_expr <- function(x, ...) {
   vctrs::new_data_frame(out, n = length(x))
 }
 
-# @export
+# Lazily registered in `.onLoad()`
 vec_restore.bench_expr <- function(x, to, ...) {
   new_bench_expr(x$x, x$desc)
 }
@@ -55,6 +55,7 @@ pillar_shaft.bench_expr <- function(x, ...) {
   pillar_shaft(as.character(x), ...)
 }
 
+# Lazily registered in `.onLoad()`
 scale_type.bench_expr <- function(x) {
   "bench_expr"
 }
