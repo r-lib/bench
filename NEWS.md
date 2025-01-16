@@ -1,12 +1,12 @@
-# bench (development version)
+# bench 1.1.4
+
+* `press()` gains a new `.quiet` argument to silence progress messages (#145).
 
 * The `.grid` argument of `press()` now subsets data.frames and tibbles
   consistently (#142).
 
-* `press()` gains a new `.quiet` argument to silence progress messages (#145).
-
-* Fixed an issue in `bench_time_trans()` and `bench_bytes_trans()` where pretty
-  breaks were not being applied correctly (#140, @plietar, @simonpcouch).
+* `bench_time_trans()` and `bench_bytes_trans()` once again apply pretty
+  breaks correctly (#140, @plietar, @simonpcouch).
 
 * R >=4.0.0 is now required, which is aligned with tidyverse standards.
 
