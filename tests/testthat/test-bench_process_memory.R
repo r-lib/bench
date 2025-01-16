@@ -9,9 +9,9 @@ describe("bench_process_memory", {
   # This test is unreliable due to when gcs happen when run repeatedly, so it
   # is commented out.
   #it("current memory increases when you allocate a medium size vector", {
-    #res1 <- bench_process_memory()
-    #x <- rep(1, 1e8)
-    #res2 <- bench_process_memory()
-    #expect_true(res2[["current"]] > res1[["current"]])
+  #res1 <- bench_process_memory()
+  #x <- rep(1, 1e8)
+  #res2 <- bench_process_memory()
+  #expect_true(res2[["current"]] > res1[["current"]])
   #})
 })

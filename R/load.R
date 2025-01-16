@@ -1,4 +1,3 @@
-
 #' Get system load averages
 #'
 #' Uses OS system APIs to return the load average for the past 1, 5 and 15 minutes.

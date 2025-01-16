@@ -36,7 +36,11 @@ workout <- function(expr, description = NULL) {
 
 #' @rdname workout
 #' @export
-workout_expressions <- function(exprs, env = parent.frame(), description = NULL) {
+workout_expressions <- function(
+  exprs,
+  env = parent.frame(),
+  description = NULL
+) {
   if (is.null(description)) {
     description <- names(exprs)
   }

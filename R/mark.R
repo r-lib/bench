@@ -39,10 +39,20 @@ NULL
 #'   dat[which(dat$x > 500), ],
 #'   subset(dat, x > 500))
 #' @export
-mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
-                 max_iterations = 10000, check = TRUE, memory = capabilities("profmem"), filter_gc = TRUE,
-                 relative = FALSE, time_unit = NULL, exprs = NULL, env = parent.frame()) {
-
+mark <- function(
+  ...,
+  min_time = .5,
+  iterations = NULL,
+  min_iterations = 1,
+  max_iterations = 10000,
+  check = TRUE,
+  memory = capabilities("profmem"),
+  filter_gc = TRUE,
+  relative = FALSE,
+  time_unit = NULL,
+  exprs = NULL,
+  env = parent.frame()
+) {
   if (!is.null(iterations)) {
     min_iterations <- iterations
     max_iterations <- iterations
@@ -63,7 +73,13 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
 
   n_exprs <- length(exprs)
 
-  results <- list(expression = new_bench_expr(exprs), time = vector("list", n_exprs), gc = vector("list", n_exprs), memory = vector("list", n_exprs), result = vector("list", n_exprs))
+  results <- list(
+    expression = new_bench_expr(exprs),
+    time = vector("list", n_exprs),
+    gc = vector("list", n_exprs),
+    memory = vector("list", n_exprs),
+    result = vector("list", n_exprs)
+  )
 
   # Helper for evaluating with memory profiling
   eval_one <- function(e, profile_memory) {
@@ -101,13 +117,15 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
         if (!isTRUE(comp)) {
           expressions <- as.character(results$expression)
 
-          stop(glue::glue("
+          stop(
+            glue::glue(
+              "
               Each result must equal the first result:
               `{first}` does not equal `{current}`
               ",
               first = expressions[[1]],
               current = expressions[[i]]
-              ),
+            ),
             call. = FALSE
           )
         }
@@ -118,8 +136,20 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
   for (i in seq_len(length(exprs))) {
     error <- NULL
     gc_msg <- with_gcinfo({
-      tryCatch(error = function(e) { e$call <- NULL; error <<- e},
-      res <- .Call(mark_, exprs[[i]], env, min_time, as.integer(min_iterations), as.integer(max_iterations), TRUE)
+      tryCatch(
+        error = function(e) {
+          e$call <- NULL
+          error <<- e
+        },
+        res <- .Call(
+          mark_,
+          exprs[[i]],
+          env,
+          min_time,
+          as.integer(min_iterations),
+          as.integer(max_iterations),
+          TRUE
+        )
       )
     })
     if (!is.null(error)) {
@@ -130,8 +160,12 @@ mark <- function(..., min_time = .5, iterations = NULL, min_iterations = 1,
     results$gc[[i]] <- parse_gc(gc_msg)
   }
 
-  out <- summary(bench_mark(tibble::as_tibble(results, .name_repair = "minimal")),
-          filter_gc = filter_gc, relative = relative, time_unit = time_unit)
+  out <- summary(
+    bench_mark(tibble::as_tibble(results, .name_repair = "minimal")),
+    filter_gc = filter_gc,
+    relative = relative,
+    time_unit = time_unit
+  )
 
   out
 }
@@ -217,19 +251,23 @@ time_cols <- c("min", "median", "total_time")
 #' # Or output relative times
 #' summary(results, relative = TRUE)
 #' @export
-summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, time_unit = NULL, ...) {
+summary.bench_mark <- function(
+  object,
+  filter_gc = TRUE,
+  relative = FALSE,
+  time_unit = NULL,
+  ...
+) {
   nms <- colnames(object)
   parameters <- setdiff(nms, c("expression", summary_cols, data_cols))
 
-  num_gc <- lapply(object$gc,
-    function(x) {
-      res <- rowSums(x)
-      if (length(res) == 0) {
-        res <- rep(0, length(x))
-      }
-      res
+  num_gc <- lapply(object$gc, function(x) {
+    res <- rowSums(x)
+    if (length(res) == 0) {
+      res <- rep(0, length(x))
     }
-  )
+    res
+  })
   if (isTRUE(filter_gc)) {
     no_gc <- lapply(num_gc, `==`, 0)
     times <- Map(`[`, object$time, no_gc)
@@ -239,8 +277,9 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, time_
 
   if (filter_gc && any(lengths(times) == 0)) {
     times <- object$time
-    warning(call. = FALSE,
-        "Some expressions had a GC in every iteration; so filtering is disabled."
+    warning(
+      call. = FALSE,
+      "Some expressions had a GC in every iteration; so filtering is disabled."
     )
   }
 
@@ -250,25 +289,38 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, time_
   object$total_time <- new_bench_time(vdapply(times, sum))
 
   object$n_itr <- viapply(times, length)
-  object$`itr/sec` <-  as.numeric(object$n_itr / object$total_time)
+  object$`itr/sec` <- as.numeric(object$n_itr / object$total_time)
 
   object$n_gc <- vdapply(num_gc, sum)
-  object$`gc/sec` <-  as.numeric(object$n_gc / object$total_time)
+  object$`gc/sec` <- as.numeric(object$n_gc / object$total_time)
 
   object$mem_alloc <-
     bench_bytes(
-      vdapply(object$memory, function(x) if (is.null(x)) NA else sum(x$bytes, na.rm = TRUE)))
+      vdapply(
+        object$memory,
+        function(x) if (is.null(x)) NA else sum(x$bytes, na.rm = TRUE)
+      )
+    )
 
   if (isTRUE(relative)) {
-    object[summary_cols] <- lapply(object[summary_cols], function(x) as.numeric(x / min(x)))
+    object[summary_cols] <- lapply(
+      object[summary_cols],
+      function(x) as.numeric(x / min(x))
+    )
   }
 
   if (!is.null(time_unit)) {
     time_unit <- match.arg(time_unit, names(time_units()))
-    object[time_cols] <- lapply(object[time_cols], function(x) as.numeric(x / time_units()[time_unit]))
+    object[time_cols] <- lapply(
+      object[time_cols],
+      function(x) as.numeric(x / time_units()[time_unit])
+    )
   }
 
-  to_keep <- intersect(c("expression", parameters, summary_cols, data_cols), names(object))
+  to_keep <- intersect(
+    c("expression", parameters, summary_cols, data_cols),
+    names(object)
+  )
   bench_mark(object[to_keep])
 }
 
@@ -278,14 +330,11 @@ summary.bench_mark <- function(object, filter_gc = TRUE, relative = FALSE, time_
 }
 
 parse_allocations <- function(filename) {
-
   if (!file.exists(filename)) {
     empty_Rprofmem <- structure(
-      list(what = character(),
-        bytes = integer(),
-        trace = list()),
-      class = c("Rprofmem",
-        "data.frame"))
+      list(what = character(), bytes = integer(), trace = list()),
+      class = c("Rprofmem", "data.frame")
+    )
 
     return(empty_Rprofmem)
   }
@@ -294,7 +343,10 @@ parse_allocations <- function(filename) {
   tryCatch(
     profmem::readRprofmem(filename),
     error = function(e) {
-      stop("Memory profiling failed.\n  If you are benchmarking parallel code you must set `memory = FALSE`.", call. = FALSE)
+      stop(
+        "Memory profiling failed.\n  If you are benchmarking parallel code you must set `memory = FALSE`.",
+        call. = FALSE
+      )
     }
   )
 }
@@ -359,7 +411,8 @@ unnest.bench_mark <- function(data, ...) {
       data$level2 > 0 ~ "level2",
       data$level1 > 0 ~ "level1",
       data$level0 > 0 ~ "level0",
-      TRUE ~ "none")
+      TRUE ~ "none"
+    )
   data$gc <- factor(data$gc, c("none", "level0", "level1", "level2"))
 
   data

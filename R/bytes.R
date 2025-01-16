@@ -1,7 +1,17 @@
 # This is mostly a copy of https://github.com/r-lib/fs/blob/0f5b6191935fe4c862d2e5003655e6c1669f4afd/R/fs_bytes.R
 # If I end up needing this in a third package it should probably live in a package somewhere, maybe prettyunits?
 
-byte_units <- c('B' = 1, 'K' = 1024, 'M' = 1024 ^ 2, 'G' = 1024 ^ 3, 'T' = 1024 ^ 4, 'P' = 1024 ^ 5, 'E' = 1024 ^ 6, 'Z' = 1024 ^ 7, 'Y' = 1024 ^ 8)
+byte_units <- c(
+  'B' = 1,
+  'K' = 1024,
+  'M' = 1024^2,
+  'G' = 1024^3,
+  'T' = 1024^4,
+  'P' = 1024^5,
+  'E' = 1024^6,
+  'Z' = 1024^7,
+  'Y' = 1024^8
+)
 
 #' Human readable memory sizes
 #'
@@ -42,7 +52,14 @@ setOldClass(c("bench_bytes", "numeric"), numeric())
 #' @export
 as_bench_bytes.default <- function(x) {
   x <- as.character(x)
-  m <- captures(x, regexpr("^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$", x, perl = TRUE))
+  m <- captures(
+    x,
+    regexpr(
+      "^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$",
+      x,
+      perl = TRUE
+    )
+  )
   m$unit[m$unit == ""] <- "B"
   new_bench_bytes(unname(as.numeric(m$size) * byte_units[m$unit]))
 }
@@ -59,7 +76,13 @@ as_bench_bytes.numeric <- function(x) {
 
 # Adapted from https://github.com/gaborcsardi/prettyunits
 #' @export
-format.bench_bytes <- function(x, scientific = FALSE, digits = 3, drop0trailing = TRUE, ...) {
+format.bench_bytes <- function(
+  x,
+  scientific = FALSE,
+  digits = 3,
+  drop0trailing = TRUE,
+  ...
+) {
   nms <- names(x)
 
   bytes <- unclass(x)
@@ -74,13 +97,19 @@ format.bench_bytes <- function(x, scientific = FALSE, digits = 3, drop0trailing 
   ## NA and NaN bytes
   res[is.na(bytes)] <- NA_real_
   res[is.nan(bytes)] <- NaN
-  unit[is.na(bytes)] <- ""            # Includes NaN as well
+  unit[is.na(bytes)] <- "" # Includes NaN as well
 
   # Append an extra B to each unit
   large_units <- unit %in% names(byte_units)[-1]
   unit[large_units] <- paste0(unit[large_units], "B")
 
-  res <- format(res, scientific = scientific, digits = digits, drop0trailing = drop0trailing, ...)
+  res <- format(
+    res,
+    scientific = scientific,
+    digits = digits,
+    drop0trailing = drop0trailing,
+    ...
+  )
 
   stats::setNames(paste0(res, unit), nms)
 }
@@ -120,13 +149,16 @@ max.bench_bytes <- function(x, ...) {
 
 #' @export
 # Adapted from Ops.numeric_version
-Ops.bench_bytes <- function (e1, e2) {
+Ops.bench_bytes <- function(e1, e2) {
   if (nargs() == 1L) {
-    stop(sprintf("unary '%s' not defined for \"bench_bytes\" objects", .Generic),
-      call. = FALSE)
+    stop(
+      sprintf("unary '%s' not defined for \"bench_bytes\" objects", .Generic),
+      call. = FALSE
+    )
   }
 
-  boolean <- switch(.Generic,
+  boolean <- switch(
+    .Generic,
     `+` = TRUE,
     `-` = TRUE,
     `*` = TRUE,
@@ -138,10 +170,13 @@ Ops.bench_bytes <- function (e1, e2) {
     `!=` = TRUE,
     `<=` = TRUE,
     `>=` = TRUE,
-  FALSE)
+    FALSE
+  )
   if (!boolean) {
-    stop(sprintf("'%s' not defined for \"bench_bytes\" objects", .Generic),
-      call. = FALSE)
+    stop(
+      sprintf("'%s' not defined for \"bench_bytes\" objects", .Generic),
+      call. = FALSE
+    )
   }
   e1 <- as_bench_bytes(e1)
   e2 <- as_bench_bytes(e2)
@@ -157,7 +192,6 @@ pillar_shaft.bench_bytes <- function(x, ...) {
 type_sum.bench_bytes <- function(x) {
   "bch:byt"
 }
-
 
 #' Benchmark time transformation
 #'
@@ -179,7 +213,7 @@ bench_bytes_trans <- function(base = 2) {
     )
   }
   trans <- function(x) log(as.numeric(x), base)
-  inv <- function(x) as_bench_bytes(base ^ as.numeric(x))
+  inv <- function(x) as_bench_bytes(base^as.numeric(x))
 
   scales::trans_new(
     name = paste0("bch:byt-", format(base)),

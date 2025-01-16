@@ -1,6 +1,7 @@
 time_units <- function() {
   stats::setNames(
-    c(1e-9,
+    c(
+      1e-9,
       1e-6,
       if (is_utf8_output()) 1e-6,
       1e-3,
@@ -8,8 +9,10 @@ time_units <- function() {
       60,
       60 * 60,
       60 * 60 * 24,
-      60 * 60 * 24 * 7),
-    c("ns",
+      60 * 60 * 24 * 7
+    ),
+    c(
+      "ns",
       "us",
       if (is_utf8_output()) "\U00B5s",
       "ms",
@@ -17,7 +20,8 @@ time_units <- function() {
       "m",
       "h",
       "d",
-      "w")
+      "w"
+    )
   )
 }
 
@@ -52,9 +56,10 @@ setOldClass(c("bench_time", "numeric"), numeric())
 #' @export
 as_bench_time.default <- function(x) {
   x <- as.character(x)
-  re <- glue::glue("
-      ^(?<size>[[:digit:].]+)\\s*(?<unit>{nms}?)$
-      ", nms = paste0(names(time_units()), collapse = "|"))
+  re <- glue::glue(
+    "^(?<size>[[:digit:].]+)\\s*(?<unit>{nms}?)$",
+    nms = paste0(names(time_units()), collapse = "|")
+  )
 
   m <- captures(x, regexpr(re, x, perl = TRUE))
   m$unit[m$unit == ""] <- "s"
@@ -80,14 +85,20 @@ find_unit <- function(x, units) {
   }
   epsilon <- 1 - (x * (1 / units))
   names(
-    utils::tail(n = 1,
-      which(epsilon < tolerance)))
+    utils::tail(n = 1, which(epsilon < tolerance))
+  )
 }
 
 # Adapted from https://github.com/gaborcsardi/prettyunits
 # Aims to be consistent with ls -lh, so uses 1024 KiB units, 3 or less digits etc.
 #' @export
-format.bench_time <- function(x, scientific = FALSE, digits = 3, drop0trailing = TRUE, ...) {
+format.bench_time <- function(
+  x,
+  scientific = FALSE,
+  digits = 3,
+  drop0trailing = TRUE,
+  ...
+) {
   nms <- names(x)
 
   # convert negative times to 1ns, this can happen if the minimum calculated
@@ -110,7 +121,13 @@ format.bench_time <- function(x, scientific = FALSE, digits = 3, drop0trailing =
   res[is.infinite(seconds) & seconds < 0] <- -Inf
   unit[is.na(seconds) | is.infinite(seconds)] <- ""
 
-  res <- format(res, scientific = scientific, digits = digits, drop0trailing = drop0trailing, ...)
+  res <- format(
+    res,
+    scientific = scientific,
+    digits = digits,
+    drop0trailing = drop0trailing,
+    ...
+  )
 
   stats::setNames(paste0(res, unit), nms)
 }
@@ -152,11 +169,14 @@ max.bench_time <- function(x, ...) {
 # Adapted from Ops.numeric_version
 Ops.bench_time <- function(e1, e2, ...) {
   if (nargs() == 1L) {
-    stop(sprintf("unary '%s' not defined for \"bench_time\" objects", .Generic),
-      call. = FALSE)
+    stop(
+      sprintf("unary '%s' not defined for \"bench_time\" objects", .Generic),
+      call. = FALSE
+    )
   }
 
-  boolean <- switch(.Generic,
+  boolean <- switch(
+    .Generic,
     `+` = TRUE,
     `-` = TRUE,
     `*` = TRUE,
@@ -169,10 +189,13 @@ Ops.bench_time <- function(e1, e2, ...) {
     `<=` = TRUE,
     `>=` = TRUE,
     `%%` = TRUE,
-  FALSE)
+    FALSE
+  )
   if (!boolean) {
-    stop(sprintf("'%s' not defined for \"bench_time\" objects", .Generic),
-      call. = FALSE)
+    stop(
+      sprintf("'%s' not defined for \"bench_time\" objects", .Generic),
+      call. = FALSE
+    )
   }
   e1 <- as_bench_time(e1)
   e2 <- as_bench_time(e2)
@@ -220,7 +243,7 @@ bench_time_trans <- function(base = 10) {
   }
 
   trans <- function(x) log(as.numeric(x), base)
-  inv <- function(x) as_bench_time(base ^ as.numeric(x))
+  inv <- function(x) as_bench_time(base^as.numeric(x))
 
   scales::trans_new(
     name = paste0("bch:tm-", format(base)),

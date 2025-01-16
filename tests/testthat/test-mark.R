@@ -1,22 +1,65 @@
 describe("mark_", {
   it("If min_time is Inf, runs for max_iterations", {
-    res <- .Call(mark_, quote(1), new.env(), Inf, as.integer(0), as.integer(10), FALSE)
+    res <- .Call(
+      mark_,
+      quote(1),
+      new.env(),
+      Inf,
+      as.integer(0),
+      as.integer(10),
+      FALSE
+    )
     expect_length(res, 10)
 
-    res <- .Call(mark_, quote(1), new.env(), Inf, as.integer(0), as.integer(20), FALSE)
+    res <- .Call(
+      mark_,
+      quote(1),
+      new.env(),
+      Inf,
+      as.integer(0),
+      as.integer(20),
+      FALSE
+    )
     expect_length(res, 20)
   })
 
   it("If min_time is 0, runs for min_iterations", {
-    res <- .Call(mark_, quote(1), new.env(), 0, as.integer(1), as.integer(10), FALSE)
+    res <- .Call(
+      mark_,
+      quote(1),
+      new.env(),
+      0,
+      as.integer(1),
+      as.integer(10),
+      FALSE
+    )
     expect_length(res, 1)
 
-    res <- .Call(mark_, quote(1), new.env(), 0, as.integer(5), as.integer(10), FALSE)
+    res <- .Call(
+      mark_,
+      quote(1),
+      new.env(),
+      0,
+      as.integer(5),
+      as.integer(10),
+      FALSE
+    )
     expect_length(res, 5)
   })
 
   it("If min_time is 0, runs for min_iterations", {
-    res <- .Call(mark_, quote({i <- 1; while(i < 10000) i <- i + 1}), new.env(), .1, as.integer(1), as.integer(1000), FALSE)
+    res <- .Call(
+      mark_,
+      quote({
+        i <- 1
+        while (i < 10000) i <- i + 1
+      }),
+      new.env(),
+      .1,
+      as.integer(1),
+      as.integer(1000),
+      FALSE
+    )
 
     expect_gte(length(res), 1)
     expect_lte(length(res), 1000)
@@ -24,7 +67,17 @@ describe("mark_", {
 
   it("Evaluates code in the environment", {
     e <- new.env(parent = baseenv())
-    res <- .Call(mark_, quote({a <- 42}), e, Inf, as.integer(1), as.integer(1), FALSE)
+    res <- .Call(
+      mark_,
+      quote({
+        a <- 42
+      }),
+      e,
+      Inf,
+      as.integer(1),
+      as.integer(1),
+      FALSE
+    )
     expect_equal(e[["a"]], 42)
   })
 })
@@ -37,14 +90,17 @@ describe("mark", {
     expect_true(all.equal(res$result[[1]], res$result[[2]]))
   })
   it("Can use other functions to check results like identical to check results", {
-
     # numerics and integers not identical
-    expect_error(regexp = "Each result must equal the first result",
-      mark(1 + 1, 1L + 1L, check = identical, iterations = 1))
+    expect_error(
+      regexp = "Each result must equal the first result",
+      mark(1 + 1, 1L + 1L, check = identical, iterations = 1)
+    )
 
     # Function that always returns false
-    expect_error(regexp = "Each result must equal the first result",
-      mark(1 + 1, 1 + 1, check = function(x, y) FALSE, iterations = 1))
+    expect_error(
+      regexp = "Each result must equal the first result",
+      mark(1 + 1, 1 + 1, check = function(x, y) FALSE, iterations = 1)
+    )
 
     # Function that always returns true
     res <- mark(1 + 1, 1 + 2, check = function(x, y) TRUE, iterations = 1)
@@ -55,7 +111,7 @@ describe("mark", {
   })
 
   it("works with capabilities('profmem')", {
-    skip_if_not(isTRUE(capabilities("profmem")[[1]]))
+    skip_if_not(capabilities("profmem"))
 
     res <- mark(1, 2, check = FALSE, iterations = 1)
 
@@ -151,25 +207,32 @@ describe("summary.bench_mark", {
       memory = list(NULL),
       time = list(
         c(
-          0.088492998, 0.109396977, 0.141906863, 0.005378346, 0.007563524,
-          0.002439451, 0.079715252, 0.003022223, 0.005948069, 0.002276121
-          )
-        ),
+          0.088492998,
+          0.109396977,
+          0.141906863,
+          0.005378346,
+          0.007563524,
+          0.002439451,
+          0.079715252,
+          0.003022223,
+          0.005948069,
+          0.002276121
+        )
+      ),
       gc = list(
         tibble::tibble(
           level0 = c(1, 0, 0, 0, 1, 0, 0, 0, 1, 0),
           level1 = c(0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
           level2 = c(0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-          )
         )
       )
     )
+  )
   it("computes relative summaries if called with relative = TRUE", {
     # remove memory column, as there likely are no allocations or gc in these
     # benchmarks
     res1 <- summary(res)
     for (col in setdiff(summary_cols, "mem_alloc")) {
-
       # Absolute values should always be positive
       expect_true(all(res1[[!!col]] >= 0))
     }
@@ -192,22 +255,34 @@ describe("summary.bench_mark", {
     # This is artificial, but it avoids differences in gc on different
     # platforms / memory loads, so we can ensure the first has no gcs, and the
     # second has all gcs
-    x <- bench_mark(tibble::tibble(
-      expression = c(1, 2),
-      result = list(1, 2),
-      time = list(
-        as_bench_time(c(0.166, 0.161, 0.162)),
-        as_bench_time(c(0.276, 0.4))
-      ),
-      memory = list(NULL, NULL),
-      gc = list(
-        tibble::tibble(level0 = integer(0), level1 = integer(0), level2 = integer(0)),
-        tibble::tibble(level0 = c(1L, 1L), level1 = c(0L, 0L), level2 = c(0L, 0L))
+    x <- bench_mark(
+      tibble::tibble(
+        expression = c(1, 2),
+        result = list(1, 2),
+        time = list(
+          as_bench_time(c(0.166, 0.161, 0.162)),
+          as_bench_time(c(0.276, 0.4))
+        ),
+        memory = list(NULL, NULL),
+        gc = list(
+          tibble::tibble(
+            level0 = integer(0),
+            level1 = integer(0),
+            level2 = integer(0)
+          ),
+          tibble::tibble(
+            level0 = c(1L, 1L),
+            level1 = c(0L, 0L),
+            level2 = c(0L, 0L)
+          )
+        )
       )
-    ))
+    )
 
-    expect_warning(regexp = "Some expressions had a GC in every iteration",
-      res <- summary(x, filter_gc = TRUE))
+    expect_warning(
+      regexp = "Some expressions had a GC in every iteration",
+      res <- summary(x, filter_gc = TRUE)
+    )
 
     expect_equal(res$min, as_bench_time(c(.161, .276)))
     expect_equal(res$median, as_bench_time(c(.162, .338)))
@@ -227,12 +302,15 @@ describe("summary.bench_mark", {
 describe("unnest.bench_mark", {
   it("does not contain result or memory columns", {
     skip_if_not_installed("tidyr", "1.0.0")
-    bnch <- mark(1+1, 2+0)
+    bnch <- mark(1 + 1, 2 + 0)
     res <- tidyr::unnest(bnch, c(time, gc))
 
     gc_cols <- colnames(bnch$gc[[1]])
 
-    expect_equal(colnames(res), c(head(colnames(bnch), n = -1), c(gc_cols, "gc")))
+    expect_equal(
+      colnames(res),
+      c(head(colnames(bnch), n = -1), c(gc_cols, "gc"))
+    )
 
     expect_equal(nrow(res), length(bnch$time[[1]]) + length(bnch$time[[2]]))
   })

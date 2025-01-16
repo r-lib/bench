@@ -46,9 +46,11 @@
 #'   }
 #' }
 # Lazily registered in `.onLoad()`
-autoplot.bench_mark <- function(object,
-  type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),...) {
-
+autoplot.bench_mark <- function(
+  object,
+  type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),
+  ...
+) {
   rlang::check_installed(c("ggplot2", "tidyr (>= 1.0.0)"), "for `autoplot()`.")
 
   type <- match.arg(type)
@@ -65,8 +67,8 @@ autoplot.bench_mark <- function(object,
   res <- tidyr::unnest(object, c(time, gc))
   p <- ggplot2::ggplot(res)
 
-
-  switch(type,
+  switch(
+    type,
     beeswarm = p <- p +
       ggplot2::aes(.data$time, .data$expression, color = .data$gc) +
       ggbeeswarm::geom_quasirandom(..., orientation = "y"),
@@ -90,17 +92,21 @@ autoplot.bench_mark <- function(object,
 
   parameters <- setdiff(
     colnames(object),
-    c("expression", summary_cols, data_cols, c("level0", "level1", "level2")))
+    c("expression", summary_cols, data_cols, c("level0", "level1", "level2"))
+  )
 
   if (length(parameters) == 0) {
     return(p)
   }
 
   if (length(parameters) == 2) {
-    return(p +
-      ggplot2::facet_grid(
-        paste0(parameters[[1]], "~", parameters[[2]]),
-        labeller = ggplot2::label_both))
+    return(
+      p +
+        ggplot2::facet_grid(
+          paste0(parameters[[1]], "~", parameters[[2]]),
+          labeller = ggplot2::label_both
+        )
+    )
   }
 
   p + ggplot2::facet_wrap(parameters, labeller = ggplot2::label_both)
@@ -110,7 +116,12 @@ autoplot.bench_mark <- function(object,
 #' @param x A `bench_mark` object.
 #' @param y Ignored, required for compatibility with the `plot()` generic.
 #' @export
-plot.bench_mark <- function(x, ..., type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"), y) {
+plot.bench_mark <- function(
+  x,
+  ...,
+  type = c("beeswarm", "jitter", "ridge", "boxplot", "violin"),
+  y
+) {
   type <- match.arg(type)
   ggplot2::autoplot(x, type = type, ...)
 }

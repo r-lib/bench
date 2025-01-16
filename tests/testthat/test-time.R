@@ -51,7 +51,8 @@ describe("format.as_bench_time", {
     v <- c(NA, .001, 60, 600, NaN, 6000)
     expect_equal(
       format(as_bench_time(v), trim = TRUE),
-      c("NA", "1ms", "1m", "10m", "NaN", "1.67h"))
+      c("NA", "1ms", "1m", "10m", "NaN", "1.67h")
+    )
 
     expect_equal(format(as_bench_time(numeric())), character())
   })
@@ -116,7 +117,7 @@ describe("Ops.as_bench_time", {
     expect_equal(x - 100, as_bench_time(c(0, 100, 200)))
     expect_equal(x * 100, as_bench_time(c(10000, 20000, 30000)))
     expect_equal(x / 2, as_bench_time(c(50, 100, 150)))
-    expect_equal(x ^ 2, as_bench_time(c(10000, 40000, 90000)))
+    expect_equal(x^2, as_bench_time(c(10000, 40000, 90000)))
   })
 
   it("errors for other binary operators", {
