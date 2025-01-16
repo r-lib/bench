@@ -1,4 +1,4 @@
-# bench (development version)
+# bench 1.1.4
 
 * `press()` gains a new `.quiet` argument to silence progress messages (#145).
 
