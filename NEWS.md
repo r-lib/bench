@@ -1,5 +1,7 @@
 # bench (development version)
 
+* R >=4.0.0 is now required, which is aligned with tidyverse standards.
+
 * Switched to modern ggplot2 conventions internally (#141, @olivroy).
 
 # bench 1.1.3
