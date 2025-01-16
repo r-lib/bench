@@ -15,9 +15,9 @@
 #'
 #' @param ... If named, parameters to define, if unnamed the expression to run.
 #'   Only one unnamed expression is permitted.
-#' @param .grid A pre-built grid of values to use, typically a [data.frame] or
-#'   [tibble]. This is useful if you only want to benchmark a subset of all
-#'   possible combinations.
+#' @param .grid A pre-built grid of values to use, typically a [data.frame()] or
+#'   [tibble::tibble()]. This is useful if you only want to benchmark a subset
+#'   of all possible combinations.
 #' @param .quiet If `TRUE`, progress messages will not be emitted.
 #' @export
 #' @examples

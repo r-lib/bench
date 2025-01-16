@@ -10,9 +10,9 @@ press(..., .grid = NULL, .quiet = FALSE)
 \item{...}{If named, parameters to define, if unnamed the expression to run.
 Only one unnamed expression is permitted.}
 
-\item{.grid}{A pre-built grid of values to use, typically a \link{data.frame} or
-\link{tibble}. This is useful if you only want to benchmark a subset of all
-possible combinations.}
+\item{.grid}{A pre-built grid of values to use, typically a \code{\link[=data.frame]{data.frame()}} or
+\code{\link[tibble:tibble]{tibble::tibble()}}. This is useful if you only want to benchmark a subset
+of all possible combinations.}
 
 \item{.quiet}{If \code{TRUE}, progress messages will not be emitted.}
 }
