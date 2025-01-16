@@ -85,9 +85,9 @@ Only one unnamed expression is permitted.</p></dd>
 
 
 <dt id="arg--grid">.grid<a class="anchor" aria-label="anchor" href="#arg--grid"></a></dt>
-<dd><p>A pre-built grid of values to use, typically a <a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a> or
-<a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a>. This is useful if you only want to benchmark a subset of all
-possible combinations.</p></dd>
+<dd><p>A pre-built grid of values to use, typically a <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame()</a></code> or
+<code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble()</a></code>. This is useful if you only want to benchmark a subset
+of all possible combinations.</p></dd>
 
 
 <dt id="arg--quiet">.quiet<a class="anchor" aria-label="anchor" href="#arg--quiet"></a></dt>
@@ -133,16 +133,16 @@ possible combinations.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 24 × 16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    expression  rows  cols   rep      min   median `itr/sec` mem_alloc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> bracket     <span style="text-decoration: underline;">1</span>000    10     1  106.1µs    118µs   <span style="text-decoration: underline;">8</span>232.    112.77KB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> which       <span style="text-decoration: underline;">1</span>000    10     1   94.9µs    103µs   <span style="text-decoration: underline;">9</span>300.     53.87KB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> subset      <span style="text-decoration: underline;">1</span>000    10     1  130.4µs    146µs   <span style="text-decoration: underline;">6</span>574.    124.63KB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> bracket    <span style="text-decoration: underline;">10</span>000    10     1  364.5µs    389µs   <span style="text-decoration: underline;">2</span>418.      1.14MB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> which      <span style="text-decoration: underline;">10</span>000    10     1  290.1µs    323µs   <span style="text-decoration: underline;">2</span>829.    575.37KB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> subset     <span style="text-decoration: underline;">10</span>000    10     1  425.3µs    458µs   <span style="text-decoration: underline;">2</span>105.      1.25MB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> bracket     <span style="text-decoration: underline;">1</span>000   100     1  823.4µs    850µs   <span style="text-decoration: underline;">1</span>124.    986.96KB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> which       <span style="text-decoration: underline;">1</span>000   100     1  696.7µs    742µs   <span style="text-decoration: underline;">1</span>322.     397.9KB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> subset      <span style="text-decoration: underline;">1</span>000   100     1  872.1µs    909µs   <span style="text-decoration: underline;">1</span>063.   1008.18KB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> bracket    <span style="text-decoration: underline;">10</span>000   100     1  191.1ms    191ms      5.23    9.71MB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> bracket     <span style="text-decoration: underline;">1</span>000    10     1   98.6µs  103.6µs   <span style="text-decoration: underline;">9</span>301.    112.77KB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> which       <span style="text-decoration: underline;">1</span>000    10     1   89.5µs   93.6µs  <span style="text-decoration: underline;">10</span>487.     53.87KB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> subset      <span style="text-decoration: underline;">1</span>000    10     1  122.5µs  128.5µs   <span style="text-decoration: underline;">7</span>512.    124.63KB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> bracket    <span style="text-decoration: underline;">10</span>000    10     1  327.5µs  347.3µs   <span style="text-decoration: underline;">2</span>785.      1.14MB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> which      <span style="text-decoration: underline;">10</span>000    10     1  267.7µs  283.8µs   <span style="text-decoration: underline;">3</span>346.    575.37KB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> subset     <span style="text-decoration: underline;">10</span>000    10     1  391.2µs  449.4µs   <span style="text-decoration: underline;">2</span>203.      1.25MB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> bracket     <span style="text-decoration: underline;">1</span>000   100     1    770µs  803.8µs   <span style="text-decoration: underline;">1</span>218.    986.96KB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> which       <span style="text-decoration: underline;">1</span>000   100     1  671.6µs  702.8µs   <span style="text-decoration: underline;">1</span>408.     397.9KB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> subset      <span style="text-decoration: underline;">1</span>000   100     1  807.9µs  844.1µs   <span style="text-decoration: underline;">1</span>166.   1008.18KB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> bracket    <span style="text-decoration: underline;">10</span>000   100     1  135.5ms  135.5ms      7.38    9.71MB</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: `gc/sec` &lt;dbl&gt;, n_itr &lt;int&gt;, n_gc &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   total_time &lt;bch:tm&gt;, result &lt;list&gt;, memory &lt;list&gt;, time &lt;list&gt;,</span></span>
