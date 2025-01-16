@@ -244,12 +244,12 @@ scale_type.bench_time <- function(x) "bench_time"
 #' @keywords internal
 #' @export
 scale_x_bench_time <- function(base = 10, ...) {
-  ggplot2::scale_x_continuous(..., trans = bench_time_trans(base = base))
+  ggplot2::scale_x_continuous(..., transform = bench_time_trans(base = base))
 }
 
 #' @rdname scale_bench_time
 #' @keywords internal
 #' @export
 scale_y_bench_time <- function(base = 10, ...) {
-  ggplot2::scale_y_continuous(..., trans = bench_time_trans(base = base))
+  ggplot2::scale_y_continuous(..., transform = bench_time_trans(base = base))
 }
