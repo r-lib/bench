@@ -13,7 +13,11 @@ template:
   params:
     ganalytics: UA-115082821-1
 
+  includes:
+    in_header: |
+      <script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script>
+
 news:
- releases:
- - text: "bench 1.0.1"
-   href: https://www.tidyverse.org/blog/2018/06/bench-1.0.1/
+  releases:
+  - text: "bench 1.0.1"
+    href: https://www.tidyverse.org/blog/2018/06/bench-1.0.1/
