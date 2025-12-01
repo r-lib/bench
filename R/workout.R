@@ -1,6 +1,6 @@
 #' Workout a group of expressions individually
 #'
-#' Given an block of expressions in `{}` [workout()] individually times each
+#' Given a block of expressions in `{}` [workout()] individually times each
 #' expression in the group. [workout_expressions()] is a lower level function most
 #' useful when reading lists of calls from a file.
 #'

@@ -21,7 +21,7 @@ deparsed expression will be used.}
 \item{env}{The environment in which the expressions should be evaluated.}
 }
 \description{
-Given an block of expressions in \code{{}} \code{\link[=workout]{workout()}} individually times each
+Given a block of expressions in \code{{}} \code{\link[=workout]{workout()}} individually times each
 expression in the group. \code{\link[=workout_expressions]{workout_expressions()}} is a lower level function most
 useful when reading lists of calls from a file.
 }
